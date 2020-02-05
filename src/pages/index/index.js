@@ -1,27 +1,37 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+
 import './index.scss'
+import MedicineItem from '../../components/MedicineItem'
+
 
 export default class Index extends Component {
 
   config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: 'Mad Pill',
+    enablePullDownRefresh: true,
+    backgroundTextStyle: 'dark'
   }
 
-  componentWillMount () { }
+  constructor() {
+    super()
+    this.state = {
+    }
+  }
 
-  componentDidMount () { }
+  onPullDownRefresh() {
+    this.init()
+  }
 
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
+  init = () => {
+    console.log('init')
+  }
 
   render () {
     return (
       <View className='index'>
         <Text>Hello world!</Text>
+        <MedicineItem />
       </View>
     )
   }

@@ -8,8 +8,8 @@ import {getDate} from "../../../utils";
 
 function BasicItem(props) {
 
-  // 项展示名称、项类型、是否必须、输入类型、标签展示内容 TODO iconValue
-  const {itemName, itemType, isRequired, inputType = 'text', tagContent = ''} = props.item
+  // 项展示名称、项类型、是否必须、输入类型、标签展示内容
+  const {itemName, itemType, isRequired, inputType = 'text', tagContent = '', iconValue = ''} = props.item
   const [value, setValue] = useState(() => {
     if (itemType === 'date') {
       return getDate(new Date())
@@ -47,41 +47,49 @@ function BasicItem(props) {
 
       {/* 右部实际输入 */}
       <View className='right at-col__offset-1 at-col-8'>
-        {
-          itemType === 'input' &&
-          <View>
-            <Input
-              name={itemName}
-              type={inputType}
-              placeholder={`请输入${itemName}`}
-              value={value}
-              onChange={handleChange}
-            />
-          </View>
-        }
-
-        {
-          itemType === 'date' &&
-          <Picker mode='date' value={value} onChange={handleChange}>
-            <View className='picker'>
-              {value}
-            </View>
-          </Picker>
-        }
-
-        {
-          itemType === 'tag' &&
-          <View className='at-row'>
+        <View className='at-row'>
+          {
+            // 普通输入框
+            itemType === 'input' &&
             <View className='at-col-10'>
               <Input
-                disabled
                 name={itemName}
                 type={inputType}
-                placeholder={tagContent.substr(0, 12)}
-                placeholderClass='tag'
-                maxLength={12}
+                placeholder={`请输入${itemName}`}
+                value={value}
+                onChange={handleChange}
               />
             </View>
+          }
+
+          {
+            // 日期选择器
+            itemType === 'date' &&
+            <Picker mode='date' value={value} onChange={handleChange}>
+              <View className='picker'>
+                {value}
+              </View>
+            </Picker>
+          }
+
+          {
+            // 不可输入的标签
+            itemType === 'tag' &&
+              <View className='at-col-10'>
+                <Input
+                  disabled
+                  name={itemName}
+                  type={inputType}
+                  placeholder={tagContent.substr(0, 12)}
+                  placeholderClass='tag'
+                  maxLength={12}
+                />
+              </View>
+          }
+
+          {
+            // 最右的图标
+            (itemType === 'input' || itemType === 'tag') &&
             <View className='at-col-2'>
               <View className='at-row at-row__justify--end'>
                 {tagContent.length > 12 &&
@@ -89,11 +97,11 @@ function BasicItem(props) {
                   ...
                 </Text>
                 }
-                <AtIcon value='chevron-right' size='16' color='#AEAEAE' />
+                <AtIcon value={iconValue} size='16' color='#AEAEAE' />
               </View>
             </View>
-          </View>
-        }
+          }
+        </View>
       </View>
     </View>
   )

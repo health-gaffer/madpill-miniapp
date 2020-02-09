@@ -6,10 +6,9 @@ import BasicItem from "../../components/MedicineInfo/BasicItem"
 
 function Add() {
 
-  const searchItem = {itemName: '药品名称', itemType: 'input', isRequired: true,}
+  const searchItem = {itemName: '药品名称', itemType: 'input', isRequired: true, iconValue: 'search'}
 
-
-    return (
+  return (
     <View>
       <View className='tip'>
         <View className='at-row at-row__justify--center'>
@@ -33,7 +32,6 @@ function Add() {
 
       <View className='search'>
         <BasicItem item={searchItem} />
-
       </View>
     </View>
   )

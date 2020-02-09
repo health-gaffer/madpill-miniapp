@@ -20,6 +20,7 @@ function BasicItem(props) {
 
   const handleChange = (cur) => {
     console.log(cur)
+    props.onClicked(cur)
     setValue(cur.target.value)
     return cur.target.value
   }
@@ -33,7 +34,7 @@ function BasicItem(props) {
             <View className='at-row at-row__justify--end'>
               {
                 isRequired &&
-                <AtIcon value='star-2' size='10' color='#F00'/>
+                <AtIcon value='star-2' size='10' color='#F00' />
               }
             </View>
           </View>

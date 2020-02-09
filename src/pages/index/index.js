@@ -1,22 +1,19 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 
 import './index.scss'
-import MedicineItem from '../../components/MedicineItem'
 
 
 export default class Index extends Component {
-
-  config = {
-    navigationBarTitleText: 'Mad Pill',
-    enablePullDownRefresh: true,
-    backgroundTextStyle: 'dark'
-  }
 
   constructor() {
     super()
     this.state = {
     }
+  }
+
+  config = {
+    enablePullDownRefresh: true,
   }
 
   onPullDownRefresh() {
@@ -27,11 +24,16 @@ export default class Index extends Component {
     console.log('init')
   }
 
+  routeToAdd = () => {
+    Taro.navigateTo({
+      url: '/pages/add/index'
+    })
+  }
+
   render () {
     return (
       <View className='index'>
-        <Text>Hello world!</Text>
-        <MedicineItem />
+        <Button type='primary' onClick={this.routeToAdd}>添加药品</Button>
       </View>
     )
   }

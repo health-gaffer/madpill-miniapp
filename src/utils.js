@@ -16,7 +16,7 @@ export const fetchAuthorizationInfo = callback => {
             });
             return;
           }
-          const { token, registered } = res2.data.data;
+          const {token, registered} = res2.data.data;
           callback(token, registered);
         },
         fail: err => {
@@ -30,3 +30,12 @@ export const fetchAuthorizationInfo = callback => {
     }
   });
 };
+
+export const getDate = (date) => {
+  const y = date.getFullYear();
+  let m = date.getMonth() + 1;
+  m = m < 10 ? ('0' + m) : m;
+  let d = date.getDate();
+  d = d < 10 ? ('0' + d) : d;
+  return y + '-' + m + '-' + d;
+}

@@ -16,10 +16,10 @@ function Add() {
   const basicItems = [
     {itemName: '药品名称', itemType: 'input', isRequired: true,},
     {itemName: '生产时间', itemType: 'date', isRequired: true,},
-    {itemName: '保质天数', itemType: 'input', isRequired: true,},
+    {itemName: '保质天数', itemType: 'input', isRequired: true, inputType: 'number',},
     {itemName: '过期时间', itemType: 'date', isRequired: true,},
     {itemName: '用药说明', itemType: 'input', isRequired: true,},
-    {itemName: '药品标签', itemType: 'tag', isRequired: false,},
+    {itemName: '药品标签', itemType: 'tag', isRequired: false, tagContent: '头晕, 恶心',},
   ];
 
   usePullDownRefresh(() => {

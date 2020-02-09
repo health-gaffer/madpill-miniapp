@@ -1,6 +1,6 @@
 import Taro, { useState } from '@tarojs/taro'
-import { View, Picker } from '@tarojs/components'
-import { AtInput,AtIcon, AtList, AtListItem }  from 'taro-ui'
+import { View, Text, Picker, Input } from '@tarojs/components'
+import { AtIcon }  from 'taro-ui'
 
 import './index.scss'
 
@@ -8,13 +8,20 @@ import {getDate} from "../../../utils";
 
 function BasicItem(props) {
 
-  const {itemName, itemType, isRequired} = props.item;
-  const [value, setValue] = useState('');
-  const [curDate, setCurDate] = useState(getDate(new Date()));
+  // 项展示名称、项类型、是否必须、输入类型、标签展示内容
+  const {itemName, itemType, isRequired, inputType='text', tagContent=''} = props.item;
+  const [value, setValue] = useState(() => {
+    if (itemType === 'date') {
+      return getDate(new Date())
+    } else {
+      return ''
+    }
+  });
 
   const handleChange = (cur) => {
-    setValue(cur)
-    return cur
+    console.log(cur)
+    setValue(cur.target.value)
+    return cur.target.value
   }
 
   return (
@@ -40,28 +47,47 @@ function BasicItem(props) {
       {/* 右部实际输入 */}
       <View className='right at-col__offset-1 at-col-8'>
         {itemType === 'input' &&
-        <AtInput
-          name={itemName}
-          type='text'
-          placeholder={'请输入' + itemName}
-          border={false}
-          value={value}
-          onChange={handleChange}
-        />
+          <View>
+            <Input
+              name={itemName}
+              type={inputType}
+              placeholder={'请输入' + itemName}
+              value={value}
+              onChange={handleChange}
+            />
+          </View>
         }
 
         {itemType === 'date' &&
-        <Picker mode='date' value={curDate} >
+        <Picker mode='date' value={value} onChange={handleChange}>
           <View className='picker'>
-            {curDate}
+            {value}
           </View>
         </Picker>
         }
 
         {itemType === 'tag' &&
-        <AtList hasBorder={false}>
-          <AtListItem hasBorder={false} note='头晕, 恶心' arrow='right' />
-        </AtList>
+          <View className='at-row'>
+            <View className='at-col-10'>
+              <Input
+                disabled
+                name={itemName}
+                type={inputType}
+                placeholder={tagContent.substr(0, 12)}
+                maxLength={12}
+              />
+            </View>
+            <View className='at-col-2'>
+              <View className='at-row at-row__justify--end'>
+                {tagContent.length > 12 &&
+                <Text style='color: #BFBFBF'>
+                  ...
+                </Text>
+                }
+                <AtIcon value='chevron-right' size='16' color='#BFBFBF' />
+              </View>
+            </View>
+          </View>
         }
       </View>
     </View>

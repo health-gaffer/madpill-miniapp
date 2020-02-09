@@ -13,6 +13,7 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/add/index',
+      'pages/medicine/index',
     ],
     window: {
       navigationBarBackgroundColor: '#fff',

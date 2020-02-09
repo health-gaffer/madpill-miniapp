@@ -37,7 +37,6 @@ function Medicine(props) {
       {/*  TODO */}
       </View>
 
-
       {/* banner TODO ref */}
       <View className='banner at-row'>
         <View className='at-col-6'>
@@ -120,7 +119,7 @@ function Medicine(props) {
         </View>
       </View>
 
-      <View className='act'>
+      <View className='operation'>
         {props.children}
       </View>
 

@@ -1,19 +1,10 @@
 @import "src/custom-variables";
 
-.act {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
+.tip {
+  margin-top: 200px;
+  margin-bottom: 150px;
 
-  .add.at-button {
-    color: white;
-    background: $color-brand;
-    border: $color-brand;
-  }
-
-  .delete.at-button {
-    color: red;
-    background: white;
-    border: white;
+  .at-article__h3 {
+    color: $tip;
   }
 }

@@ -8,7 +8,7 @@ import {getDate} from "../../../utils";
 
 function BasicItem(props) {
 
-  // 项展示名称、项类型、是否必须、输入类型、标签展示内容
+  // 项展示名称、项类型、是否必须、输入类型、标签展示内容 TODO iconValue
   const {itemName, itemType, isRequired, inputType = 'text', tagContent = ''} = props.item
   const [value, setValue] = useState(() => {
     if (itemType === 'date') {
@@ -78,17 +78,18 @@ function BasicItem(props) {
                 name={itemName}
                 type={inputType}
                 placeholder={tagContent.substr(0, 12)}
+                placeholderClass='tag'
                 maxLength={12}
               />
             </View>
             <View className='at-col-2'>
               <View className='at-row at-row__justify--end'>
                 {tagContent.length > 12 &&
-                <Text style='color: #BFBFBF'>
+                <Text className='tag'>
                   ...
                 </Text>
                 }
-                <AtIcon value='chevron-right' size='16' color='#BFBFBF'/>
+                <AtIcon value='chevron-right' size='16' color='#AEAEAE' />
               </View>
             </View>
           </View>

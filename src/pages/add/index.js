@@ -1,39 +1,40 @@
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtButton } from "taro-ui"
 
 import './index.scss'
-import Medicine from "../../components/Medicine"
+import BasicItem from "../../components/MedicineInfo/BasicItem"
 
-function Add(props) {
+function Add() {
 
-  const {act = 'review'} = props
+  const searchItem = {itemName: '药品名称', itemType: 'input', isRequired: true,}
 
-  return (
+
+    return (
     <View>
-      <Medicine>
-        <View className='act'>
-          {
-            act === 'new' &&
-            <View className='at-row at-row__justify--center'>
-              <View className='at-col-8'>
-                <AtButton className='add'>确认添加</AtButton>
-              </View>
-            </View>
-          }
-
-          {
-            act === 'review' &&
-            <View className='at-row at-row__justify--center'>
-              <View className='at-col-8'>
-                <AtButton className='add at-col-12'>确认修改</AtButton>
-                <AtButton className='delete'>删除药品</AtButton>
-              </View>
-            </View>
-          }
+      <View className='tip'>
+        <View className='at-row at-row__justify--center'>
+          <View className='at-article__h1'>
+            输入一个药品名称
+          </View>
         </View>
-      </Medicine>
+        <View className='at-row at-row__justify--center at-row--wrap'>
+          <View className='at-col-12 at-article__h3'>
+            <View className='at-row at-row__justify--center'>
+              通过药品名称搜索，您可以直接选择
+            </View>
+          </View>
+          <View className='at-col-12 at-article__h3'>
+            <View className='at-row at-row__justify--center'>
+              一种已记录的药品，自动补全相关信息～
+            </View>
+          </View>
+        </View>
+      </View>
 
+      <View className='search'>
+        <BasicItem item={searchItem} />
+
+      </View>
     </View>
   )
 }

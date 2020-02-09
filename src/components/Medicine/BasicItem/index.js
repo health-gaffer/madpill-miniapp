@@ -51,7 +51,7 @@ function BasicItem(props) {
             <Input
               name={itemName}
               type={inputType}
-              placeholder={'请输入' + itemName}
+              placeholder={`请输入${itemName}`}
               value={value}
               onChange={handleChange}
             />
@@ -92,6 +92,10 @@ function BasicItem(props) {
       </View>
     </View>
   )
+}
+
+BasicItem.defaultProps = {
+  item: {}
 }
 
 export default BasicItem

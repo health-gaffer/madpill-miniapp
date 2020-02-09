@@ -1,12 +1,12 @@
+@import "~taro-ui/dist/style/components/flex.scss";
 
 .extra-item {
   .head {
-    height: 50px;
-    background: purple;
+    //background: purple;
   }
 
   .content {
-    height: 100px;
-    background: blue;
+    margin-top: 8px;
+    //background: blue;
   }
 }

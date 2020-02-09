@@ -22,6 +22,11 @@ function Add() {
     {itemName: '药品标签', itemType: 'tag', isRequired: false, tagContent: '头晕, 恶心',},
   ];
 
+  const moreItems =[
+    {itemName: '适用症',},
+    {itemName: '药品禁忌',},
+  ]
+
   usePullDownRefresh(() => {
     console.log('hello kk')
   })
@@ -84,11 +89,11 @@ function Add() {
           {
             basicItems.map((item, index) => {
               if (index === basicItems.length - 1) {
-                return <BasicItem className='at-row' key={index} item={item}>specific input {item}</BasicItem>
+                return <BasicItem className='at-row' key={index} item={item} />
               }
               return (
                 <View>
-                  <BasicItem className='at-row' key={index} item={item}>specific input {item}</BasicItem>
+                  <BasicItem className='at-row' key={index} item={item} />
                   <MPDivider />
                 </View>
               )
@@ -100,7 +105,17 @@ function Add() {
 
         <View className='extras'>
           {
-            basicItems.map(number => <MoreItem className='at-row' key={number}>specific input {number}</MoreItem>)
+            moreItems.map((item, index) => {
+              if (index === moreItems.length - 1) {
+                return <MoreItem className='at-row' key={index} item={item} />
+              }
+              return (
+                <View>
+                  <MoreItem className='at-row' key={index} item={item} />
+                  <MPDivider />
+                </View>
+              )
+            })
           }
         </View>
       </View>

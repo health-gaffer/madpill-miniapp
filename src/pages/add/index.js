@@ -1,124 +1,38 @@
-import Taro, {
-  useState,
-  usePullDownRefresh,
-} from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { AtButton } from "taro-ui"
 
 import './index.scss'
-import BasicItem from "../../components/Medicine/BasicItem";
-import MoreItem from "../../components/Medicine/MoreItem";
-import MPDivider from "../../components/MPDivider";
+import Medicine from "../../components/Medicine"
 
-function Add() {
+function Add(props) {
 
-  const [showingInfoType, setShowingInfoType] = useState('basic');
-
-  const basicItems = [
-    {itemName: '药品名称', itemType: 'input', isRequired: true,},
-    {itemName: '生产时间', itemType: 'date', isRequired: true,},
-    {itemName: '保质天数', itemType: 'input', isRequired: true, inputType: 'number',},
-    {itemName: '过期时间', itemType: 'date', isRequired: true,},
-    {itemName: '用药说明', itemType: 'input', isRequired: true,},
-    {itemName: '药品标签', itemType: 'tag', isRequired: false, tagContent: '头晕, 恶心',},
-  ];
-
-  const moreItems =[
-    {itemName: '适用症',},
-    {itemName: '药品禁忌',},
-  ]
-
-  usePullDownRefresh(() => {
-    console.log('hello kk')
-  })
+  const {act = 'review'} = props
 
   return (
-    <View className='medicine'>
-      <View className='photo at-row'>
-      {/*  TODO */}
-      </View>
-
-
-      {/* banner TODO ref */}
-      <View className='banner at-row'>
-        <View className='at-col-6'>
-          <View className='at-row at-row__justify--end'>
-            <View className='at-col--auto'>
-              <View className='at-row'>
-                <View className='at-col--auto at-article__p'>
-                  基本信息
-                </View>
-              </View>
-
-              {
-                showingInfoType === 'basic' &&
-                <View className='at-row'>
-                  <View className='indicator at-row'>
-                  </View>
-                </View>
-              }
-            </View>
-            {/* 补空格 */}
-            <View className='at-col-1' />
-          </View>
-        </View>
-
-        <View className='at-col-6'>
-          <View className='at-row at-row__justify--start'>
-            {/* 补空格 */}
-            <View className='at-col-1' />
-            <View className='at-col--auto'>
-              <View className='at-row'>
-                <View className='at-col--auto at-article__p'>
-                  更多信息
-                </View>
-              </View>
-              {
-                showingInfoType === 'more' &&
-                <View className='at-row'>
-                  <View className='indicator at-row'>
-                  </View>
-                </View>
-              }
-            </View>
-          </View>
-        </View>
-      </View>
-
-      <View className='info'>
-        <View className='basics'>
+    <View>
+      <Medicine>
+        <View className='act'>
           {
-            basicItems.map((item, index) => {
-              if (index === basicItems.length - 1) {
-                return <BasicItem className='at-row' key={index} item={item} />
-              }
-              return (
-                <View>
-                  <BasicItem className='at-row' key={index} item={item} />
-                  <MPDivider />
-                </View>
-              )
-            })
+            act === 'new' &&
+            <View className='at-row at-row__justify--center'>
+              <View className='at-col-8'>
+                <AtButton className='add'>确认添加</AtButton>
+              </View>
+            </View>
+          }
+
+          {
+            act === 'review' &&
+            <View className='at-row at-row__justify--center'>
+              <View className='at-col-8'>
+                <AtButton className='add at-col-12'>确认修改</AtButton>
+                <AtButton className='delete'>删除药品</AtButton>
+              </View>
+            </View>
           }
         </View>
-
-        <MPDivider color='#737373' />
-
-        <View className='extras'>
-          {
-            moreItems.map((item, index) => {
-              if (index === moreItems.length - 1) {
-                return <MoreItem className='at-row' key={index} item={item} />
-              }
-              return (
-                <View>
-                  <MoreItem className='at-row' key={index} item={item} />
-                  <MPDivider />
-                </View>
-              )
-            })
-          }
-        </View>
-      </View>
+      </Medicine>
 
     </View>
   )
@@ -126,7 +40,6 @@ function Add() {
 
 Add.config = {
   navigationBarTitleText: '添加药品',
-  enablePullDownRefresh: true,
 }
 
 export default Add

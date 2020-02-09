@@ -5,8 +5,8 @@ import './index.scss'
 
 function MoreItem(props) {
 
-  const {itemName} = props.item;
-  const [content, setContent] = useState('');
+  const {itemName} = props.item
+  const [content, setContent] = useState('')
 
   return (
     <View className='extra-item'>

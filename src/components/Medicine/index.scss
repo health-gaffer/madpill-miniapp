@@ -1,0 +1,26 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+@import "src/custom-variables";
+
+.medicine {
+
+  .banner {
+    .indicator {
+      height: 10px;
+      background: $color-brand;
+    }
+  }
+
+  .info {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .basics {
+      margin-top: 20px;
+    }
+
+    .extras {
+      margin-top: 20px;
+    }
+  }
+
+}

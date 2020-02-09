@@ -1,23 +1,19 @@
-.medicine {
+@import "src/custom-variables";
 
-  .banner {
-    .indicator {
-      height: 10px;
-      background: #FB9828;
-    }
+.act {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+
+  .add.at-button {
+    color: white;
+    background: $color-brand;
+    border: $color-brand;
   }
 
-  .info {
-    padding-left: 10px;
-    padding-right: 10px;
-
-    .basics {
-      margin-top: 20px;
-    }
-
-    .extras {
-      margin-top: 20px;
-    }
+  .delete.at-button {
+    color: red;
+    background: white;
+    border: white;
   }
-
 }

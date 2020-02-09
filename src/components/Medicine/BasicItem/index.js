@@ -9,14 +9,14 @@ import {getDate} from "../../../utils";
 function BasicItem(props) {
 
   // 项展示名称、项类型、是否必须、输入类型、标签展示内容
-  const {itemName, itemType, isRequired, inputType='text', tagContent=''} = props.item;
+  const {itemName, itemType, isRequired, inputType = 'text', tagContent = ''} = props.item
   const [value, setValue] = useState(() => {
     if (itemType === 'date') {
       return getDate(new Date())
     } else {
       return ''
     }
-  });
+  })
 
   const handleChange = (cur) => {
     console.log(cur)
@@ -31,8 +31,9 @@ function BasicItem(props) {
         <View className='at-row at-row__align--center at-row__justify--center'>
           <View className='at-col-2'>
             <View className='at-row at-row__justify--end'>
-              {isRequired &&
-              <AtIcon value='star-2' size='10' color='#F00' />
+              {
+                isRequired &&
+                <AtIcon value='star-2' size='10' color='#F00'/>
               }
             </View>
           </View>
@@ -46,7 +47,8 @@ function BasicItem(props) {
 
       {/* 右部实际输入 */}
       <View className='right at-col__offset-1 at-col-8'>
-        {itemType === 'input' &&
+        {
+          itemType === 'input' &&
           <View>
             <Input
               name={itemName}
@@ -58,15 +60,17 @@ function BasicItem(props) {
           </View>
         }
 
-        {itemType === 'date' &&
-        <Picker mode='date' value={value} onChange={handleChange}>
-          <View className='picker'>
-            {value}
-          </View>
-        </Picker>
+        {
+          itemType === 'date' &&
+          <Picker mode='date' value={value} onChange={handleChange}>
+            <View className='picker'>
+              {value}
+            </View>
+          </Picker>
         }
 
-        {itemType === 'tag' &&
+        {
+          itemType === 'tag' &&
           <View className='at-row'>
             <View className='at-col-10'>
               <Input
@@ -84,7 +88,7 @@ function BasicItem(props) {
                   ...
                 </Text>
                 }
-                <AtIcon value='chevron-right' size='16' color='#BFBFBF' />
+                <AtIcon value='chevron-right' size='16' color='#BFBFBF'/>
               </View>
             </View>
           </View>

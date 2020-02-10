@@ -1,6 +1,8 @@
-import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import { AtButton } from "taro-ui"
+import Taro, {
+  useState
+} from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import { AtButton, AtActionSheet, AtActionSheetItem  } from "taro-ui"
 
 import './index.scss'
 import MedicineInfo from "../../components/MedicineInfo"
@@ -9,13 +11,29 @@ function Medicine(props) {
 
   const {action = 'review'} = props
 
-  const actionNewItems = [
-    {type: 'add', msg: '确认添加',},
-  ]
-  const actionReviewItems = [
-    {type: 'add', msg: '确认修改',},
-    {type: 'delete', msg: '删除药品',},
-  ]
+  const [deleteConfirmModalOpen, setDeleteComfirmModalOpen] = useState(false)
+
+  const addClicked = () => {
+    // TODO
+    console.log('addClicked')
+  }
+
+  const modifyClicked = () => {
+    // TODO
+    console.log('modifyClicked')
+  }
+
+  const deleteClicked = () => {
+    setDeleteComfirmModalOpen(true)
+  }
+
+  const deleteConfirmed = () => {
+    // TODO
+  }
+
+  const deleteCancelled = () => {
+    setDeleteComfirmModalOpen(false)
+  }
 
   return (
     <MedicineInfo>
@@ -23,19 +41,32 @@ function Medicine(props) {
         <View className='at-col-8'>
           {
             action === 'new' &&
-            actionNewItems.map((item, index) => {
-              return <AtButton className={item.type} key={index}>{item.msg}</AtButton>
-            })
+            <AtButton className='add' onClick={addClicked}>确认添加</AtButton>
           }
 
           {
             action === 'review' &&
-            actionReviewItems.map((item, index) => {
-              return <AtButton className={item.type} key={index}>{item.msg}</AtButton>
-            })
+            <View>
+              <AtButton className='add' onClick={modifyClicked}>确认修改</AtButton>
+              <AtButton className='delete' onClick={deleteClicked}>删除药品</AtButton>
+            </View>
           }
         </View>
       </View>
+
+      <AtActionSheet
+        isOpened={deleteConfirmModalOpen}
+        cancelText='取消'
+        title='请您知悉，删除该药品该操作不可撤销！'
+        onCancel={deleteCancelled}
+        onClose={deleteCancelled}
+      >
+        <AtActionSheetItem onClick={deleteConfirmed}>
+          <Text className='delete-confirm'>
+            确认删除
+          </Text>
+        </AtActionSheetItem>
+      </AtActionSheet>
     </MedicineInfo>
   )
 }

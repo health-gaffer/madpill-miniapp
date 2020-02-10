@@ -25,32 +25,31 @@ function AddSearchedResult(props) {
     search()
   }, [query])
 
-  // TODO 向后端搜索数据
+  // TODO api 向后端搜索数据
   const search = () => {
     const curResult = [
-      {name: '奥硝唑片', vendor: '潇然'},
-      {name: '左奥硝唑氯化钠注射液', vendor: '潇然'},
-      {name: '奥沙利铂', vendor: '潇然'},
-      {name: '替吉奥胶囊', vendor: '潇然'},
-      {name: '奥美拉唑肠溶胶囊', vendor: '潇然'},
-      {name: '奥替拉西钾', vendor: '潇然'},
-      {name: '注射用奥扎格雷钠', vendor: '潇然'},
-      {name: '磷酸奥司他韦胶囊', vendor: '潇然'},
-      {name: '奥氮平片', vendor: '潇然'},
-      {name: '奥拉西坦胶囊', vendor: '潇然'},
+      {id: 3, name: '奥硝唑片', vendor: '潇然'},
+      {id: 3, name: '左奥硝唑氯化钠注射液', vendor: '潇然'},
+      {id: 3, name: '奥沙利铂', vendor: '潇然'},
+      {id: 3, name: '替吉奥胶囊', vendor: '潇然'},
+      {id: 3, name: '奥美拉唑肠溶胶囊', vendor: '潇然'},
+      {id: 3, name: '奥替拉西钾', vendor: '潇然'},
+      {id: 3, name: '注射用奥扎格雷钠', vendor: '潇然'},
+      {id: 3, name: '磷酸奥司他韦胶囊', vendor: '潇然'},
+      {id: 3, name: '奥氮平片', vendor: '潇然'},
+      {id: 3, name: '奥拉西坦胶囊', vendor: '潇然'},
     ]
 
     setResult(curResult);
   }
 
-  // TODO 选择了药品，跳转页面，填充适用症和药品禁忌
   const resultItemClicked = (item) => (e) => {
     console.log('resultItemClicked')
     console.log(item)
     console.log(e)
 
     Taro.navigateTo({
-      url: '/pages/medicine/index'
+      url: `/pages/medicine/index?action=add&addMode=madpill&medicineId=${item.id}`
     })
   }
 
@@ -60,7 +59,7 @@ function AddSearchedResult(props) {
     if (more !== MORE_STATE_HAS_MORE) return
 
     setMore(MORE_STATE_LOADING)
-    // TODO 后端加载数据
+    // TODO api 后端加载数据
     setResult(prevState => {
       prevState.push(
         {name: '替吉奥胶囊', vendor: '潇然'},

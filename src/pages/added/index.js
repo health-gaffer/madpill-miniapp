@@ -6,7 +6,6 @@ import './index.scss'
 
 function Added() {
 
-  // TODO 继续添加
   const continueBtnClicked = () => {
     console.log('continualBtnClicked')
     Taro.redirectTo({

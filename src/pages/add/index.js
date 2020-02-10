@@ -24,13 +24,12 @@ function Add() {
     }
   }
 
-  // TODO 选择手动输入药品名，跳转页面
   const manuallyInputBtnClicked = () => {
     console.log('manuallyInputBtnClicked')
     console.log(query)
 
     Taro.navigateTo({
-      url: '/pages/medicine/index'
+      url: `/pages/medicine/index?action=add&addMode=direct&name=${query}`
     })
   }
 

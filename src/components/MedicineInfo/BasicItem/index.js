@@ -21,6 +21,7 @@ function BasicItem(props) {
   const handleChange = (cur) => {
     console.log(cur)
     setValue(cur.target.value)
+    // TODO bug
     props.onClicked(cur.target.value)
     return cur.target.value
   }

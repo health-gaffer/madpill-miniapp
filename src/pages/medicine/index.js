@@ -1,25 +1,50 @@
 import Taro, {
-  useState
+  useState,
+  useEffect,
+  useRouter,
 } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton, AtActionSheet, AtActionSheetItem  } from "taro-ui"
 
 import './index.scss'
 import MedicineInfo from "../../components/MedicineInfo"
+import { MADPILL_ADD_CONFIG } from "../../constants"
 
-function Medicine(props) {
-
-  const {action = 'review'} = props
+function Medicine() {
 
   const [deleteConfirmModalOpen, setDeleteComfirmModalOpen] = useState(false)
+  const curRouter = useRouter()
+  const [action, setAction] = useState('add')
+
+  /**
+   * 路由参数规则
+   * action: 'add' (新增)
+   *        addMode: 'madpill' (选取已有的药品)
+   *                medicineId: $id (药品ID)
+   *        addMode: 'direct' (直接输入)
+   *                name: $name (药品名称)
+   * action: 'review' (查看)
+   *        medicineId: $id (药品ID)
+   */
+  useEffect(() => {
+    setAction(curRouter.params.action)
+  }, [curRouter])
 
   const addClicked = () => {
-    // TODO
+    // TODO api
     console.log('addClicked')
+
+    // 关闭上两层添加页面，以便可以直接返回首页
+    Taro.navigateBack({
+      delta: 10
+    })
+    Taro.navigateTo({
+      url: '/pages/added/index'
+    })
   }
 
   const modifyClicked = () => {
-    // TODO
+    // TODO api
     console.log('modifyClicked')
   }
 
@@ -28,7 +53,7 @@ function Medicine(props) {
   }
 
   const deleteConfirmed = () => {
-    // TODO
+    // TODO api
   }
 
   const deleteCancelled = () => {
@@ -36,16 +61,16 @@ function Medicine(props) {
   }
 
   return (
-    <MedicineInfo>
+    <MedicineInfo routeParams={curRouter.params}>
       <View className='action at-row at-row__justify--center'>
         <View className='at-col-8'>
           {
-            action === 'new' &&
+            action === MADPILL_ADD_CONFIG.ACTION_ADD &&
             <AtButton className='add' onClick={addClicked}>确认添加</AtButton>
           }
 
           {
-            action === 'review' &&
+            action === MADPILL_ADD_CONFIG.ACTION_REVIEW &&
             <View>
               <AtButton className='add' onClick={modifyClicked}>确认修改</AtButton>
               <AtButton className='delete' onClick={deleteClicked}>删除药品</AtButton>

@@ -1,6 +1,6 @@
 import Taro, {
   useState,
-  usePullDownRefresh,
+  useEffect,
 } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
@@ -8,10 +8,16 @@ import './index.scss'
 import BasicItem from "./BasicItem";
 import MoreItem from "./MoreItem";
 import MPDivider from "../MPDivider";
+import { MADPILL_ADD_CONFIG } from "../../constants"
 
 function MedicineInfo(props) {
 
   const [showingInfoType, setShowingInfoType] = useState('basic');
+
+  const [action, setAction] = useState('add')
+  const [addMode, setAddMode] = useState('direct')
+  const [medicineId, setMedicineId] = useState(0)
+  const [name, setName] = useState('')
 
   const basicItems = [
     {itemName: '药品名称', itemType: 'input', isRequired: true,},
@@ -27,8 +33,8 @@ function MedicineInfo(props) {
     {itemName: '药品禁忌',},
   ]
 
-  usePullDownRefresh(() => {
-    console.log('hello kk')
+  useEffect(() => {
+    // TODO api 解析路由，向后端取数据 / 填充数据
   })
 
   return (

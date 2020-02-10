@@ -9,24 +9,31 @@ function Medicine(props) {
 
   const {action = 'review'} = props
 
+  const actionNewItems = [
+    {type: 'add', msg: '确认添加',},
+  ]
+  const actionReviewItems = [
+    {type: 'add', msg: '确认修改',},
+    {type: 'delete', msg: '删除药品',},
+  ]
+
   return (
     <MedicineInfo>
-      <View className='action'>
-        <View className='at-row at-row__justify--center'>
-          <View className='at-col-8'>
-            {
-              action === 'new' &&
-              <AtButton className='add'>确认添加</AtButton>
-            }
+      <View className='action at-row at-row__justify--center'>
+        <View className='at-col-8'>
+          {
+            action === 'new' &&
+            actionNewItems.map((item, index) => {
+              return <AtButton className={item.type} key={index}>{item.msg}</AtButton>
+            })
+          }
 
-            {
-              action === 'review' &&
-              <View>
-                <AtButton className='add'>确认修改</AtButton>
-                <AtButton className='delete'>删除药品</AtButton>
-              </View>
-            }
-          </View>
+          {
+            action === 'review' &&
+            actionReviewItems.map((item, index) => {
+              return <AtButton className={item.type} key={index}>{item.msg}</AtButton>
+            })
+          }
         </View>
       </View>
     </MedicineInfo>

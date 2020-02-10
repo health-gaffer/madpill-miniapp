@@ -2,6 +2,7 @@ import Taro ,{
   useState
 } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { AtButton } from "taro-ui"
 
 import './index.scss'
 import BasicItem from "../../components/MedicineInfo/BasicItem"
@@ -13,13 +14,15 @@ function Add() {
   const [showingResult, setShowingResult] = useState(false)
 
   const searchItemClicked = (e) => {
-    if (e !== undefined && showingResult === false) {
+    if (e !== undefined && e.target.value !== '' && showingResult === false) {
       setShowingResult(true)
     }
   }
 
   return (
     <View>
+
+      {/* 输入的提示信息 */}
       <View>
         {
           showingResult === false &&
@@ -45,14 +48,29 @@ function Add() {
         }
       </View>
 
+      {/* 搜索框 */}
       <View className={showingResult ? 'searched' : 'search'}>
         <BasicItem item={searchItem} onClicked={searchItemClicked} />
       </View>
 
+      {/* 搜索结果*/}
       <View>
         {
           showingResult === true &&
           <View className='search-result'>
+          {/* TODO */}
+          </View>
+        }
+      </View>
+
+      {/* 使用手动输入的结果 */}
+      <View>
+        {
+          showingResult === true &&
+          <View className='manually-input at-row at-row__justify--center'>
+            <View className='at-col-8'>
+              <AtButton className='manual-btn'>使用输入的药品名称</AtButton>
+            </View>
           </View>
         }
       </View>

@@ -9,7 +9,7 @@ import BasicItem from "./BasicItem";
 import MoreItem from "./MoreItem";
 import MPDivider from "../MPDivider";
 
-function Medicine(props) {
+function MedicineInfo(props) {
 
   const [showingInfoType, setShowingInfoType] = useState('basic');
 
@@ -127,4 +127,4 @@ function Medicine(props) {
   )
 }
 
-export default Medicine
+export default MedicineInfo

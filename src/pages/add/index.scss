@@ -29,3 +29,15 @@
     margin-top: 30px;
   }
 }
+
+.manually-input {
+  margin-bottom: $iphone-x-indicator-height;
+  position: absolute;
+  bottom: 0;
+
+  .manual-btn.at-button {
+    color: $plain-color;
+    background: $plain-background;
+    border: $plain-background;
+  }
+}

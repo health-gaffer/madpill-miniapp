@@ -1,15 +1,17 @@
 @import "src/custom-variables";
 
 .action {
+  margin-bottom: $iphone-x-indicator-height;
+
   .add.at-button {
-    color: white;
-    background: $color-brand;
-    border: $color-brand;
+    color: $primary-color;
+    background: $primary-background;
+    border: $primary-background;
   }
 
   .delete.at-button {
-    color: red;
-    background: white;
-    border: white;
+    color: $danger-color;
+    background: $danger-background;
+    border: $danger-background;
   }
 }

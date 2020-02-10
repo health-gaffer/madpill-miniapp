@@ -17,10 +17,17 @@ function Add() {
   const [query, setQuery] = useState('')
 
   const searchItemClicked = (curQuery) => {
+    setQuery(curQuery)
+
     if (curQuery !== undefined && curQuery !== '' && showingResult === false) {
       setShowingResult(true)
-      setQuery(curQuery)
     }
+  }
+
+  // TODO 选择手动输入药品名，跳转页面
+  const manuallyInputBtnClicked = () => {
+    console.log('manuallyInputBtnClicked')
+    console.log(query)
   }
 
   return (
@@ -74,7 +81,7 @@ function Add() {
           showingResult === true &&
           <View className='manually-input at-row at-row__justify--center'>
             <View className='at-col-8'>
-              <AtButton className='manual-btn'>使用输入的药品名称</AtButton>
+              <AtButton className='manual-btn' onClick={manuallyInputBtnClicked}>使用输入的药品名称</AtButton>
             </View>
           </View>
         }

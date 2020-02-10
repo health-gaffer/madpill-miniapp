@@ -2,7 +2,7 @@ import Taro, {
   useState,
   useEffect,
 } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 
 import './index.scss'
 import { getPillColor } from "../../../utils"
@@ -14,16 +14,13 @@ function AddSearchedResultItem(props) {
   const [color, setColor] = useState('white')
 
   useEffect(() => {
-    setColor(getPillColor(name))
+    setColor(getPillColor(vendor + name))
   })
-
-  const searchItemClicked = (e) => {
-  }
 
   return (
     <View className='result-item at-row at-row__align--center'>
       <View className='pill-photo at-col-1'>
-        <Text className='madpill icon-pill2' style={{color: color}} />
+        <View className='madpill icon-pill' style={{color: color}} />
       </View>
 
       <View className='name at-col-9'>

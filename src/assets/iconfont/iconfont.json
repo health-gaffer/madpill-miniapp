@@ -6,23 +6,16 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "5714301",
-      "name": "pill",
-      "font_class": "pill",
-      "unicode": "e675",
-      "unicode_decimal": 58997
-    },
-    {
-      "icon_id": "12228709",
-      "name": "pill",
-      "font_class": "pill1",
-      "unicode": "e727",
-      "unicode_decimal": 59175
+      "icon_id": "9355203",
+      "name": "more",
+      "font_class": "more",
+      "unicode": "e83f",
+      "unicode_decimal": 59455
     },
     {
       "icon_id": "12231340",
       "name": "pill",
-      "font_class": "pill2",
+      "font_class": "pill",
       "unicode": "e8c8",
       "unicode_decimal": 59592
     }

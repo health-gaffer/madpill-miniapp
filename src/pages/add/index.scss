@@ -38,8 +38,7 @@
 
 .manually-input {
   margin-bottom: $iphone-x-indicator-height;
-  position: absolute;
-  bottom: 0;
+  position: sticky;
 
   .manual-btn.at-button {
     color: $plain-color;

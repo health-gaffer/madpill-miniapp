@@ -48,6 +48,10 @@ function AddSearchedResult(props) {
     console.log('resultItemClicked')
     console.log(item)
     console.log(e)
+
+    Taro.navigateTo({
+      url: '/pages/medicine/index'
+    })
   }
 
   const moreClicked = () => {

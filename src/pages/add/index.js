@@ -28,6 +28,10 @@ function Add() {
   const manuallyInputBtnClicked = () => {
     console.log('manuallyInputBtnClicked')
     console.log(query)
+
+    Taro.navigateTo({
+      url: '/pages/medicine/index'
+    })
   }
 
   return (

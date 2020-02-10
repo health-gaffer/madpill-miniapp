@@ -20,8 +20,8 @@ function BasicItem(props) {
 
   const handleChange = (cur) => {
     console.log(cur)
-    props.onClicked(cur)
     setValue(cur.target.value)
+    props.onClicked(cur.target.value)
     return cur.target.value
   }
 

@@ -6,16 +6,20 @@ import { AtButton } from "taro-ui"
 
 import './index.scss'
 import BasicItem from "../../components/MedicineInfo/BasicItem"
+import MPDivider from "../../components/MPDivider"
+import AddSearchedResult from "../../components/AddSearchedResult"
 
 function Add() {
 
   const searchItem = {itemName: '药品名称', itemType: 'input', isRequired: true, iconValue: 'search'}
 
   const [showingResult, setShowingResult] = useState(false)
+  const [query, setQuery] = useState('')
 
-  const searchItemClicked = (e) => {
-    if (e !== undefined && e.target.value !== '' && showingResult === false) {
+  const searchItemClicked = (curQuery) => {
+    if (curQuery !== undefined && curQuery !== '' && showingResult === false) {
       setShowingResult(true)
+      setQuery(curQuery)
     }
   }
 
@@ -51,6 +55,7 @@ function Add() {
       {/* 搜索框 */}
       <View className={showingResult ? 'searched' : 'search'}>
         <BasicItem item={searchItem} onClicked={searchItemClicked} />
+        <MPDivider type='dark-gray' />
       </View>
 
       {/* 搜索结果*/}
@@ -58,7 +63,7 @@ function Add() {
         {
           showingResult === true &&
           <View className='search-result'>
-          {/* TODO */}
+            <AddSearchedResult query={query} />
           </View>
         }
       </View>

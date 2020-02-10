@@ -100,7 +100,7 @@ function MedicineInfo(props) {
           }
         </View>
 
-        <MPDivider color='#737373' />
+        <MPDivider type='dark-gray' />
 
         <View className='extras'>
           {

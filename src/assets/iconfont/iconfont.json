@@ -1,0 +1,30 @@
+{
+  "id": "1633546",
+  "name": "MadPill",
+  "font_family": "madpill",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5714301",
+      "name": "pill",
+      "font_class": "pill",
+      "unicode": "e675",
+      "unicode_decimal": 58997
+    },
+    {
+      "icon_id": "12228709",
+      "name": "pill",
+      "font_class": "pill1",
+      "unicode": "e727",
+      "unicode_decimal": 59175
+    },
+    {
+      "icon_id": "12231340",
+      "name": "pill",
+      "font_class": "pill2",
+      "unicode": "e8c8",
+      "unicode_decimal": 59592
+    }
+  ]
+}

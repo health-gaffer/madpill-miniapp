@@ -30,10 +30,17 @@ export default class Index extends Component {
     })
   }
 
+  routeToDetail = () => {
+    Taro.navigateTo({
+      url: '/pages/medicine/index?action=review'
+    })
+  }
+
   render () {
     return (
       <View className='index'>
         <Button type='primary' onClick={this.routeToAdd}>添加药品</Button>
+        <Button type='plain' onClick={this.routeToDetail}>查看详情</Button>
       </View>
     )
   }

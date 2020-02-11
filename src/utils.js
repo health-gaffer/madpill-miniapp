@@ -2,7 +2,6 @@ import Taro from "@tarojs/taro";
 
 import {HOST, MADPILL_COLORS} from "./constants";
 
-// eslint-disable-next-line import/prefer-default-export
 export const fetchAuthorizationInfo = callback => {
   Taro.login({
     success: res => {
@@ -29,6 +28,20 @@ export const fetchAuthorizationInfo = callback => {
       });
     }
   });
+};
+
+export const requestData = (uri, method, data) => {
+      Taro.request({
+        url: `${HOST}/${uri}`,
+        method,
+        data,
+        success: res => {
+
+        },
+        fail: err => {
+
+        }
+      });
 };
 
 export const getDate = (date) => {

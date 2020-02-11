@@ -18,6 +18,10 @@ function MedicineImage(props) {
       setCurImage(props.imageSrc)
     }
 
+    setWidthAndHeightBasedOnOriginImage()
+  })
+
+  const setWidthAndHeightBasedOnOriginImage =() => {
     console.log(curImage)
     const sysInfo = Taro.getSystemInfoSync()
     Taro.getImageInfo({
@@ -27,7 +31,7 @@ function MedicineImage(props) {
         setHeight(sysInfo.windowWidth / res.width  * res.height)
       }
     })
-  })
+  }
 
 
   const imageClicked = () => {
@@ -39,6 +43,8 @@ function MedicineImage(props) {
         console.log(res)
         if (res.tempFilePaths.length !== 0) {
           console.log('select image success')
+          setCurImage(res.tempFilePaths[0])
+          setWidthAndHeightBasedOnOriginImage()
           // TODO api 上传照片
         }
       }

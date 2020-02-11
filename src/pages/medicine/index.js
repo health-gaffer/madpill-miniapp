@@ -37,9 +37,11 @@ function Medicine() {
     // 关闭上两层添加页面，以便可以直接返回首页
     Taro.navigateBack({
       delta: 10
-    })
-    Taro.navigateTo({
-      url: '/pages/added/index'
+    }).then((res) => {
+      // 页面在执行 navigateTo 的时候，上述关闭动画未执行完成，导致真机上页面打开失败，故需要在 then 中调用
+      Taro.navigateTo({
+        url: '/pages/added/index'
+      })
     })
   }
 

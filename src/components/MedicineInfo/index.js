@@ -5,6 +5,7 @@ import Taro, {
 import { View } from '@tarojs/components'
 
 import './index.scss'
+import MedicineImage from "./MedicineImage"
 import BasicItem from "./BasicItem";
 import MoreItem from "./MoreItem";
 import MPDivider from "../MPDivider";
@@ -37,10 +38,15 @@ function MedicineInfo(props) {
     // TODO api 解析路由，向后端取数据 / 填充数据
   })
 
+  const basicItemClicked = (curValue) => {
+    console.log('basicItemClicked')
+    console.log(curValue)
+  }
+
   return (
     <View className='medicine'>
-      <View className='photo at-row'>
-      {/*  TODO */}
+      <View className='image at-row'>
+        <MedicineImage />
       </View>
 
       {/* banner TODO ref */}
@@ -94,11 +100,11 @@ function MedicineInfo(props) {
           {
             basicItems.map((item, index) => {
               if (index === basicItems.length - 1) {
-                return <BasicItem className='at-row' key={index} item={item} />
+                return <BasicItem className='at-row' key={index} item={item} onClicked={basicItemClicked} />
               }
               return (
                 <View>
-                  <BasicItem className='at-row' key={index} item={item} />
+                  <BasicItem className='at-row' key={index} item={item} onClicked={basicItemClicked} />
                   <MPDivider />
                 </View>
               )

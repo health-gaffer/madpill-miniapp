@@ -1,5 +1,6 @@
-.my-tag.at-tag.at-tag--primary{
-  margin: 0.1rem;
-  color: aliceblue;
+@import "~taro-ui/dist/style/components/badge.scss";
+.tag-group{
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
 }
-

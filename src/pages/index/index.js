@@ -3,7 +3,7 @@ import { View, Text } from '@tarojs/components'
 
 import './index.scss'
 import MedicineItem from '../../components/MedicineItem'
-
+import MedicineTag from '../../components/MedicineTag'
 
 export default class Index extends Component {
 
@@ -32,6 +32,7 @@ export default class Index extends Component {
       <View className='index'>
         <Text>Hello world!</Text>
         <MedicineItem />
+        <MedicineTag />
       </View>
     )
   }

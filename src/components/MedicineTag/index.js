@@ -1,28 +1,39 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtTag } from 'taro-ui'
-import './index.scss'
+import { AtTag,AtButton } from 'taro-ui'
 
+import './index.scss'
 export default class TagItem extends Component {
 
   constructor(props) {
     super(props)
   }
 
-  handleClick = () => {
-    console.log('item clicked!')
+  handleClick (e){
+    this.props.onClick({
+      tag : this.props.name
+    })
+  }
+  removeTag(){
+    this.props.onRemoveTag({
+      tag : this.props.name
+    })
   }
 
   render() {
+    const { active } = this.props
     return (
-
-      <AtTag
-        className='my-tag'
-        type='primary'
-        circle
-        active
-        onClick={this.handleClick.bind(this)}>
-        {this.props.name}</AtTag>
+      <View className='tag-group'>
+        {this.props.isManage?<AtButton className='badge'  onClick={this.removeTag.bind(this)} size='small' circle> X </AtButton>:<View/>}
+        <AtTag
+          className='my-tag'
+          type='primary'
+          circle
+          active = {active}
+          onClick={this.handleClick.bind(this)}
+        >
+          {this.props.name}</AtTag>
+      </View>
     )
   }
 }

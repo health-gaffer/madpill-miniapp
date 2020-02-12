@@ -22,9 +22,8 @@ function Banner(props) {
     console.log('moreBannerClicked')
     setShowingInfoType('more')
 
-    // TODO 适配机型
     Taro.pageScrollTo({
-      scrollTop: 270
+      scrollTop: props.basicsHeight
     })
 
 
@@ -78,6 +77,10 @@ function Banner(props) {
       </View>
     </View>
   )
+}
+
+Banner.defaultProps ={
+  basicsHeight: 0
 }
 
 export default Banner

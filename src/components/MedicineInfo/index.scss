@@ -3,11 +3,11 @@
 
 .medicine {
 
-  .banner {
-    .indicator {
-      height: 10px;
-      background: $color-brand;
-    }
+  .image-and-banner {
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   }
 
   .info {
@@ -18,7 +18,7 @@
       margin-top: 20px;
     }
 
-    .extras {
+    .mores {
       margin-top: 20px;
     }
   }

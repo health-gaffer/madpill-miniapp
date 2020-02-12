@@ -6,14 +6,13 @@ import { View } from '@tarojs/components'
 
 import './index.scss'
 import MedicineImage from "./MedicineImage"
+import Banner from "./Banner"
 import BasicItem from "./BasicItem";
 import MoreItem from "./MoreItem";
 import MPDivider from "../MPDivider";
 import { MADPILL_ADD_CONFIG } from "../../constants"
 
 function MedicineInfo(props) {
-
-  const [showingInfoType, setShowingInfoType] = useState('basic');
 
   const [action, setAction] = useState('add')
   const [addMode, setAddMode] = useState('direct')
@@ -45,54 +44,9 @@ function MedicineInfo(props) {
 
   return (
     <View className='medicine'>
-      <View className='image at-row'>
+      <View className='image-and-banner'>
         <MedicineImage />
-      </View>
-
-      {/* banner TODO ref */}
-      <View className='banner at-row'>
-        <View className='at-col-6'>
-          <View className='at-row at-row__justify--end'>
-            <View className='at-col--auto'>
-              <View className='at-row'>
-                <View className='at-col--auto at-article__p'>
-                  基本信息
-                </View>
-              </View>
-
-              {
-                showingInfoType === 'basic' &&
-                <View className='at-row'>
-                  <View className='indicator at-row'>
-                  </View>
-                </View>
-              }
-            </View>
-            {/* 补空格 */}
-            <View className='at-col-1' />
-          </View>
-        </View>
-
-        <View className='at-col-6'>
-          <View className='at-row at-row__justify--start'>
-            {/* 补空格 */}
-            <View className='at-col-1' />
-            <View className='at-col--auto'>
-              <View className='at-row'>
-                <View className='at-col--auto at-article__p'>
-                  更多信息
-                </View>
-              </View>
-              {
-                showingInfoType === 'more' &&
-                <View className='at-row'>
-                  <View className='indicator at-row'>
-                  </View>
-                </View>
-              }
-            </View>
-          </View>
-        </View>
+        <Banner />
       </View>
 
       <View className='info'>
@@ -114,7 +68,7 @@ function MedicineInfo(props) {
 
         <MPDivider type='dark-gray' />
 
-        <View className='extras'>
+        <View className='mores'>
           {
             moreItems.map((item, index) => {
               if (index === moreItems.length - 1) {

@@ -21,6 +21,15 @@ export default class Login extends Component {
   }
 
   componentDidMount() {
+    this.checkLoginStatus()
+  }
+
+  onPullDownRefresh() {
+    this.checkLoginStatus()
+    Taro.stopPullDownRefresh()
+  }
+
+  checkLoginStatus = () => {
     Taro.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
@@ -45,14 +54,6 @@ export default class Login extends Component {
         }
       }
     })
-  }
-
-  onPullDownRefresh() {
-    this.init()
-  }
-
-  init = () => {
-    console.log('init')
   }
 
   handleAddDrug = () => {

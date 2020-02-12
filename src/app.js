@@ -1,15 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
-import Index from './pages/index'
+import TagPage from './pages/tagManage'
 
 import './app.scss'
 import './taro-custom-theme.scss'
 
+import 'taro-ui/dist/style/index.scss'
 
 class App extends Component {
 
   config = {
     pages: [
-      'pages/index/index'
+      'pages/index/index',
+      'pages/tagManage/index',
     ],
     window: {
       backgroundTextStyle: 'light',

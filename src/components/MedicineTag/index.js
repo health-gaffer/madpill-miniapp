@@ -29,6 +29,7 @@ export default class TagItem extends Component {
           className='my-tag'
           type='primary'
           circle
+          disabled = {this.props.disabled}
           active = {active}
           onClick={this.handleClick.bind(this)}
         >

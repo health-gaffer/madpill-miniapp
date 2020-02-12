@@ -42,8 +42,8 @@ export default class TagInput extends Component {
         border={false}
         placeholder='添加标签'
         value={this.state.newTagName}
-        clear
         maxLength={10}
+        disabled={this.props.disabled}
         confirmType='添加'
         onChange={this.handleChange.bind(this)}
         onConfirm={this.addTag.bind(this)}

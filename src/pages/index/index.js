@@ -22,17 +22,16 @@ export default class Index extends Component {
   onPullDownRefresh() {
     this.init()
   }
-
-  init = () => {
-    console.log('init')
+  routeToTag = () => {
+    Taro.navigateTo({
+      url: '/pages/tagManage/index'
+    })
   }
 
   render () {
     return (
       <View className='index'>
-        <Text>Hello world!</Text>
-        <MedicineItem />
-        <MedicineTag />
+        <Button type='primary' onClick={this.routeToTag}>管理药品</Button>
       </View>
     )
   }

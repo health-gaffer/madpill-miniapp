@@ -19,11 +19,16 @@ export default class TagItem extends Component {
       tag : this.props.name
     })
   }
+  longPress(){
+    if(this.props.onLongPress && !this.props.isManage){
+      this.props.onLongPress()
+    }
+  }
 
   render() {
     const { active } = this.props
     return (
-      <View className='tag-group'>
+      <View className='tag-group' onLongPress={this.longPress.bind(this)}>
         {this.props.isManage?<AtButton className='badge'  onClick={this.removeTag.bind(this)} size='small' circle> X </AtButton>:<View/>}
         <AtTag
           className='my-tag'

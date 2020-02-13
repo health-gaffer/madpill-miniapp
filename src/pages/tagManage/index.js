@@ -32,7 +32,6 @@ export default class TagPage extends Component {
       allTags : ['感冒','发烧','鼻炎','治脚气','头疼'],
       isManage : false,
       confirmDelete : '',
-      model : false,
       disabled : false
     });
     Taro.setNavigationBarTitle({
@@ -82,17 +81,19 @@ export default class TagPage extends Component {
   }
   removeTag(value){
     console.log(value.tag)
-    const {model} = this.state
-    this.setState({
-      confirmDelete: value.tag,
-      model: !model
-    },()=>(
-      console.log(this.state.model)
-    ))
+    Taro.showModal({
+      title: '删除标签',
+      content: '确认删除标签' + value.tag,
+    })
+      .then(res => {
+        if (res.confirm){
+          this.confirmRemoveTag(value.tag)
+        }
+      })
 
   }
-  confirmRemoveTag(){
-    const { tags,allTags,confirmDelete } = this.state
+  confirmRemoveTag(confirmDelete){
+    const { tags,allTags } = this.state
     if(allTags.indexOf(confirmDelete) >= 0){
       allTags.splice(allTags.indexOf(confirmDelete),1);
     }
@@ -101,7 +102,6 @@ export default class TagPage extends Component {
     }
     this.setState({
       confirmDelete: '',
-      model:false,
       tags:tags,
       allTags: allTags
     })
@@ -114,7 +114,7 @@ export default class TagPage extends Component {
       <View className='panel'>
         <View className='cur-tags'>
             {tags.map((tag) =>
-              <TagItem key={tag} name={tag} disabled={disabled} isManage={false} onClick={this.handleClick.bind(this)} active={true}/>
+              <TagItem key={tag} name={tag}  disabled={disabled} isManage={false} onClick={this.handleClick.bind(this)} active={true}/>
             )}
             <TagInput disabled={disabled} onAddNewTag={this.addNewTag.bind(this)}/>
         </View>
@@ -122,26 +122,19 @@ export default class TagPage extends Component {
           <Text>
             所有标签
           </Text>
-          <AtButton onClick={this.manageTag.bind(this)} type='secondary' size='small'>
-          {!isManage ? '管理': '取消'}
-          </AtButton>
+          {!isManage ? <Text/> :
+            <AtButton onClick={this.manageTag.bind(this)} type='secondary' size='small'>
+              取消
+            </AtButton>
+          }
         </View>
         <View className='all-tags'>
           <View className='all-tag-manage'>
             {allTags.map((tag) => {
-              return <TagItem key={tag} disabled={false} isManage={isManage} name={tag} onRemoveTag={this.removeTag.bind(this)} onClick={this.handleClick.bind(this)} active={tags.indexOf(tag) >= 0}/>
+              return <TagItem key={tag}  onLongPress={this.manageTag.bind(this)} disabled={false} isManage={isManage} name={tag} onRemoveTag={this.removeTag.bind(this)} onClick={this.handleClick.bind(this)} active={tags.indexOf(tag) >= 0}/>
             })}
           </View>
         </View>
-        <AtModal
-          isOpened = {this.state.model}
-          // title='标题'
-          confirmText='确1认'
-          onClose={ ()=>this.setState({model:false}) }
-          // onCancel={ this.handleCancel }
-          onConfirm={ this.confirmRemoveTag.bind(this) }
-          content= {this.state.confirmDelete+ '确认删除'}
-        />
       </View>
     )
   }

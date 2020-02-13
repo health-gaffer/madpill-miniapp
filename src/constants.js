@@ -1,4 +1,4 @@
-export const HOST = 'https://tokindle.top/madpill'
+export const HOST = 'localhost:8081'
 
 export const MADPILL_COLORS = [
   '#323b5e',
@@ -17,4 +17,9 @@ export const MADPILL_ADD_CONFIG = {
 
   ADD_MODE_MADPILL: 'madpill',
   ADD_MODE_DIRECT: 'direct',
+}
+
+export const RESPONSE_CODE ={
+  OK: 200,
+
 }

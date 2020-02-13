@@ -30,20 +30,6 @@ export const fetchAuthorizationInfo = callback => {
   });
 };
 
-export const requestData = (uri, method, data) => {
-      Taro.request({
-        url: `${HOST}/${uri}`,
-        method,
-        data,
-        success: res => {
-
-        },
-        fail: err => {
-
-        }
-      });
-};
-
 export const getDate = (date) => {
   const y = date.getFullYear();
   let m = date.getMonth() + 1;

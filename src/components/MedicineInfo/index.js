@@ -79,7 +79,8 @@ function MedicineInfo(props) {
 
 
   const scrollStyle = {
-    height: 100
+    height: `${scrollViewHeight}px`
+    // height: '150px'
   }
   const scrollTop = 0
   const Threshold = 20

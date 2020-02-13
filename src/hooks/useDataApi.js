@@ -4,66 +4,86 @@ import Taro, {
   useReducer,
 } from '@tarojs/taro'
 
-import { requestData } from "../utils"
+import {HOST} from "../constants";
 
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_INIT':
-      return {...state, isLoading: true, isError: false};
-    case 'FETCH_SUCCESS':
+    case 'REQUEST_INIT':
+      return {...state, isLoading: true, statusCode: 200};
+    case 'REQUEST_SUCCESS':
       return {
         ...state,
         isLoading: false,
-        isError: false,
+        statusCode: 200,
         data: action.payload,
       };
-    case 'FETCH_FAILURE':
+    case 'REQUEST_FAILURE':
       return {
         ...state,
         isLoading: false,
-        isError: true,
+        statusCode: action.errorCode,
       };
     default:
       throw new Error();
   }
 };
 
-const useDataApi = (initialUrl, initialData) => {
-  const [url, setUrl] = useState(initialUrl);
+/**
+ *
+ * @param {string} requestMethod
+ * @param {string} requestUrl
+ * @param {object} initialResultData
+ * @param {string} [requestData] json string of data
+ * @return {[S, (value: (((prevState: {method: *, data: *, url: string}) => {method: *, data: *, url: string}) | {method: *, data: *, url: string})) => void]}
+ */
+const useDataApi = (requestMethod, requestUrl, initialResultData, requestData = '') => {
 
-  const [state, dispatch] = useReducer(dataFetchReducer, {
+  const [request, setRequest] = useState({
+    method: requestMethod,
+    url: `${HOST}/${requestUrl}`,
+    data: requestData,
+  })
+
+  const [resultState, resultDispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
-    isError: false,
-    data: initialData,
+    statusCode: 200,
+    data: initialResultData,
   });
 
   useEffect(() => {
     let didCancel = false;
 
-    const fetchData = async () => {
-      dispatch({type: 'FETCH_INIT'});
+    resultDispatch({type: 'REQUEST_INIT'});
 
-      try {
-        const result = await requestData(url, 'GET');
-
+    Taro.request({
+      url: request.url,
+      method: request.method,
+      data: request.data,
+      success: result => {
+        console.log(result)
         if (!didCancel) {
-          dispatch({type: 'FETCH_SUCCESS', payload: result.data});
+          if (result.statusCode === 200) {
+            resultDispatch({type: 'REQUEST_SUCCESS', payload: result.data});
+          } else {
+            resultDispatch({type: 'REQUEST_FAILURE', errorCode: result.statusCode});
+          }
         }
-      } catch (error) {
+      },
+      fail: error => {
+        console.log(error)
         if (!didCancel) {
-          dispatch({type: 'FETCH_FAILURE'});
+          resultDispatch({type: 'REQUEST_FAILURE', errorCode: 400});
         }
       }
-    };
+    })
 
-    fetchData();
 
     return () => {
       didCancel = true;
     };
-  }, [url]);
+  }, [request]);
 
-  return [state, setUrl];
+  return [resultState, setRequest];
 };
 
 export default useDataApi

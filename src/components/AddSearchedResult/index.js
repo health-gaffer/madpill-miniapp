@@ -1,47 +1,40 @@
-import Taro, {
-  useState,
-  useEffect,
-} from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import { AtActivityIndicator } from "taro-ui"
+import Taro, {useCallback, useState} from '@tarojs/taro'
+import {View} from '@tarojs/components'
+import {AtActivityIndicator} from "taro-ui"
 
 import './index.scss'
 import AddSearchedResultItem from "./AddSearchedResultItem"
 import MPDivider from "../MPDivider"
+import useDataApi from "../../hooks/useDataApi"
+import {RESPONSE_CODE} from "../../constants"
 
 function AddSearchedResult(props) {
 
   // 要搜索的药名
   const {query} = props
   const [result, setResult] = useState([])
+  const [{data, isLoading, statusCode}, search] = useDataApi(
+    'GET',
+    `warehouse?query=${query}`,
+    {queryResult: []},
+  )
 
-  // hasMore: 加载更多; loading: 加载中; noMore: 没有更多
-  const MORE_STATE_HAS_MORE = 'hasMore'
-  const MORE_STATE_LOADING = 'loading'
-  const MORE_STATE_NO_MORE = 'noMore'
-  const [more, setMore] = useState(MORE_STATE_HAS_MORE)
+  // 数据加载后处理结果
+  useCallback(() => {
+    setResult(prevResult => {
+      return prevResult.concat(data.queryResult)
+    })
+  }, [data])
 
-  useEffect(() => {
-    search()
-  }, [query])
-
-  // TODO api 向后端搜索数据
-  const search = () => {
-    const curResult = [
-      {id: 3, name: '奥硝唑片', vendor: '潇然'},
-      {id: 3, name: '左奥硝唑氯化钠注射液', vendor: '潇然'},
-      {id: 3, name: '奥沙利铂', vendor: '潇然'},
-      {id: 3, name: '替吉奥胶囊', vendor: '潇然'},
-      {id: 3, name: '奥美拉唑肠溶胶囊', vendor: '潇然'},
-      {id: 3, name: '奥替拉西钾', vendor: '潇然'},
-      {id: 3, name: '注射用奥扎格雷钠', vendor: '潇然'},
-      {id: 3, name: '磷酸奥司他韦胶囊', vendor: '潇然'},
-      {id: 3, name: '奥氮平片', vendor: '潇然'},
-      {id: 3, name: '奥拉西坦胶囊', vendor: '潇然'},
-    ]
-
-    setResult(curResult);
-  }
+  // 搜索名变化后重新搜索
+  useCallback(() => {
+    search(preRequest => {
+      return {
+        ...preRequest,
+        url: `warehouse?query=${query}`,
+      }
+    })
+  }, [query, search])
 
   const resultItemClicked = (item) => (e) => {
     console.log('resultItemClicked')
@@ -53,44 +46,58 @@ function AddSearchedResult(props) {
     })
   }
 
+  // 加载更多时发起请求
   const moreClicked = () => {
-    console.log('hello')
-    // 只有点击时是 加载更多 需要处理
-    if (more !== MORE_STATE_HAS_MORE) return
-
-    setMore(MORE_STATE_LOADING)
-    // TODO api 后端加载数据
-    setResult(prevState => {
-      prevState.push(
-        {name: '替吉奥胶囊', vendor: '潇然'},
-        {name: '奥美拉唑肠溶胶囊', vendor: '潇然'}
-      )
-      return prevState
+    search(preRequest => {
+      return {
+        ...preRequest,
+        url: `warehouse?query=${query}&start=${result.length}`
+      }
     })
-
-    setMore(MORE_STATE_HAS_MORE)
   }
 
   return (
     <View>
       <View>
         {
-          result.map((item, index) => {
-            return (
-              <View key={index} onClick={resultItemClicked(item)}>
-                <AddSearchedResultItem item={item} />
-                <MPDivider />
-              </View>
-            )
-          })
-        }
-      </View>
-
-      <View className='more at-row at-row__justify--center' onClick={moreClicked}>
-        <View className='at-col-8'>
-          <View className='at-row at-row__justify--center'>
+          statusCode === RESPONSE_CODE.OK &&
+          <View>
             {
-              more === MORE_STATE_HAS_MORE &&
+              result.map((item, index) => {
+                return (
+                  <View key={index} onClick={resultItemClicked(item)}>
+                    <AddSearchedResultItem item={item} />
+                    <MPDivider />
+                  </View>
+                )
+              })
+            }
+          </View>
+        }
+
+        <View className='more at-row at-row__justify--center' onClick={moreClicked}>
+          <View className='at-col-8'>
+            <View className='at-row at-row__justify--center'>
+              {
+                statusCode !== RESPONSE_CODE.OK &&
+                <View className='at-article__h3'>
+                  似乎出了点什么问题 Σ（ﾟдﾟlll）
+                </View>
+              }
+
+              {
+                // 加载中
+                statusCode === RESPONSE_CODE.OK &&
+                isLoading === true &&
+                <View>
+                  <AtActivityIndicator color='#FB9828' />
+                </View>
+              }
+
+              {
+                statusCode === RESPONSE_CODE.OK &&
+                isLoading === false &&
+                data.queryResult.length !== 0 &&
                 <View>
                   <View className='at-article__h3'>
                     加载更多
@@ -99,25 +106,21 @@ function AddSearchedResult(props) {
                     <View className='madpill icon-more' />
                   </View>
                 </View>
-            }
+              }
 
-            {
-              more === MORE_STATE_LOADING &&
-              <View>
-                <AtActivityIndicator color='#FB9828' />
-              </View>
-
-            }
-
-            {
-              more === MORE_STATE_NO_MORE &&
-              <View className='at-article__h3'>
-                真的一种都没有了orz
-              </View>
-            }
+              {
+                statusCode === RESPONSE_CODE.OK &&
+                isLoading === false &&
+                data.queryResult.length === 0 &&
+                <View className='at-article__h3'>
+                  真的一种都没有了 :-P
+                </View>
+              }
+            </View>
           </View>
         </View>
       </View>
+
     </View>
   )
 }

@@ -5,7 +5,7 @@ import {HOST, MADPILL_RESPONSE_CODE} from "../constants";
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
     case 'REQUEST_INIT':
-      return {...state, isLoading: true, statusCode: 200};
+      return {...state, isLoading: true, statusCode: undefined};
     case 'REQUEST_SUCCESS':
       console.log('REQUEST_SUCCESS')
       console.log(action.payload)
@@ -30,56 +30,74 @@ const dataFetchReducer = (state, action) => {
 
 /**
  *
- * @param {Taro.request.method} requestMethod
- * @param {string} requestUrl
- * @param {object} [initialResultData]
- * @param {object} [requestData] json string of data
+ * @param option {object}
+ * @param option.requestMethod {Taro.request.method}
+ * @param option.requestUrl {string}
+ * @param [option.initialResultData] {object}
+ * @param [option.requestData] {object | array}
+ * @param [option.execNow=false] {boolean} set true to send the REQUEST on every change
  * @return {[S, (value: (((prevState: {method: *, data: *, url: string}) => {method: *, data: *, url: string}) | {method: *, data: *, url: string})) => void]}
  */
-const useDataApi = (requestMethod, requestUrl, initialResultData, requestData = {}) => {
+const useDataApi = ({
+                      requestMethod,
+                      requestUrl,
+                      requestData = {},
+                      initialResultData = {},
+                      execNow = false,
+                    }) => {
 
   const [request, setRequest] = useState({
     method: requestMethod,
     url: requestUrl,
     data: requestData,
-  })
+    exec: execNow,
+  });
 
   const [resultState, resultDispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
-    statusCode: 200,
+    statusCode: undefined,
     data: initialResultData,
   });
 
   useEffect(() => {
     let didCancel = false;
 
-    resultDispatch({type: 'REQUEST_INIT'});
-
-    Taro.request({
-      url: `${HOST}/${request.url}`,
-      method: request.method,
-      data: request.data,
-      success: result => {
-        console.log('success')
-        console.log(result)
-        if (!didCancel && result.statusCode === 200) {
-          const madpillResult = result.data
-          if (madpillResult.code === MADPILL_RESPONSE_CODE.OK) {
-            resultDispatch({type: 'REQUEST_SUCCESS', payload: madpillResult.data});
-          } else {
-            resultDispatch({type: 'REQUEST_FAILURE', errorCode: madpillResult.code ? madpillResult.code : madpillResult.status});
+    if (request.exec) {
+      console.log('now exec')
+      resultDispatch({
+        type: 'REQUEST_INIT'
+      });
+      Taro.request({
+        url: `${HOST}/${request.url}`,
+        method: request.method,
+        data: request.data,
+        success: result => {
+          console.log('success')
+          console.log(result)
+          if (!didCancel && result.statusCode === 200) {
+            const madpillResult = result.data
+            if (madpillResult.code === MADPILL_RESPONSE_CODE.OK) {
+              resultDispatch({
+                type: 'REQUEST_SUCCESS',
+                payload: madpillResult.data
+              });
+            } else {
+              resultDispatch({
+                type: 'REQUEST_FAILURE',
+                errorCode: madpillResult.code ? madpillResult.code : madpillResult.status
+              });
+            }
+          }
+        },
+        fail: error => {
+          console.log('fail')
+          console.log(error)
+          if (!didCancel) {
+            resultDispatch({type: 'REQUEST_FAILURE', errorCode: 400});
           }
         }
-      },
-      fail: error => {
-        console.log('fail')
-        console.log(error)
-        if (!didCancel) {
-          resultDispatch({type: 'REQUEST_FAILURE', errorCode: 400});
-        }
-      }
-    })
-
+      })
+    }
 
     return () => {
       didCancel = true;

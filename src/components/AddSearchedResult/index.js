@@ -13,11 +13,12 @@ function AddSearchedResult(props) {
   // 要搜索的药名
   const {query} = props
   const [result, setResult] = useState([])
-  const [{data, isLoading, statusCode}, search] = useDataApi(
-    Taro.request.GET,
-    `warehouse?query=${query}`,
-    [],
-  )
+  const [{data, isLoading, statusCode}, search] = useDataApi({
+    requestMethod: Taro.request.GET,
+    requestUrl: `warehouse?query=${query}`,
+    requestData: [],
+    execNow: true,
+  })
 
   // 数据加载后处理结果
   useEffect(() => {
@@ -52,21 +53,18 @@ function AddSearchedResult(props) {
   return (
     <View>
       <View>
-        {
-          statusCode === MADPILL_RESPONSE_CODE.OK &&
-          <View>
-            {
-              result.map((item, index) => {
-                return (
-                  <View key={index} >
-                    <AddSearchedResultItem item={item} />
-                    <MPDivider />
-                  </View>
-                )
-              })
-            }
-          </View>
-        }
+        <View>
+          {
+            result.map((item, index) => {
+              return (
+                <View key={index} >
+                  <AddSearchedResultItem item={item} />
+                  <MPDivider />
+                </View>
+              )
+            })
+          }
+        </View>
 
         <View className='more at-row at-row__justify--center' onClick={moreClicked}>
           <View className='at-col-8'>

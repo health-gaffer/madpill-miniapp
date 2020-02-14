@@ -8,13 +8,7 @@ function BasicItem(props) {
 
   // 项展示名称、项类型、是否必须、输入类型、标签展示内容
   const {itemLabel, itemName, itemType, isRequired, inputType = 'text', iconValue = ''} = props.item
-  const [value, setValue] = useState(() => {
-    if (itemType === 'tag') {
-      return props.value.join(', ')
-    } else {
-      return props.value
-    }
-  })
+  const [value, setValue] = useState(props.value)
 
   useEffect(() => {
     setValue(props.value)
@@ -27,6 +21,11 @@ function BasicItem(props) {
     setValue(e.target.value)
     props.onClicked(e.target.value, curItemLabel)
     return e.target.value
+  }
+
+  const representAtTag = () => {
+    // console.log('representAtTag')
+    return value.map(tag => tag.name).join(', ')
   }
 
   return (
@@ -85,7 +84,7 @@ function BasicItem(props) {
                   disabled
                   name={itemName}
                   type={inputType}
-                  placeholder={value}
+                  placeholder={representAtTag()}
                   placeholderClass='tag'
                   maxLength={12}
                 />
@@ -114,7 +113,7 @@ function BasicItem(props) {
 
 BasicItem.defaultProps = {
   item: {},
-  value: ''
+  value: []
 }
 
 export default BasicItem

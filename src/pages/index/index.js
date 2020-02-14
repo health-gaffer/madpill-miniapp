@@ -16,6 +16,8 @@ export default class Index extends Component {
   constructor() {
     super()
     this.state = {
+      tags:[{id:1,name:'感冒'},{id:2,name:'发烧'}],
+      data:1
     }
   }
 
@@ -24,14 +26,14 @@ export default class Index extends Component {
   }
   routeToTag = () => {
     Taro.navigateTo({
-      url: '/pages/tagManage/index'
+      url: '/pages/tagManage/index?tags='+ JSON.stringify(this.state.tags)
     })
   }
 
   render () {
     return (
       <View className='index'>
-        <Button type='primary' onClick={this.routeToTag}>管理药品</Button>
+        <Button type='primary' onClick={this.routeToTag}>{this.state.data}</Button>
       </View>
     )
   }

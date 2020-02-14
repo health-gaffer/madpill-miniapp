@@ -11,12 +11,14 @@ export default class TagItem extends Component {
 
   handleClick (e){
     this.props.onClick({
-      tag : this.props.name
+      id : this.props.id,
+      name : this.props.name
     })
   }
   removeTag(){
     this.props.onRemoveTag({
-      tag : this.props.name
+      id : this.props.id,
+      name : this.props.name
     })
   }
   longPress(){

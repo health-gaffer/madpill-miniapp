@@ -17,7 +17,7 @@ export default class TagInput extends Component {
     }
     console.log(newTag)
     this.props.onAddNewTag({
-      tag: newTag
+      name: newTag
     })
     this.setState({
       newTagName: ''

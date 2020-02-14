@@ -12,7 +12,7 @@ import BasicItem from "./BasicItem"
 import MoreItem from "./MoreItem"
 import MPDivider from "../MPDivider"
 import useDataApi from "../../hooks/useDataApi"
-import { MADPILL_ADD_CONFIG } from "../../constants"
+import {MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE} from "../../constants"
 import { getDate } from "../../utils"
 
 function MedicineInfo(props) {
@@ -27,8 +27,7 @@ function MedicineInfo(props) {
     {itemLabel: 'expireDate', itemName: '过期时间', itemType: 'date', isRequired: true,},
     {itemLabel: 'description', itemName: '用药说明', itemType: 'input', isRequired: true,},
     {itemLabel: 'tags', itemName: '药品标签', itemType: 'tag', isRequired: false, iconValue: 'chevron-right'},
-  ];
-
+  ]
   const moreItems = [
     {itemLabel: 'indication', itemName: '适用症',},
     {itemLabel: 'contraindication', itemName: '药品禁忌',},
@@ -85,7 +84,7 @@ function MedicineInfo(props) {
   }, [props.routerParams])
 
   const initScreenHeight = () => {
-    console.log('initScreenHeight')
+    // console.log('initScreenHeight')
     Taro.createSelectorQuery()
       .selectViewport()
       .fields({
@@ -144,6 +143,40 @@ function MedicineInfo(props) {
       })
     }
   }
+
+  // 加载中的相关处理
+  useEffect(() => {
+    // console.log(`warehouseLoading: ${warehouseLoading}`)
+    // console.log(`medicineLoading: ${medicineLoading}`)
+    if (warehouseLoading || medicineLoading) {
+      Taro.showLoading({
+        title: '加载中(/ω＼)',
+        mask: true,
+      })
+    } else {
+      Taro.hideLoading()
+    }
+  }, [warehouseLoading, medicineLoading])
+
+  // 错误的处理
+  useEffect(() => {
+    // console.log(`warehouseStatusCode: ${warehouseStatusCode}`)
+    // console.log(`medicineStatusCode: ${medicineStatusCode}`)
+    if (!(warehouseStatusCode === undefined || warehouseStatusCode === MADPILL_RESPONSE_CODE.OK)) {
+      Taro.showToast({
+        title: '初始化药品失败(ToT)/~~~',
+        icon: 'none'
+      })
+    }
+
+    if (!(medicineStatusCode === undefined || medicineStatusCode === MADPILL_RESPONSE_CODE.OK)) {
+      Taro.showToast({
+        title: '查找药品失败(ToT)/~~~',
+        icon: 'none'
+      })
+    }
+  }, [warehouseStatusCode, medicineStatusCode])
+
 
 
   const basicItemClicked = (curValue, itemLabel) => {

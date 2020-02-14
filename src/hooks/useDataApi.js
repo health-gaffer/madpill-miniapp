@@ -5,14 +5,14 @@ import {HOST, MADPILL_RESPONSE_CODE} from "../constants";
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
     case 'REQUEST_INIT':
-      return {...state, isLoading: true, statusCode: 200};
+      return {...state, isLoading: true, statusCode: MADPILL_RESPONSE_CODE.OK};
     case 'REQUEST_SUCCESS':
       console.log('REQUEST_SUCCESS')
       console.log(action.payload)
       return {
         ...state,
         isLoading: false,
-        statusCode: 200,
+        statusCode: MADPILL_RESPONSE_CODE.OK,
         data: action.payload,
       };
     case 'REQUEST_FAILURE':

@@ -10,7 +10,6 @@ import Banner from "./Banner"
 import BasicItem from "./BasicItem";
 import MoreItem from "./MoreItem";
 import MPDivider from "../MPDivider";
-import { MADPILL_ADD_CONFIG } from "../../constants"
 
 function MedicineInfo(props) {
 
@@ -38,8 +37,7 @@ function MedicineInfo(props) {
 
   useEffect(() => {
     initScreenHeight()
-
-    // TODO api 解析路由，向后端取数据 / 填充数据
+    initData()
   }, [scrollViewHeight])
 
   const initScreenHeight = () => {
@@ -69,6 +67,10 @@ function MedicineInfo(props) {
         // + 5 是为了遮挡中间的分割线
         setInfoBasicsHeight(basicsRes[0].height + 5)
     })
+  }
+
+  const initData = () => {
+    // TODO api 解析路由，向后端取数据 / 填充数据
   }
 
 

@@ -32,7 +32,7 @@ export default class Index extends Component {
 
   routeToDetail = () => {
     Taro.navigateTo({
-      url: '/pages/medicine/index?action=review'
+      url: '/pages/medicine/index?action=review&medicineId=1'
     })
   }
 

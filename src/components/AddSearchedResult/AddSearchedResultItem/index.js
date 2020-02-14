@@ -9,16 +9,25 @@ import { getPillColor } from "../../../utils"
 
 function AddSearchedResultItem(props) {
 
-  const {name, manufacture} = props.item
+  const {id, name, manufacture} = props.item
 
   const [color, setColor] = useState('white')
 
   useEffect(() => {
     setColor(getPillColor(manufacture + name))
-  })
+  }, [name, manufacture])
+
+  const resultItemClicked = () => {
+    console.log('resultItemClicked')
+    console.log(props.item)
+
+    Taro.navigateTo({
+      url: `/pages/medicine/index?action=add&addMode=madpill&manufactureId=${id}`
+    })
+  }
 
   return (
-    <View className='result-item at-row at-row__align--center'>
+    <View className='result-item at-row at-row__align--center' onClick={resultItemClicked}>
       <View className='pill-photo at-col-1'>
         <View className='madpill icon-pill' style={{color: color}} />
       </View>

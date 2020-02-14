@@ -32,7 +32,7 @@ const dataFetchReducer = (state, action) => {
  *
  * @param {Taro.request.method} requestMethod
  * @param {string} requestUrl
- * @param {object} initialResultData
+ * @param {object} [initialResultData]
  * @param {object} [requestData] json string of data
  * @return {[S, (value: (((prevState: {method: *, data: *, url: string}) => {method: *, data: *, url: string}) | {method: *, data: *, url: string})) => void]}
  */
@@ -40,7 +40,7 @@ const useDataApi = (requestMethod, requestUrl, initialResultData, requestData = 
 
   const [request, setRequest] = useState({
     method: requestMethod,
-    url: `${requestUrl}`,
+    url: requestUrl,
     data: requestData,
   })
 
@@ -67,7 +67,7 @@ const useDataApi = (requestMethod, requestUrl, initialResultData, requestData = 
           if (madpillResult.code === MADPILL_RESPONSE_CODE.OK) {
             resultDispatch({type: 'REQUEST_SUCCESS', payload: madpillResult.data});
           } else {
-            resultDispatch({type: 'REQUEST_FAILURE', errorCode: madpillResult.code});
+            resultDispatch({type: 'REQUEST_FAILURE', errorCode: madpillResult.code ? madpillResult.code : madpillResult.status});
           }
         }
       },

@@ -39,16 +39,6 @@ function AddSearchedResult(props) {
     })
   }, [query])
 
-  const resultItemClicked = (item) => (e) => {
-    console.log('resultItemClicked')
-    console.log(item)
-    console.log(e)
-
-    Taro.navigateTo({
-      url: `/pages/medicine/index?action=add&addMode=madpill&medicineId=${item.id}`
-    })
-  }
-
   // 加载更多时发起请求
   const moreClicked = () => {
     search(preRequest => {
@@ -68,7 +58,7 @@ function AddSearchedResult(props) {
             {
               result.map((item, index) => {
                 return (
-                  <View key={index} onClick={resultItemClicked(item)}>
+                  <View key={index} >
                     <AddSearchedResultItem item={item} />
                     <MPDivider />
                   </View>

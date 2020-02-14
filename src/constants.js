@@ -11,14 +11,6 @@ export const MADPILL_COLORS = [
   '#3fd49c',
 ]
 
-export const MADPILL_ADD_CONFIG = {
-  ACTION_ADD: 'add',
-  ACTION_REVIEW: 'review',
-
-  ADD_MODE_MADPILL: 'madpill',
-  ADD_MODE_DIRECT: 'direct',
-}
-
 export const MADPILL_RESPONSE_CODE ={
   OK: 200,
 

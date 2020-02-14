@@ -1,4 +1,4 @@
-import Taro, { useState } from '@tarojs/taro'
+import Taro, {useEffect, useState} from '@tarojs/taro'
 import { View, Textarea } from '@tarojs/components'
 
 import './index.scss'
@@ -6,7 +6,11 @@ import './index.scss'
 function MoreItem(props) {
 
   const {itemName} = props.item
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState(props.value)
+
+  useEffect(() => {
+    setContent(props.value)
+  }, [props.value])
 
   return (
     <View className='extra-item'>
@@ -30,7 +34,8 @@ function MoreItem(props) {
 }
 
 MoreItem.defaultProps = {
-  item: {}
+  item: {},
+  value: '',
 }
 
 export default MoreItem

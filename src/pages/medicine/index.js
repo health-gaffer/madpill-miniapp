@@ -159,7 +159,7 @@ function Medicine() {
   return (
     <View>
       <AtMessage />
-      <MedicineInfo>
+      <MedicineInfo routerParams={curRouter.params}>
         <View className='action at-row at-row__justify--center'>
           <View className='at-col-8'>
             {

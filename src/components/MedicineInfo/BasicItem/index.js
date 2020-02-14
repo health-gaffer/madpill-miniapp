@@ -1,29 +1,27 @@
-import Taro, { useState } from '@tarojs/taro'
+import Taro, { useEffect, useState } from '@tarojs/taro'
 import { View, Text, Picker, Input } from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
 
 import './index.scss'
 
-import {getDate} from "../../../utils";
-
 function BasicItem(props) {
 
   // 项展示名称、项类型、是否必须、输入类型、标签展示内容
-  const {itemLabel, itemName, itemType, isRequired, inputType = 'text', tagContent = '', iconValue = ''} = props.item
+  const {itemLabel, itemName, itemType, isRequired, inputType = 'text', iconValue = ''} = props.item
   const [value, setValue] = useState(() => {
-    console.log('BasicItem init')
-    console.log(props.value)
-    switch (itemType) {
-      case 'date':
-        return getDate(new Date())
-      case 'tag':
-        return props.value.join(', ')
-      default:
-        return props.value
+    if (itemType === 'tag') {
+      return props.value.join(', ')
+    } else {
+      return props.value
     }
   })
 
+  useEffect(() => {
+    setValue(props.value)
+  }, [props.value])
+
   const handleChange = (curItemLabel) => (e) => {
+    // TODO tag 修改后回调
     console.log(curItemLabel)
     console.log(e)
     setValue(e.target.value)
@@ -87,7 +85,7 @@ function BasicItem(props) {
                   disabled
                   name={itemName}
                   type={inputType}
-                  placeholder={value.substr(0, 15)}
+                  placeholder={value}
                   placeholderClass='tag'
                   maxLength={12}
                 />
@@ -99,7 +97,7 @@ function BasicItem(props) {
             (itemType === 'input' || itemType === 'tag') &&
             <View className='at-col-2'>
               <View className='at-row at-row__justify--end'>
-                {tagContent.length > 12 &&
+                {value.length > 12 &&
                 <Text className='tag'>
                   ...
                 </Text>
@@ -115,7 +113,8 @@ function BasicItem(props) {
 }
 
 BasicItem.defaultProps = {
-  item: {}
+  item: {},
+  value: ''
 }
 
 export default BasicItem

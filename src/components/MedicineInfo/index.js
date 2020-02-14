@@ -11,22 +11,22 @@ import Banner from "./Banner"
 import BasicItem from "./BasicItem"
 import MoreItem from "./MoreItem"
 import MPDivider from "../MPDivider"
+import useDataApi from "../../hooks/useDataApi"
 import { MADPILL_ADD_CONFIG } from "../../constants"
-import useDataApi from "../../hooks/useDataApi";
+import { getDate } from "../../utils"
 
 function MedicineInfo(props) {
 
-  const curRouterParams = useRouter().params
   const [scrollViewHeight, setScrollViewHeight] = useState(0)
   const [infoBasicsHeight, setInfoBasicsHeight] = useState(0)
 
   const basicItems = [
     {itemLabel: 'name', itemName: '药品名称', itemType: 'input', isRequired: true,},
     {itemLabel: 'producedDate', itemName: '生产时间', itemType: 'date', isRequired: true,},
-    {itemLabel: 'expireDate', itemName: '保质天数', itemType: 'input', isRequired: true, inputType: 'number',},
-    {itemLabel: 'period', itemName: '过期时间', itemType: 'date', isRequired: true,},
+    {itemLabel: 'period', itemName: '保质天数', itemType: 'input', isRequired: true, inputType: 'number',},
+    {itemLabel: 'expireDate', itemName: '过期时间', itemType: 'date', isRequired: true,},
     {itemLabel: 'description', itemName: '用药说明', itemType: 'input', isRequired: true,},
-    {itemLabel: 'tags', itemName: '药品标签', itemType: 'tag', isRequired: false, tagContent: '头晕, 恶心', iconValue: 'chevron-right'},
+    {itemLabel: 'tags', itemName: '药品标签', itemType: 'tag', isRequired: false, iconValue: 'chevron-right'},
   ];
 
   const moreItems = [
@@ -36,25 +36,26 @@ function MedicineInfo(props) {
 
   const [medicine, setMedicine] = useState({
     id: undefined,
-    name: 'test',
+    name: '',
     producedDate: '',
     expireDate: '',
-    description: '1234567890',
+    period: 0,
+    description: '',
     indication: '',
     contraindication: '',
-    tags: ['感冒', '咳嗽'],
+    tags: [],
   })
 
   const [{data: warehouseRequestedData, isLoading: warehouseLoading, statusCode: warehouseStatusCode}, warehouseRequest] = useDataApi({
     requestMethod: 'GET',
-    requestUrl: `warehouse/${curRouterParams.warehouseId}`,
+    requestUrl: `warehouse/${props.routerParams.warehouseId}`,
     initialResultData: {},
   })
 
   // warehouseRequest 加载结果返回后设置本组件中药品 medicine 的相关信息
   useEffect(() => {
-    console.log('warehouseRequest finish')
-    console.log(warehouseRequestedData)
+    // console.log('warehouseRequest finish')
+    // console.log(warehouseRequestedData)
     setMedicine(preMedicine => {
       return {
         ...preMedicine,
@@ -65,23 +66,23 @@ function MedicineInfo(props) {
 
   const [{data: medicineRequestedData, isLoading: medicineLoading, statusCode: medicineStatusCode}, medicineRequest] = useDataApi({
     requestMethod: 'GET',
-    requestUrl: `drugs/${curRouterParams.medicineId}`,
+    requestUrl: `drugs/${props.routerParams.medicineId}`,
     initialResultData: {},
   })
 
   // medicineRequest 加载结果返回后设置本组件中药品 medicine 的相关信息
   useEffect(() => {
-    console.log('medicineRequest finish')
-    console.log(medicineRequestedData)
+    // console.log('medicineRequest finish')
+    // console.log(medicineRequestedData)
     setMedicine(medicineRequestedData)
-  })
+  }, [medicineRequestedData])
 
   useEffect(() => {
     console.log('medicine info init')
-    console.log(curRouterParams)
+    console.log(props.routerParams)
     initScreenHeight()
     initData()
-  }, [curRouterParams])
+  }, [props.routerParams])
 
   const initScreenHeight = () => {
     console.log('initScreenHeight')
@@ -113,27 +114,27 @@ function MedicineInfo(props) {
   }
 
   const initData = () => {
-    if (curRouterParams.action === MADPILL_ADD_CONFIG.ACTION_ADD) {
+    if (props.routerParams.action === MADPILL_ADD_CONFIG.ACTION_ADD) {
       // 新增界面
-      if (curRouterParams.addMode === MADPILL_ADD_CONFIG.ADD_MODE_MADPILL) {
+      setDefaultDateWhenAdd()
+      if (props.routerParams.addMode === MADPILL_ADD_CONFIG.ADD_MODE_MADPILL) {
         // 从仓库新增
-        console.log('---warehouse init---')
         warehouseRequest(preRequest => {
           return {
             ...preRequest,
             exec: true
           }
         })
-      } else if (curRouterParams.addMode === MADPILL_ADD_CONFIG.ADD_MODE_DIRECT) {
+      } else if (props.routerParams.addMode === MADPILL_ADD_CONFIG.ADD_MODE_DIRECT) {
         // 直接新增
-        medicineRequest(preMedicine => {
+        setMedicine(preMedicine => {
           return {
             ...preMedicine,
-            name: curRouterParams.manualName,
+            name: props.routerParams.manualName,
           }
         })
       }
-    } else if (curRouterParams.action === MADPILL_ADD_CONFIG.ACTION_REVIEW) {
+    } else if (props.routerParams.action === MADPILL_ADD_CONFIG.ACTION_REVIEW) {
       // 查看修改删除界面
       medicineRequest(preRequest => {
         return {
@@ -145,9 +146,10 @@ function MedicineInfo(props) {
   }
 
 
-  const basicItemClicked = (itemLabel) => (curValue) => {
-    console.log('basicItemClicked')
-    console.log(curValue)
+  const basicItemClicked = (curValue, itemLabel) => {
+    // console.log('basicItemClicked')
+    // console.log(curValue)
+    // console.log(itemLabel)
     setMedicine(preMedicine => {
       return {
         ...preMedicine,
@@ -171,6 +173,18 @@ function MedicineInfo(props) {
 
   const onScroll = (e) => {
     console.log(e.detail)
+  }
+
+  // 新增时设置初始化的时间
+  const setDefaultDateWhenAdd = () => {
+    setMedicine(preMedicine => {
+      return {
+        ...preMedicine,
+        producedDate: getDate(new Date()),
+        expireDate: getDate(new Date()),
+        period: 0,
+      }
+    })
   }
 
   return (
@@ -223,11 +237,20 @@ function MedicineInfo(props) {
             {
               moreItems.map((item, index) => {
                 if (index === moreItems.length - 1) {
-                  return <MoreItem className='at-row' key={index} item={item} />
+                  return <MoreItem
+                    key={index}
+                    className='at-row'
+                    item={item}
+                    value={medicine[item.itemLabel]}
+                  />
                 }
                 return (
                   <View key={index} >
-                    <MoreItem className='at-row' item={item} />
+                    <MoreItem
+                      className='at-row'
+                      item={item}
+                      value={medicine[item.itemLabel]}
+                    />
                     <MPDivider />
                   </View>
                 )
@@ -243,6 +266,16 @@ function MedicineInfo(props) {
 
     </View>
   )
+}
+
+MedicineInfo.defaultProps = {
+  routerParams: {
+    action: '',
+    addMode: '',
+    warehouseId: '',
+    manualName: '',
+    medicineId: '',
+  }
 }
 
 export default MedicineInfo

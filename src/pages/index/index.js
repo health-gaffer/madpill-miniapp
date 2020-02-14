@@ -5,7 +5,7 @@ import './index.scss'
 
 
 export default class Index extends Component {
-
+  //TODO 删除药品后回到主页面如何比较好地进行提示
   constructor() {
     super()
     this.state = {

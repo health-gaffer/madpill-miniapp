@@ -27,19 +27,34 @@ function Medicine() {
   const ACTION_REVIEW = 'review'
 
   const [{isLoading: addLoading, statusCode: addStatusCode}, addRequest] = useDataApi({
-    requestMethod: Taro.request.POST,
+    requestMethod: 'POST',
     requestUrl: 'drugs',
-    requestData: {},
+    requestData: {
+      name: '测试药品新增',
+      producedDate: '2019-04-08',
+      expireDate: '2020-02-14',
+      description: '测试描述新增',
+      indication: '测试适用症新增',
+      contraindication: '测试禁忌新增',
+    },
   })
 
   const [{isLoading: modifyLoading, statusCode: modifyStatusCode}, modifyRequest] = useDataApi({
-    requestMethod: Taro.request.PUT,
+    requestMethod: 'PUT',
     requestUrl: `drugs/${curRouter.params.medicineId}`,
-    requestData: {},
+    requestData: {
+      id: 1,
+      name: '测试药品修改',
+      producedDate: '2019-04-08',
+      expireDate: '2020-02-14',
+      description: '测试描述修改',
+      indication: '测试适用症修改',
+      contraindication: '测试禁忌修改',
+    },
   })
 
   const [{isLoading: deleteLoading, statusCode: deleteStatusCode}, deleteRequest] = useDataApi({
-    requestMethod: Taro.request.DELETE,
+    requestMethod: 'DELETE',
     requestUrl: `drugs/${curRouter.params.medicineId}`,
   })
 
@@ -65,7 +80,10 @@ function Medicine() {
   useEffect(() => {
     console.log(`modify success ${modifyStatusCode}`)
     if (modifyStatusCode === MADPILL_RESPONSE_CODE.OK) {
-      returnToHome()
+      Taro.atMessage({
+        message: '修改成功！',
+        type: 'success',
+      })
     } else {
       handleError(modifyStatusCode)
     }
@@ -106,9 +124,6 @@ function Medicine() {
       return {
         ...prevRequest,
         exec: true,
-        // TODO
-        data: {}
-        // TODO successCallback
       }
     })
   }
@@ -118,8 +133,6 @@ function Medicine() {
       return {
         ...prevRequest,
         exec: true,
-        // TODO
-        data: {}
       }
     })
   }

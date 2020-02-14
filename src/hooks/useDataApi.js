@@ -41,8 +41,8 @@ const dataFetchReducer = (state, action) => {
 const useDataApi = ({
                       requestMethod,
                       requestUrl,
-                      requestData = {},
-                      initialResultData = {},
+                      requestData,
+                      initialResultData,
                       execNow = false,
                     }) => {
 
@@ -74,19 +74,17 @@ const useDataApi = ({
         success: result => {
           console.log('success')
           console.log(result)
-          if (!didCancel && result.statusCode === 200) {
-            const madpillResult = result.data
-            if (madpillResult.code === MADPILL_RESPONSE_CODE.OK) {
-              resultDispatch({
-                type: 'REQUEST_SUCCESS',
-                payload: madpillResult.data
-              });
-            } else {
-              resultDispatch({
-                type: 'REQUEST_FAILURE',
-                errorCode: madpillResult.code ? madpillResult.code : madpillResult.status
-              });
-            }
+          const madpillResult = result.data
+          if (!didCancel && result.statusCode === 200 && madpillResult.code === MADPILL_RESPONSE_CODE.OK) {
+            resultDispatch({
+              type: 'REQUEST_SUCCESS',
+              payload: madpillResult.data
+            });
+          } else {
+            resultDispatch({
+              type: 'REQUEST_FAILURE',
+              errorCode: madpillResult.code ? madpillResult.code : madpillResult.status
+            });
           }
         },
         fail: error => {

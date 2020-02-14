@@ -18,11 +18,11 @@ function AddSearchedResultItem(props) {
   }, [name, manufacture])
 
   const resultItemClicked = () => {
-    console.log('resultItemClicked')
-    console.log(props.item)
+    // console.log('resultItemClicked')
+    // console.log(props.item)
 
     Taro.navigateTo({
-      url: `/pages/medicine/index?action=add&addMode=madpill&manufactureId=${id}`
+      url: `/pages/medicine/index?action=add&addMode=madpill&warehouseId=${id}`
     })
   }
 

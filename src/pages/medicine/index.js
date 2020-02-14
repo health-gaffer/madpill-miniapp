@@ -7,24 +7,12 @@ import { AtButton, AtMessage, AtActivityIndicator } from "taro-ui"
 
 import './index.scss'
 import MedicineInfo from "../../components/MedicineInfo"
-import useDataApi from "../../hooks/useDataApi";
-import { MADPILL_RESPONSE_CODE } from "../../constants"
+import useDataApi from "../../hooks/useDataApi"
+import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from "../../constants"
 
 function Medicine() {
 
-  /**
-   * 路由参数规则
-   * action: 'add' (新增)
-   *        addMode: 'madpill' (选取已有的药品)
-   *                manufactureId: $manufactureId (仓库药名ID)
-   *        addMode: 'direct' (直接输入)
-   *                manualName: $manualName (药品名称)
-   * action: 'review' (查看)
-   *        medicineId: $id (药品ID)
-   */
   const curRouter = useRouter()
-  const ACTION_ADD = 'add'
-  const ACTION_REVIEW = 'review'
 
   const [{isLoading: addLoading, statusCode: addStatusCode}, addRequest] = useDataApi({
     requestMethod: 'POST',
@@ -171,11 +159,11 @@ function Medicine() {
   return (
     <View>
       <AtMessage />
-      <MedicineInfo routeParams={curRouter.params}>
+      <MedicineInfo>
         <View className='action at-row at-row__justify--center'>
           <View className='at-col-8'>
             {
-              curRouter.params.action === ACTION_ADD &&
+              curRouter.params.action === MADPILL_ADD_CONFIG.ACTION_ADD &&
               <AtButton className='add' onClick={addClicked}>
                 {
                   addLoading === true
@@ -191,7 +179,7 @@ function Medicine() {
             }
 
             {
-              curRouter.params.action === ACTION_REVIEW &&
+              curRouter.params.action === MADPILL_ADD_CONFIG.ACTION_REVIEW &&
               <View>
                 <AtButton className='add' onClick={modifyClicked}>
                   {

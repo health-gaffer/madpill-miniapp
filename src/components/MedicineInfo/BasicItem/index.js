@@ -9,20 +9,26 @@ import {getDate} from "../../../utils";
 function BasicItem(props) {
 
   // 项展示名称、项类型、是否必须、输入类型、标签展示内容
-  const {itemName, itemType, isRequired, inputType = 'text', tagContent = '', iconValue = ''} = props.item
+  const {itemLabel, itemName, itemType, isRequired, inputType = 'text', tagContent = '', iconValue = ''} = props.item
   const [value, setValue] = useState(() => {
-    if (itemType === 'date') {
-      return getDate(new Date())
-    } else {
-      return ''
+    console.log('BasicItem init')
+    console.log(props.value)
+    switch (itemType) {
+      case 'date':
+        return getDate(new Date())
+      case 'tag':
+        return props.value.join(', ')
+      default:
+        return props.value
     }
   })
 
-  const handleChange = (cur) => {
-    console.log(cur)
-    setValue(cur.target.value)
-    props.onClicked(cur.target.value)
-    return cur.target.value
+  const handleChange = (curItemLabel) => (e) => {
+    console.log(curItemLabel)
+    console.log(e)
+    setValue(e.target.value)
+    props.onClicked(e.target.value, curItemLabel)
+    return e.target.value
   }
 
   return (
@@ -58,7 +64,7 @@ function BasicItem(props) {
                 type={inputType}
                 placeholder={`请输入${itemName}`}
                 value={value}
-                onChange={handleChange}
+                onChange={handleChange(itemLabel)}
               />
             </View>
           }
@@ -66,7 +72,7 @@ function BasicItem(props) {
           {
             // 日期选择器
             itemType === 'date' &&
-            <Picker mode='date' value={value} onChange={handleChange}>
+            <Picker mode='date' value={value} onChange={handleChange(itemLabel)}>
               <View className='picker'>
                 {value}
               </View>
@@ -81,7 +87,7 @@ function BasicItem(props) {
                   disabled
                   name={itemName}
                   type={inputType}
-                  placeholder={tagContent.substr(0, 12)}
+                  placeholder={value.substr(0, 15)}
                   placeholderClass='tag'
                   maxLength={12}
                 />

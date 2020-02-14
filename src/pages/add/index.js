@@ -11,7 +11,7 @@ import AddSearchedResult from "../../components/AddSearchedResult"
 
 function Add() {
 
-  const searchItem = {itemName: '药品名称', itemType: 'input', isRequired: true, iconValue: 'search'}
+  const searchItem = {itemLabel: 'search', itemName: '药品名称', itemType: 'input', isRequired: true, iconValue: 'search'}
 
   const [showingResult, setShowingResult] = useState(false)
   const [query, setQuery] = useState('')
@@ -29,7 +29,7 @@ function Add() {
     console.log(query)
 
     Taro.navigateTo({
-      url: `/pages/medicine/index?action=add&addMode=direct&name=${query}`
+      url: `/pages/medicine/index?action=add&addMode=direct&manualName=${query}`
     })
   }
 

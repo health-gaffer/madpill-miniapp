@@ -1,4 +1,4 @@
-export const HOST = 'localhost:8081'
+export const HOST = 'http://localhost:8081'
 
 export const MADPILL_COLORS = [
   '#323b5e',
@@ -19,7 +19,7 @@ export const MADPILL_ADD_CONFIG = {
   ADD_MODE_DIRECT: 'direct',
 }
 
-export const RESPONSE_CODE ={
+export const MADPILL_RESPONSE_CODE ={
   OK: 200,
 
 }

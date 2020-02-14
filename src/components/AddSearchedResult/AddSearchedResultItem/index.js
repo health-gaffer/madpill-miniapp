@@ -9,12 +9,12 @@ import { getPillColor } from "../../../utils"
 
 function AddSearchedResultItem(props) {
 
-  const {name, vendor} = props.item
+  const {name, manufacture} = props.item
 
   const [color, setColor] = useState('white')
 
   useEffect(() => {
-    setColor(getPillColor(vendor + name))
+    setColor(getPillColor(manufacture + name))
   })
 
   return (
@@ -27,9 +27,9 @@ function AddSearchedResultItem(props) {
         {name}
       </View>
 
-      <View className='vendor at-col-2'>
+      <View className='manufacture at-col-2'>
         <View className='at-row at-row__justify--end'>
-          {vendor}
+          {manufacture}
         </View>
       </View>
     </View>

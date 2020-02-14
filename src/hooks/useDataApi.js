@@ -1,16 +1,14 @@
-import Taro, {
-  useState,
-  useEffect,
-  useReducer,
-} from '@tarojs/taro'
+import Taro, {useEffect, useReducer, useState,} from '@tarojs/taro'
 
-import {HOST} from "../constants";
+import {HOST, MADPILL_RESPONSE_CODE} from "../constants";
 
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
     case 'REQUEST_INIT':
       return {...state, isLoading: true, statusCode: 200};
     case 'REQUEST_SUCCESS':
+      console.log('REQUEST_SUCCESS')
+      console.log(action.payload)
       return {
         ...state,
         isLoading: false,
@@ -18,6 +16,8 @@ const dataFetchReducer = (state, action) => {
         data: action.payload,
       };
     case 'REQUEST_FAILURE':
+      console.log('REQUEST_FAILURE')
+      console.log(action.errorCode)
       return {
         ...state,
         isLoading: false,
@@ -30,17 +30,17 @@ const dataFetchReducer = (state, action) => {
 
 /**
  *
- * @param {string} requestMethod
+ * @param {Taro.request.method} requestMethod
  * @param {string} requestUrl
  * @param {object} initialResultData
- * @param {string} [requestData] json string of data
+ * @param {object} [requestData] json string of data
  * @return {[S, (value: (((prevState: {method: *, data: *, url: string}) => {method: *, data: *, url: string}) | {method: *, data: *, url: string})) => void]}
  */
-const useDataApi = (requestMethod, requestUrl, initialResultData, requestData = '') => {
+const useDataApi = (requestMethod, requestUrl, initialResultData, requestData = {}) => {
 
   const [request, setRequest] = useState({
     method: requestMethod,
-    url: `${HOST}/${requestUrl}`,
+    url: `${requestUrl}`,
     data: requestData,
   })
 
@@ -56,20 +56,23 @@ const useDataApi = (requestMethod, requestUrl, initialResultData, requestData = 
     resultDispatch({type: 'REQUEST_INIT'});
 
     Taro.request({
-      url: request.url,
+      url: `${HOST}/${request.url}`,
       method: request.method,
       data: request.data,
       success: result => {
+        console.log('success')
         console.log(result)
-        if (!didCancel) {
-          if (result.statusCode === 200) {
-            resultDispatch({type: 'REQUEST_SUCCESS', payload: result.data});
+        if (!didCancel && result.statusCode === 200) {
+          const madpillResult = result.data
+          if (madpillResult.code === MADPILL_RESPONSE_CODE.OK) {
+            resultDispatch({type: 'REQUEST_SUCCESS', payload: madpillResult.data});
           } else {
-            resultDispatch({type: 'REQUEST_FAILURE', errorCode: result.statusCode});
+            resultDispatch({type: 'REQUEST_FAILURE', errorCode: madpillResult.code});
           }
         }
       },
       fail: error => {
+        console.log('fail')
         console.log(error)
         if (!didCancel) {
           resultDispatch({type: 'REQUEST_FAILURE', errorCode: 400});

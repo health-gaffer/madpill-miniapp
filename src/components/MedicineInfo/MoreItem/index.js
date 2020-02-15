@@ -5,12 +5,20 @@ import './index.scss'
 
 function MoreItem(props) {
 
-  const {itemName} = props.item
+  const {itemLabel, itemName} = props.item
   const [content, setContent] = useState(props.value)
 
   useEffect(() => {
     setContent(props.value)
   }, [props.value])
+
+  const handleChange = (curItemLabel) => (e) => {
+    // console.log(curItemLabel)
+    // console.log(e)
+    setContent(e.detail.value)
+    props.onClicked(e.target.value, curItemLabel)
+    return e.target.value
+  }
 
   return (
     <View className='extra-item'>
@@ -26,6 +34,7 @@ function MoreItem(props) {
           autoHeight
           cursorSpacing={20}
           maxlength={800}
+          onBlur={handleChange(itemLabel)}
         />
       </View>
 

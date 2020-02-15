@@ -21,28 +21,11 @@ function Medicine() {
   const [{isLoading: addLoading, statusCode: addStatusCode}, addRequest] = useDataApi({
     requestMethod: 'POST',
     requestUrl: 'drugs',
-    requestData: {
-      name: '测试药品新增',
-      producedDate: '2019-04-08',
-      expireDate: '2020-02-14',
-      description: '测试描述新增',
-      indication: '测试适用症新增',
-      contraindication: '测试禁忌新增',
-    },
   })
 
   const [{isLoading: modifyLoading, statusCode: modifyStatusCode}, modifyRequest] = useDataApi({
     requestMethod: 'PUT',
     requestUrl: `drugs/${curRouter.params.medicineId}`,
-    requestData: {
-      id: 1,
-      name: '测试药品修改',
-      producedDate: '2019-04-08',
-      expireDate: '2020-02-14',
-      description: '测试描述修改',
-      indication: '测试适用症修改',
-      contraindication: '测试禁忌修改',
-    },
   })
 
   const [{isLoading: deleteLoading, statusCode: deleteStatusCode}, deleteRequest] = useDataApi({
@@ -112,18 +95,24 @@ function Medicine() {
   }
 
   const addClicked = () => {
+    // console.log('ready to send data')
+    // console.log(curMedicine)
     addRequest(prevRequest => {
       return {
         ...prevRequest,
+        requestData: curMedicine,
         exec: true,
       }
     })
   }
 
   const modifyClicked = () => {
+    // console.log('ready to send data')
+    // console.log(curMedicine)
     modifyRequest(prevRequest => {
       return {
         ...prevRequest,
+        requestData: curMedicine,
         exec: true,
       }
     })

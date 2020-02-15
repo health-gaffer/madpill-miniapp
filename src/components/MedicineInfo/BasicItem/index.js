@@ -14,12 +14,18 @@ function BasicItem(props) {
     setValue(props.value)
   }, [props.value])
 
+  // useEffect(() => {
+  //   document.getElementsByName('icon').addEventListener('click', function () {
+  //     console.log('hello')
+  //   })
+  // })
+
   const handleChange = (curItemLabel) => (e) => {
     // TODO tag 修改后回调
     // console.log(curItemLabel)
     // console.log(e)
     setValue(e.target.value)
-    props.onClicked(e.target.value, curItemLabel)
+    props.onItemChange(e.target.value, curItemLabel)
     return e.target.value
   }
 

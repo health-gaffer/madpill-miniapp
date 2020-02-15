@@ -186,7 +186,7 @@ function MedicineInfo(props) {
 
 
 
-  const MedicineItemClicked = (curValue, itemLabel) => {
+  const MedicineItemChanged = (curValue, itemLabel) => {
     // console.log('MedicineItemClicked')
     // console.log(curValue)
     // console.log(itemLabel)
@@ -251,7 +251,7 @@ function MedicineInfo(props) {
                     className='at-row'
                     item={item}
                     value={medicine[item.itemLabel]}
-                    onClicked={MedicineItemClicked}
+                    onItemChange={MedicineItemChanged}
                   />
                 }
                 return (
@@ -260,7 +260,7 @@ function MedicineInfo(props) {
                       className='at-row'
                       item={item}
                       value={medicine[item.itemLabel]}
-                      onClicked={MedicineItemClicked}
+                      onItemChange={MedicineItemChanged}
                     />
                     <MPDivider />
                   </View>
@@ -279,7 +279,7 @@ function MedicineInfo(props) {
                     className='at-row'
                     item={item}
                     value={medicine[item.itemLabel]}
-                    onClicked={MedicineItemClicked}
+                    onItemChange={MedicineItemChanged}
                   />
                 }
                 return (
@@ -288,7 +288,7 @@ function MedicineInfo(props) {
                       className='at-row'
                       item={item}
                       value={medicine[item.itemLabel]}
-                      onClicked={MedicineItemClicked}
+                      onItemChange={MedicineItemChanged}
                     />
                     <MPDivider />
                   </View>

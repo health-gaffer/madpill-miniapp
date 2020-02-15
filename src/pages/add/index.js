@@ -16,7 +16,7 @@ function Add() {
   const [showingResult, setShowingResult] = useState(false)
   const [query, setQuery] = useState('')
 
-  const searchItemClicked = (curQuery) => {
+  const searchItemChanged = (curQuery) => {
     setQuery(curQuery)
 
     if (curQuery !== undefined && curQuery !== '' && showingResult === false) {
@@ -64,7 +64,7 @@ function Add() {
 
       {/* 搜索框 */}
       <View className={showingResult ? 'searched' : 'search'}>
-        <BasicItem item={searchItem} onClicked={searchItemClicked} />
+        <BasicItem item={searchItem} onItemChange={searchItemChanged} />
         <MPDivider type='dark-gray' />
       </View>
 

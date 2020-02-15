@@ -17,7 +17,7 @@ function MoreItem(props) {
     // console.log(curItemLabel)
     // console.log(e)
     setContent(e.detail.value)
-    props.onClicked(JSON.stringify({
+    props.onItemChange(JSON.stringify({
       content: e.target.value
     }), curItemLabel)
     return e.target.value

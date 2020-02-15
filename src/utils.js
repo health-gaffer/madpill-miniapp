@@ -30,13 +30,41 @@ export const fetchAuthorizationInfo = callback => {
   });
 };
 
-export const getDate = (date) => {
+export const getDateString = (date) => {
   const y = date.getFullYear();
   let m = date.getMonth() + 1;
   m = m < 10 ? ('0' + m) : m;
   let d = date.getDate();
   d = d < 10 ? ('0' + d) : d;
   return y + '-' + m + '-' + d;
+}
+
+/**
+ * TODO bug...
+ * @param {string} before
+ * @param {number} dayNum
+ * @return {string}
+ */
+export const calDateAfterAddDays = (before, dayNum) => {
+  let date = new Date(before)
+  console.log(`------}`)
+  console.log(`before: ${date}`)
+  console.log(`dayNum: ${dayNum}`)
+
+  date.setDate(date.getDate() + dayNum)
+  console.log(`after: ${date}`)
+  console.log(getDateString(date))
+  return getDateString(date)
+}
+
+/**
+ *
+ * @param {string} date1
+ * @param {string} date2
+ * @return {number}
+ */
+export const calDateDiffDays = (date1, date2) => {
+  return Math.abs(Date.parse(date1) - Date.parse(date2)) / (1000 * 60 * 60 * 24)
 }
 
 /**

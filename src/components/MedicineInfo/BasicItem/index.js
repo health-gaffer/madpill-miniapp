@@ -1,5 +1,5 @@
 import Taro, { useEffect, useState } from '@tarojs/taro'
-import { View, Text, Picker, Input } from '@tarojs/components'
+import {View, Text, Picker, Input, Button} from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
 
 import './index.scss'
@@ -107,7 +107,10 @@ function BasicItem(props) {
                   ...
                 </Text>
                 }
-                <AtIcon value={iconValue} size='16' color='#AEAEAE' />
+                {/*<Button className='icon-btn'>*/}
+                {/*  &gt;*/}
+                  <AtIcon value={iconValue} size='16' color='#AEAEAE' />
+                {/*</Button>*/}
               </View>
             </View>
           }

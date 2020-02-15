@@ -12,7 +12,7 @@ import MoreItem from "./MoreItem"
 import MPDivider from "../MPDivider"
 import useDataApi from "../../hooks/useDataApi"
 import {MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE} from "../../constants"
-import { getDate } from "../../utils"
+import {getDateString, calDateAfterAddDays, calDateDiffDays} from "../../utils"
 
 function MedicineInfo(props) {
 
@@ -81,6 +81,12 @@ function MedicineInfo(props) {
     // console.log('medicineRequest finish')
     // console.log(medicineRequestedData)
     setMedicine(medicineRequestedData)
+    setMedicine(preMedicine => {
+      return {
+        ...preMedicine,
+        period: calDateDiffDays(medicineRequestedData.producedDate, medicineRequestedData.expireDate)
+      }
+    })
   }, [medicineRequestedData])
 
   useEffect(() => {
@@ -185,15 +191,47 @@ function MedicineInfo(props) {
   }, [warehouseStatusCode, medicineStatusCode])
 
 
+  const dateRelatedLabels = ['producedDate', 'period', 'expireDate']
+  const dateRelatedExtraProcess = (curItemLabel, curValue) => {
+    if (curItemLabel === 'producedDate') {
+      setMedicine(preMedicine => {
+        return {
+          ...preMedicine,
+          expireDate: calDateAfterAddDays(curValue, preMedicine.period)
+        }
+      })
+    } else if (curItemLabel === 'period') {
+      setMedicine(preMedicine => {
+        return {
+          ...preMedicine,
+          expireDate: calDateAfterAddDays(preMedicine.producedDate, curValue)
+        }
+      })
+    } else if (curItemLabel === 'expireDate') {
+      setMedicine(preMedicine => {
+        return {
+          ...preMedicine,
+          period: calDateDiffDays(preMedicine.producedDate, curValue)
+        }
+      })
+    }
+  }
 
   const MedicineItemChanged = (curValue, itemLabel) => {
     // console.log('MedicineItemClicked')
     // console.log(curValue)
     // console.log(itemLabel)
+    // if (itemLabel === 'period') {
+    //  TODO regex and focus
+    // }
     setMedicine(preMedicine => {
       preMedicine[itemLabel] = curValue
       return preMedicine
     })
+
+    if (dateRelatedLabels.includes(itemLabel)) {
+      dateRelatedExtraProcess(itemLabel, curValue)
+    }
   }
 
 
@@ -217,8 +255,8 @@ function MedicineInfo(props) {
     setMedicine(preMedicine => {
       return {
         ...preMedicine,
-        producedDate: getDate(new Date()),
-        expireDate: getDate(new Date()),
+        producedDate: getDateString(new Date()),
+        expireDate: getDateString(new Date()),
         period: 0,
       }
     })

@@ -100,7 +100,7 @@ function Medicine() {
     addRequest(prevRequest => {
       return {
         ...prevRequest,
-        requestData: curMedicine,
+        data: curMedicine,
         exec: true,
       }
     })
@@ -112,7 +112,7 @@ function Medicine() {
     modifyRequest(prevRequest => {
       return {
         ...prevRequest,
-        requestData: curMedicine,
+        data: curMedicine,
         exec: true,
       }
     })

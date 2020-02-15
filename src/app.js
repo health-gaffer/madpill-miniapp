@@ -15,6 +15,7 @@ class App extends Component {
       'pages/add/index',
       'pages/medicine/index',
       'pages/added/index',
+      'pages/tagManage/index',
     ],
     window: {
       navigationBarBackgroundColor: '#fff',

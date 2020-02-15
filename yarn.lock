@@ -301,10 +301,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/webpack-env@taro^1.13.6":
-  version "1.13.6"
-  resolved "https://registry.npm.taobao.org/@types/webpack-env/download/@types/webpack-env-1.13.6.tgz#128d1685a7c34d31ed17010fc87d6a12c1de6976"
-  integrity sha1-Eo0WhafDTTHtFwEPyH1qEsHeaXY=
+"@types/webpack-env@^1.13.6":
+  version "1.15.1"
+  resolved "https://registry.npm.taobao.org/@types/webpack-env/download/@types/webpack-env-1.15.1.tgz#c8e84705e08eed430b5e15b39c65b0944e4d1422"
+  integrity sha1-yOhHBeCO7UMLXhWznGWwlE5NFCI=
 
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
@@ -7203,9 +7203,9 @@ tar@^2.0.0:
     fstream "^1.0.12"
     inherits "2"
 
-taro-ui@^2.2.2:
+taro-ui@^2.2.4:
   version "2.2.4"
-  resolved "https://registry.npm.taobao.org/taro-ui/download/taro-ui-2.2.4.tgz?cache=0&sync_timestamp=1571304906412&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftaro-ui%2Fdownload%2Ftaro-ui-2.2.4.tgz#96a486432e86d6d0d1eda70383c47c3284f5e8e6"
+  resolved "https://registry.npm.taobao.org/taro-ui/download/taro-ui-2.2.4.tgz#96a486432e86d6d0d1eda70383c47c3284f5e8e6"
   integrity sha1-lqSGQy6G1tDR7acDg8R8MoT16OY=
   dependencies:
     "@types/react" "^16.7.3"

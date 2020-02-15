@@ -6,6 +6,8 @@ import './index.scss'
 import TagItem from '../../components/MedicineTag'
 import TagInput from '../../components/MedicineTag/TagInput'
 
+import {set} from '../../global'
+
 
 export default class TagPage extends Component {
   config = {
@@ -13,25 +15,37 @@ export default class TagPage extends Component {
     backgroundTextStyle: 'dark',
     enablePullDownRefresh: false,
     backgroundColor:'#f5f4f4'
-
-}
+  }
 
   constructor() {
     super()
     this.state = {
-      name:''
+      name:'',
+      tags:[],
+      allTags:[]
     }
   }
 
   componentWillMount() {
-    // const { id, name } = this.$router.params;
+    //todo userID 获取
+    Taro.request({
+      url: `http://localhost:8081/tags/user?userId=1`,
+      method: 'GET',
+      success: result => {
+        this.setState({allTags:result.data.data})
+      },
+      fail: error => {
+        console.log('fail')
+        console.log(error)
+      }
+    })
+
     const name = "双黄连口服液"
     const tags = JSON.parse(this.$router.params.tags)
-    const allTags =  [{id:1,name:'感冒'},{id:2,name:'发烧'},{id:3,name:'治脚气'}];
+    // const allTags =  [{id:1,name:'感冒'},{id:2,name:'发烧'},{id:3,name:'治脚气'}];
     this.setState({
       name : '双黄连口服液',
       tags : tags,
-      allTags : allTags,
       isManage : false,
       confirmDelete : '',
       disabled : false
@@ -42,7 +56,7 @@ export default class TagPage extends Component {
   }
 
 
-  handleClick (value) {
+  handleClickTag (value) {
     if(this.state.isManage){
       this.removeTag(value)
       return
@@ -73,17 +87,38 @@ export default class TagPage extends Component {
   }
 
   addNewTag (value) {
+    value['userId']=1
+    //todo get userId
     const { tags,allTags } = this.state
-    //todo 传userID 和 value.name 生成tag返回
-    value.id = 10;
-    if(this.indexOfTag(allTags,value.name) < 0){
-      allTags.push(value);
-    }
-    if(this.indexOfTag(tags,value.name) < 0){
-      tags.push(value)
+    const index1 = this.indexOfTag(allTags,value.name)
+    const index2 = this.indexOfTag(tags,value.name)
+    if(index1 >= 0){
+      if(index2 < 0){
+        tags.push(allTags[index1])
+      }
+    }else {
+      Taro.request({
+        url: 'http://localhost:8081/tags',
+        method: 'PUT',
+        data: value,
+        success: result => {
+          value['id'] = result.data.data
+          allTags.push(value);
+          tags.push(value)
+          console.log(value)
+          this.setState({
+            tags: tags,
+            allTags: allTags
+          })
+        },
+        fail: error => {
+          console.log('fail')
+          console.log(error)
+        }
+      })
     }
     this.setState({
-      tags:tags,
+      tags: tags,
       allTags: allTags
     })
   }
@@ -110,29 +145,32 @@ export default class TagPage extends Component {
   }
   confirmRemoveTag(tag){
     const { tags,allTags } = this.state
-    //todo 把tag删除掉
-
-    if(this.indexOfTag(allTags,tag.name) >= 0){
-      allTags.splice(this.indexOfTag(allTags,tag.name),1);
-    }
-    if(this.indexOfTag(tags,tag.name) >= 0){
-      tags.splice(this.indexOfTag(tags,tag.name),1)
-    }
-    this.setState({
-      confirmDelete: '',
-      tags:tags,
-      allTags: allTags
+    console.log(tag)
+    Taro.request({
+      url: `http://localhost:8081/tags/` + tag.id,
+      method: 'DELETE',
+      success: result => {
+        if(this.indexOfTag(allTags,tag.name) >= 0){
+          allTags.splice(this.indexOfTag(allTags,tag.name),1);
+        }
+        if(this.indexOfTag(tags,tag.name) >= 0){
+          tags.splice(this.indexOfTag(tags,tag.name),1)
+        }
+        this.setState({
+          confirmDelete: '',
+          tags:tags,
+          allTags: allTags
+        })
+      },
+      fail: error => {
+        console.log('fail')
+        console.log(error)
+      }
     })
   }
-  // componentWillUnmount() {
-  //   var pages = getCurrentPages()
-  //   var prevPage = pagesr[pages.length - 1]; // 上一个页
-  //   console.log(prevPage.state)
-  //   prevPage.setData({
-  //     data: 2
-  //   });
-  //
-  // }
+  componentWillUnmount() {
+    set("tags",this.state.tags)
+  }
   render () {
     const { tags,allTags,isManage,disabled} = this.state
     return (
@@ -140,7 +178,7 @@ export default class TagPage extends Component {
       <View className='panel'>
         <View className='cur-tags'>
             {tags.map((tag) =>
-              <TagItem key={tag.id} name={tag.name}  id={tag.id}  disabled={disabled} isManage={false} onClick={this.handleClick.bind(this)} active={true}/>
+              <TagItem key={tag.id} tag={tag} disabled={disabled} isManage={false} onClick={this.handleClickTag.bind(this)} active={true}/>
             )}
             <TagInput disabled={disabled} onAddNewTag={this.addNewTag.bind(this)}/>
         </View>
@@ -157,7 +195,7 @@ export default class TagPage extends Component {
         <View className='all-tags'>
           <View className='all-tag-manage'>
             {allTags.map((tag) => {
-              return <TagItem key={tag.id}  onLongPress={this.manageTag.bind(this)} disabled={false} isManage={isManage} name={tag.name} id={tag.id} onRemoveTag={this.removeTag.bind(this)} onClick={this.handleClick.bind(this)} active={this.indexOfTag(tags,tag.name) >= 0}/>
+              return <TagItem key={tag.id} onLongPress={this.manageTag.bind(this)} disabled={false} isManage={isManage} tag={tag} onRemoveTag={this.removeTag.bind(this)} onClick={this.handleClickTag.bind(this)} active={this.indexOfTag(tags,tag.name) >= 0}/>
             })}
           </View>
         </View>

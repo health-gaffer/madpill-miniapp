@@ -10,16 +10,10 @@ export default class TagItem extends Component {
   }
 
   handleClick (e){
-    this.props.onClick({
-      id : this.props.id,
-      name : this.props.name
-    })
+    this.props.onClick(this.props.tag)
   }
   removeTag(){
-    this.props.onRemoveTag({
-      id : this.props.id,
-      name : this.props.name
-    })
+    this.props.onRemoveTag(this.props.tag)
   }
   longPress(){
     if(this.props.onLongPress && !this.props.isManage){
@@ -40,7 +34,7 @@ export default class TagItem extends Component {
           active = {active}
           onClick={this.handleClick.bind(this)}
         >
-          {this.props.name}</AtTag>
+          {this.props.tag.name}</AtTag>
       </View>
     )
   }

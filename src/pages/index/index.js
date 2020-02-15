@@ -4,6 +4,7 @@ import { View, Text } from '@tarojs/components'
 import './index.scss'
 import MedicineItem from '../../components/MedicineItem'
 import MedicineTag from '../../components/MedicineTag'
+import {get} from "../../global"
 
 export default class Index extends Component {
 
@@ -16,12 +17,17 @@ export default class Index extends Component {
   constructor() {
     super()
     this.state = {
-      tags:[{id:1,name:'感冒'},{id:2,name:'发烧'}],
+      tags:[{id:1,name:'头疼'},{id:2,name:'咳嗽'}],
       data:1
     }
   }
 
+  componentDidShow() {
+    console.log(get("tags"))
+  }
+
   onPullDownRefresh() {
+
     this.init()
   }
   routeToTag = () => {

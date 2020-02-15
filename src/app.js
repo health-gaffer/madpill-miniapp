@@ -6,6 +6,7 @@ import './taro-custom-theme.scss'
 
 import 'taro-ui/dist/style/index.scss'
 
+
 class App extends Component {
 
   config = {

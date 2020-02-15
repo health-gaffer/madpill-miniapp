@@ -1,6 +1,7 @@
 import Taro, {
   useEffect,
   useRouter,
+  useState,
 } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton, AtMessage, AtActivityIndicator } from "taro-ui"
@@ -13,6 +14,9 @@ import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from "../../constants"
 function Medicine() {
 
   const curRouter = useRouter()
+
+  // TODO 由子组件 MedicineInfo 中的 medicine 管理，但因为 taro 目前不支持 useImperativeHandle + forwardRef，所以先冗余保存
+  const [curMedicine, setCurMedicine] = useState({})
 
   const [{isLoading: addLoading, statusCode: addStatusCode}, addRequest] = useDataApi({
     requestMethod: 'POST',
@@ -156,10 +160,14 @@ function Medicine() {
     })
   }
 
+  const curMedicineChange = (m) => {
+    setCurMedicine(m)
+  }
+
   return (
     <View>
       <AtMessage />
-      <MedicineInfo routerParams={curRouter.params}>
+      <MedicineInfo routerParams={curRouter.params} onCurMedicineChange={curMedicineChange}>
         <View className='action at-row at-row__justify--center'>
           <View className='at-col-8'>
             {

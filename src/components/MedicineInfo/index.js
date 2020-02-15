@@ -1,7 +1,6 @@
 import Taro, {
   useState,
   useEffect,
-  useRouter,
 } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 
@@ -44,6 +43,10 @@ function MedicineInfo(props) {
     contraindication: '',
     tags: [],
   })
+
+ useEffect(() => {
+   props.onCurMedicineChange(medicine)
+ }, [medicine, props])
 
   const [{data: warehouseRequestedData, isLoading: warehouseLoading, statusCode: warehouseStatusCode}, warehouseRequest] = useDataApi({
     requestMethod: 'GET',
@@ -184,11 +187,8 @@ function MedicineInfo(props) {
     // console.log(curValue)
     // console.log(itemLabel)
     setMedicine(preMedicine => {
-      return {
-        ...preMedicine,
-        // TODO
-        // ${itemLabel}: curValue
-      }
+      preMedicine[itemLabel] = curValue
+      return preMedicine
     })
   }
 

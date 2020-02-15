@@ -24,7 +24,7 @@ function MedicineInfo(props) {
     {itemLabel: 'producedDate', itemName: '生产时间', itemType: 'date', isRequired: true,},
     {itemLabel: 'period', itemName: '保质天数', itemType: 'input', isRequired: true, inputType: 'number',},
     {itemLabel: 'expireDate', itemName: '过期时间', itemType: 'date', isRequired: true,},
-    {itemLabel: 'description', itemName: '用药说明', itemType: 'input', isRequired: true,},
+    {itemLabel: 'description', itemName: '用药说明', itemType: 'input', isRequired: false,},
     {itemLabel: 'tags', itemName: '药品标签', itemType: 'tag', isRequired: false, iconValue: 'chevron-right'},
   ]
   const moreItems = [
@@ -39,8 +39,12 @@ function MedicineInfo(props) {
     expireDate: '',
     period: 0,
     description: '',
-    indication: '',
-    contraindication: '',
+    indication: JSON.stringify({
+      content: ''
+    }),
+    contraindication: JSON.stringify({
+      content: ''
+    }),
     tags: [],
   })
 

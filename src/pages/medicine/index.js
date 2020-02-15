@@ -94,28 +94,53 @@ function Medicine() {
     }
   }
 
+  // 校验药品信息的合法性
+  const medicineValidityCheck = () => {
+    const requiredRules = [
+      {label: 'name', msg: '药品名称必填哦'},
+      {label: 'producedDate', msg: '生产时间必填哦'},
+      {label: 'expireDate', msg: '过期时间必填哦'},
+    ]
+    for (let i = 0; i < requiredRules.length; i++) {
+      const rule = requiredRules[i]
+      const checkedLabel = curMedicine[rule.label]
+      if (checkedLabel === undefined || checkedLabel === '') {
+        Taro.showToast({
+          title: rule.msg,
+          icon: 'none'
+        })
+        return false
+      }
+    }
+    return true
+  }
+
   const addClicked = () => {
     // console.log('ready to send data')
     // console.log(curMedicine)
-    addRequest(prevRequest => {
-      return {
-        ...prevRequest,
-        data: curMedicine,
-        exec: true,
-      }
-    })
+    if (medicineValidityCheck()) {
+      addRequest(prevRequest => {
+        return {
+          ...prevRequest,
+          data: curMedicine,
+          exec: true,
+        }
+      })
+    }
   }
 
   const modifyClicked = () => {
     // console.log('ready to send data')
     // console.log(curMedicine)
-    modifyRequest(prevRequest => {
-      return {
-        ...prevRequest,
-        data: curMedicine,
-        exec: true,
-      }
-    })
+    if (medicineValidityCheck()) {
+      modifyRequest(prevRequest => {
+        return {
+          ...prevRequest,
+          data: curMedicine,
+          exec: true,
+        }
+      })
+    }
   }
 
   const deleteClicked = () => {

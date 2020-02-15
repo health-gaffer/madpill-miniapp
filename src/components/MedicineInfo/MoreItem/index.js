@@ -6,17 +6,20 @@ import './index.scss'
 function MoreItem(props) {
 
   const {itemLabel, itemName} = props.item
-  const [content, setContent] = useState(props.value)
+  // 前端存储
+  const [content, setContent] = useState(JSON.parse(props.value).content)
 
   useEffect(() => {
-    setContent(props.value)
+    setContent(JSON.parse(props.value).content)
   }, [props.value])
 
   const handleChange = (curItemLabel) => (e) => {
     // console.log(curItemLabel)
     // console.log(e)
     setContent(e.detail.value)
-    props.onClicked(e.target.value, curItemLabel)
+    props.onClicked(JSON.stringify({
+      content: e.target.value
+    }), curItemLabel)
     return e.target.value
   }
 
@@ -44,7 +47,9 @@ function MoreItem(props) {
 
 MoreItem.defaultProps = {
   item: {},
-  value: '',
+  value: JSON.stringify({
+    content: ''
+  }),
 }
 
 export default MoreItem

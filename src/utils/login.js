@@ -1,22 +1,62 @@
-import Taro from "@tarojs/taro"
+import Taro from '@tarojs/taro'
 
-import { LOGIN_STORAGE_KEY } from '../constants'
+import { HOST } from '../constants'
 
 /**
- * Get login code to send requests those require authorization.
- * @param {*} onResult requires `code` as param
- * @param {*} onError optional
- * @param {*} onComplete optional
+ * Get token to send requests those require authorization.
+ * @param {*} success requires `token` as param
+ * @param {*} fail optional
  */
-export const login = ({ success, fail, complete }) => {
+export const getToken = ({ success, fail }) => {
+  const token = Taro.getStorageSync('token')
+  if (token) {
+    Taro.checkSession({
+      success: () => {
+        success(token)
+      },
+      fail: () => {
+        // session key invalid
+        console.log('session key invalid')
+        login({ success, fail })
+      }
+    })
+  } else {
+    console.log('no session key yet')
+    login({ success, fail })
+  }
+}
+
+
+const login = ({ success, fail }) => {
   Taro.login({
     success: res => {
       const code = res.code
-      if (success) {
-        success(code)
-      } else {
-        console.log(code)
-      }
+      Taro.request({
+        url: `${HOST}/users`,
+        method: 'POST',
+        data: code,
+        success: res => {
+          console.log(res)
+          if (res.statusCode >= 400) {
+            Taro.showToast({
+              title: '登录失败',
+              icon: 'none'
+            })
+            fail()
+          } else {
+            const token = res.data.data
+            Taro.setStorageSync('token', token)
+            success(token)
+          }
+        },
+        fail: err => {
+          if (fail) {
+            fail(err)
+          } else {
+            console.error(err)
+          }
+        }
+      })
     },
     fail: err => {
       if (fail) {
@@ -24,11 +64,8 @@ export const login = ({ success, fail, complete }) => {
       } else {
         console.error(err)
       }
-    },
-    complete: () => {
-      if (complete) {
-        complete()
-      }
     }
   })
 }
+
+

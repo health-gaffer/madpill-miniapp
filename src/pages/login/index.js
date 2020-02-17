@@ -4,7 +4,7 @@ import { AtAvatar } from 'taro-ui'
 
 import './index.scss'
 import addIcon from '../../assets/icons/add.png'
-import { login } from '../../utils/login'
+import { getToken } from '../../utils/login'
 import { HOST } from '../../constants'
 
 export default class Login extends Component {
@@ -24,30 +24,12 @@ export default class Login extends Component {
 
   componentDidMount() {
     this.checkLoginStatus()
-    login({
-      success: code => {
-        console.log(code)
-        Taro.request({
-          url: `${HOST}/users`,
-          method: 'POST',
-          data: code,
-          success: res => {
-            console.log(res)
-            if (res.statusCode >= 400) {
-              Taro.showToast({
-                title: '初始化失败',
-                icon: 'none'
-              })
-            }
-          },
-          fail: err => {
-            console.error(err)
-            Taro.showToast({
-              title: "请检查网络连接",
-              icon: "none"
-            })
-          }
-        })
+    getToken({
+      success: (token) => {
+        console.log(token)
+      },
+      fail: (err) => {
+        console.log(err)
       }
     })
   }

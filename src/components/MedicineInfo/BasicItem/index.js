@@ -1,8 +1,9 @@
-import Taro, { useEffect, useState } from '@tarojs/taro'
-import {View, Text, Picker, Input, Button} from '@tarojs/components'
-import { AtIcon, AtButton }  from 'taro-ui'
+import Taro, {useDidShow, useEffect, useState} from '@tarojs/taro'
+import {Input, Picker, Text, View} from '@tarojs/components'
+import {AtButton, AtIcon} from 'taro-ui'
 
 import './index.scss'
+import {get} from "../../../global";
 
 function BasicItem(props) {
 
@@ -11,22 +12,35 @@ function BasicItem(props) {
   const [value, setValue] = useState(props.value)
 
   useEffect(() => {
+    // console.log(`${itemLabel}'s props value changed`)
     setValue(props.value)
   }, [props.value])
 
-  // useEffect(() => {
-  //   document.getElementsByName('icon').addEventListener('click', function () {
-  //     console.log('hello')
-  //   })
-  // })
+  useDidShow(() => {
+    if (itemType === 'tag') {
+      const curTags = get("tags")
+      // 若不在此立刻 set，而是等 props.onItemChange 通知父组件，父组件修改后再通过上述 useEffect 修改。不能正确监听 props.value 的修改。
+      setValue(curTags)
+      props.onItemChange(curTags, itemLabel)
+    }
+  })
 
   const handleChange = (curItemLabel) => (e) => {
-    // TODO tag 修改后回调
     // console.log(curItemLabel)
     // console.log(e)
     setValue(e.target.value)
     props.onItemChange(e.target.value, curItemLabel)
     return e.target.value
+  }
+
+  const iconBtnClicked = () => {
+    console.log('iconBtnClicked')
+    console.log(JSON.stringify(value))
+    if (itemType === 'tag') {
+      Taro.navigateTo({
+        url: `/pages/tagManage/index?tags=${JSON.stringify(value)}`
+      })
+    }
   }
 
   const representAtTag = () => {
@@ -85,31 +99,33 @@ function BasicItem(props) {
           {
             // 不可输入的标签
             itemType === 'tag' &&
-              <View className='at-col-10'>
-                <Input
-                  disabled
-                  name={itemName}
-                  type={inputType}
-                  placeholder={representAtTag()}
-                  placeholderClass='tag'
-                  maxLength={12}
-                />
-              </View>
+            <View className='at-col-10'>
+              <Input
+                disabled
+                name={itemName}
+                type={inputType}
+                placeholder={representAtTag()}
+                placeholderClass='tag'
+                maxLength={12}
+              />
+            </View>
           }
 
           {
             // 最右的图标
-            (itemType === 'input' || itemType === 'tag') &&
+            itemType === 'tag' &&
             <View className='at-col-2'>
               <View className='at-row at-row__justify--end'>
-                {value.length > 12 &&
-                <Text className='tag'>
-                  ...
-                </Text>
+                {
+                  value.length > 12 &&
+                  <Text className='tag'>
+                    ...
+                  </Text>
                 }
-                {iconValue &&
-                  <AtButton value={iconValue}  className='icon-btn'>
-                    >
+                {
+                  iconValue &&
+                  <AtButton className='icon-btn' onClick={iconBtnClicked}>
+                    <AtIcon value={iconValue} size='16' />
                   </AtButton>
                 }
               </View>

@@ -29,7 +29,7 @@ export default class TagPage extends Component {
   componentWillMount() {
     //todo userID 获取
     Taro.request({
-      url: `http://localhost:8081/tags/user?userId=1`,
+      url: `http://localhost:8081/tags/user?userId=10086`,
       method: 'GET',
       success: result => {
         this.setState({allTags: result.data.data})

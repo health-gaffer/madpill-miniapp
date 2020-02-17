@@ -40,20 +40,13 @@ export const getDateString = (date) => {
 }
 
 /**
- * TODO bug...
  * @param {string} before
- * @param {number} dayNum
+ * @param {string | number} dayNum
  * @return {string}
  */
 export const calDateAfterAddDays = (before, dayNum) => {
   let date = new Date(before)
-  console.log(`------}`)
-  console.log(`before: ${date}`)
-  console.log(`dayNum: ${dayNum}`)
-
-  date.setDate(date.getDate() + dayNum)
-  console.log(`after: ${date}`)
-  console.log(getDateString(date))
+  date.setDate(date.getDate() + parseInt(dayNum))
   return getDateString(date)
 }
 

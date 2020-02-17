@@ -35,19 +35,24 @@ function MedicineImage(props) {
 
 
   const imageClicked = () => {
-    Taro.chooseImage({
-      count: 1,
-      sizeType: 'original',
-      sourceType: ['album', 'camera'],
-      success(res) {
-        console.log(res)
-        if (res.tempFilePaths.length !== 0) {
-          console.log('select image success')
-          setCurImage(res.tempFilePaths[0])
-          setWidthAndHeightBasedOnOriginImage()
-          // TODO api 上传照片
-        }
-      }
+    // Taro.chooseImage({
+    //   count: 1,
+    //   sizeType: 'original',
+    //   sourceType: ['album', 'camera'],
+    //   success(res) {
+    //     console.log(res)
+    //     if (res.tempFilePaths.length !== 0) {
+    //       console.log('select image success')
+    //       setCurImage(res.tempFilePaths[0])
+    //       setWidthAndHeightBasedOnOriginImage()
+    //       // TODO api 上传照片
+    //     }
+    //   }
+    // })
+
+    Taro.showToast({
+      title: "定制化图片功能暂未开放，敬请期待（≧∇≦）",
+      icon: "none"
     })
   }
 

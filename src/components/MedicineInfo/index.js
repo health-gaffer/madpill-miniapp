@@ -16,8 +16,17 @@ import {getDateString, calDateAfterAddDays, calDateDiffDays} from "../../utils"
 
 function MedicineInfo(props) {
 
-  const [scrollViewHeight, setScrollViewHeight] = useState(0)
+  // 设置 ScrollView wrapper 的初始高度，1000px 保证界面加载前后不抖动
+  const [scrollViewStyle, setScrollViewStyle] = useState({
+    height: '1000px'
+  })
+  // basic 基本信息的高度，用于控制 ScrollView 滑动监听的距离
   const [infoBasicsHeight, setInfoBasicsHeight] = useState(0)
+
+  // 控制子组件 banner 的显示与 ScrollView 的对应位置正确
+  const [showingInfoType, setShowingInfoType] = useState('basic')
+  // 控制直接跳转至 ScrollView 的某个部分，直接使用 showingInfoType 会导致 ScrollView 内部跳动
+  const [scrollViewPartId, setScrollViewPartId] = useState('basic')
 
   const basicItems = [
     {itemLabel: 'name', itemName: '药品名称', itemType: 'input', isRequired: true,},
@@ -109,8 +118,9 @@ function MedicineInfo(props) {
           .fields({
             size: true,
           }).exec(imageAndBannerRes => {
-          setScrollViewHeight(viewpointRes.height - imageAndBannerRes.height)
-          console.log(viewpointRes.height - imageAndBannerRes[0].height)
+          setScrollViewStyle({
+            height: `${viewpointRes.height - imageAndBannerRes[0].height}px`
+          })
         })
       }).exec()
 
@@ -235,19 +245,24 @@ function MedicineInfo(props) {
   }
 
 
-  const scrollStyle = {
-    height: `${scrollViewHeight}px`
-    // height: '150px'
-  }
-  const scrollTop = 0
-  const Threshold = 20
-
-  const onScrollToUpper = () => {
-    console.log('onScrollToUpper')
-  }
-
   const onScroll = (e) => {
-    console.log(e.detail)
+    // console.log(e.detail)
+    if (e.detail.scrollTop <= infoBasicsHeight) {
+      if (showingInfoType !== 'basic') {
+        console.log('basic')
+        setShowingInfoType('basic')
+      }
+    } else {
+      if (showingInfoType !== 'more') {
+        console.log('more')
+        setShowingInfoType('more')
+      }
+    }
+  }
+
+  const onShowingInfoTypeChange = (type) => {
+    setShowingInfoType(type)
+    setScrollViewPartId(type)
   }
 
   // 新增时设置初始化的时间
@@ -266,21 +281,22 @@ function MedicineInfo(props) {
     <View className='medicine'>
       <View className='image-and-banner'>
         <MedicineImage />
-        <Banner basicsHeight={infoBasicsHeight} />
+        <Banner
+          basicsHeight={infoBasicsHeight}
+          showingInfoType={showingInfoType}
+          onShowingInfoTypeChange={onShowingInfoTypeChange}
+        />
       </View>
 
       <ScrollView
         scrollY
         scrollWithAnimation
-        scrollTop={scrollTop}
-        style={scrollStyle}
-        lowerThreshold={Threshold}
-        upperThreshold={Threshold}
-        onScrollToUpper={onScrollToUpper}
+        style={scrollViewStyle}
         onScroll={onScroll}
+        scrollIntoView={scrollViewPartId}
       >
         <View className='info'>
-          <View className='basics'>
+          <View className='basics' id='basic'>
             {
               basicItems.map((item, index) => {
                 if (index === basicItems.length - 1) {
@@ -308,7 +324,7 @@ function MedicineInfo(props) {
             <MPDivider type='dark-gray' />
           </View>
 
-          <View className='mores'>
+          <View className='mores' id='more'>
             {
               moreItems.map((item, index) => {
                 if (index === moreItems.length - 1) {

@@ -1,32 +1,20 @@
-import Taro, {
-  useState,
-} from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
 import './index.scss'
 
 function Banner(props) {
 
-  const [showingInfoType, setShowingInfoType] = useState('basic');
+  const {showingInfoType} = props
 
   const basicBannerClicked = () => {
-    console.log('basicBannerClicked')
-    setShowingInfoType('basic')
-
-    Taro.pageScrollTo({
-      scrollTop: 0
-    })
+    // console.log('basicBannerClicked')
+    props.onShowingInfoTypeChange('basic')
   }
 
   const moreBannerClicked = () => {
-    console.log('moreBannerClicked')
-    setShowingInfoType('more')
-
-    Taro.pageScrollTo({
-      scrollTop: props.basicsHeight
-    })
-
-
+    // console.log('moreBannerClicked')
+    props.onShowingInfoTypeChange('more')
   }
 
   return (

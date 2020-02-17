@@ -1,0 +1,48 @@
+@import "src/custom-variables";
+
+.tip {
+  margin-top: 200px;
+  margin-bottom: 150px;
+
+  .at-article__h3 {
+    color: $tip;
+  }
+}
+
+.search {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.searched {
+  margin-top: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  animation: search-animation 300ms ease;
+}
+
+@keyframes search-animation {
+  0% {
+    margin-top: 350px;
+  }
+  100% {
+    margin-top: 30px;
+  }
+}
+
+.search-result {
+  margin-top: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.manually-input {
+  margin-bottom: $iphone-x-indicator-height;
+  position: sticky;
+
+  .manual-btn.at-button {
+    color: $plain-color;
+    background: $plain-background;
+    border: $plain-background;
+  }
+}

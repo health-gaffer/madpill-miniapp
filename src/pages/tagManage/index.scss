@@ -1,19 +1,18 @@
 .panel{
   width: 100%;
   display: flex;
+
   flex-direction: column;
-  align-items: center;
   height: 100vh;
   font-size: 1rem;
   //border-top: 1px solid rgba(230, 230, 230, 0.7);
   //background-color: #0e2c6a;
   .cur-tags{
-    width: 92%;
-    padding: 0.4rem 2rem 1rem;
+    padding: 0.4rem 1rem 1rem 1rem;
     display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    //justify-content: ;
-
     .at-input.tag-input{
       width:5rem;
       border: 1px dashed red;
@@ -27,25 +26,24 @@
     }
   }
   .title{
-    width:92%;
-    padding-left: 2.2rem;
-    padding-right: 2.4rem;
-    padding-top: 1rem;
+    padding: 0.8rem 1rem 0rem 1rem;
     background-color: #f5f4f4;
     color: #818181;
-    height: 1.5rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    height: 1.3rem;
+    //display: flex;
+    //flex-direction: row;
     .at-button{
+      display: inline-block;
+      //position: absolute;
+      float: right;
+      border: none;
+      background-color: #f5f4f4;
       margin-top: -0.5rem;
     }
   }
   .all-tags{
-    width: 92%;
+    padding: 0.4rem 1rem 1rem 1rem;
     background-color: #f5f4f4;
-    padding-left: 2rem;
-    padding-right: 2rem;
     flex: auto;
 
   }

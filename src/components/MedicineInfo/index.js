@@ -2,7 +2,7 @@ import Taro, {
   useState,
   useEffect,
 } from '@tarojs/taro'
-import { View, ScrollView } from '@tarojs/components'
+import { View } from '@tarojs/components'
 
 import './index.scss'
 import MedicineImage from "./MedicineImage"
@@ -12,21 +12,28 @@ import MoreItem from "./MoreItem"
 import MPDivider from "../MPDivider"
 import useDataApi from "../../hooks/useDataApi"
 import {MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE} from "../../constants"
-import {getDateString, calDateAfterAddDays, calDateDiffDays} from "../../utils"
+import {calDateAfterAddDays, calDateDiffDays, getDateString} from "../../utils"
 
 function MedicineInfo(props) {
 
-  // 设置 ScrollView wrapper 的初始高度，1000px 保证界面加载前后不抖动
-  const [scrollViewStyle, setScrollViewStyle] = useState({
-    height: '1000px'
-  })
   // basic 基本信息的高度，用于控制 ScrollView 滑动监听的距离
   const [infoBasicsHeight, setInfoBasicsHeight] = useState(0)
 
   // 控制子组件 banner 的显示与 ScrollView 的对应位置正确
   const [showingInfoType, setShowingInfoType] = useState('basic')
-  // 控制直接跳转至 ScrollView 的某个部分，直接使用 showingInfoType 会导致 ScrollView 内部跳动
-  const [scrollViewPartId, setScrollViewPartId] = useState('basic')
+
+  // 监听页面的 scrollTop，以实现随滑动自动变更 banner
+  useEffect(() => {
+    if (props.scrollTop <= infoBasicsHeight) {
+      if (showingInfoType !== 'basic') {
+        setShowingInfoType('basic')
+      }
+    } else {
+      if (showingInfoType !== 'more') {
+        setShowingInfoType('more')
+      }
+    }
+  }, [props.scrollTop])
 
   const basicItems = [
     {itemLabel: 'name', itemName: '药品名称', itemType: 'input', isRequired: true,},
@@ -57,9 +64,9 @@ function MedicineInfo(props) {
     tags: [],
   })
 
- useEffect(() => {
-   props.onCurMedicineChange(medicine)
- }, [medicine, props])
+  useEffect(() => {
+    props.onCurMedicineChange(medicine)
+  }, [medicine, props])
 
   const [{data: warehouseRequestedData, isLoading: warehouseLoading, statusCode: warehouseStatusCode}, warehouseRequest] = useDataApi({
     requestMethod: 'GET',
@@ -106,32 +113,14 @@ function MedicineInfo(props) {
   }, [props.routerParams])
 
   const initScreenHeight = () => {
-    // console.log('initScreenHeight')
-    Taro.createSelectorQuery()
-      .selectViewport()
-      .fields({
-        size: true
-      }, viewpointRes => {
-        Taro.createSelectorQuery()
-          .in(this.$scope)
-          .select('.image-and-banner')
-          .fields({
-            size: true,
-          }).exec(imageAndBannerRes => {
-          setScrollViewStyle({
-            height: `${viewpointRes.height - imageAndBannerRes[0].height}px`
-          })
-        })
-      }).exec()
-
     Taro.createSelectorQuery()
       .in(this.$scope)
       .select('.basics')
       .fields({
         size: true,
       }).exec(basicsRes => {
-        // + 5 是为了遮挡中间的分割线
-        setInfoBasicsHeight(basicsRes[0].height + 5)
+        // + 15 是为了遮挡中间的分割线
+        setInfoBasicsHeight(basicsRes[0].height + 15)
     })
   }
 
@@ -244,27 +233,6 @@ function MedicineInfo(props) {
     }
   }
 
-
-  const onScroll = (e) => {
-    // console.log(e.detail)
-    if (e.detail.scrollTop <= infoBasicsHeight) {
-      if (showingInfoType !== 'basic') {
-        console.log('basic')
-        setShowingInfoType('basic')
-      }
-    } else {
-      if (showingInfoType !== 'more') {
-        console.log('more')
-        setShowingInfoType('more')
-      }
-    }
-  }
-
-  const onShowingInfoTypeChange = (type) => {
-    setShowingInfoType(type)
-    setScrollViewPartId(type)
-  }
-
   // 新增时设置初始化的时间
   const setDefaultDateWhenAdd = () => {
     setMedicine(preMedicine => {
@@ -284,79 +252,69 @@ function MedicineInfo(props) {
         <Banner
           basicsHeight={infoBasicsHeight}
           showingInfoType={showingInfoType}
-          onShowingInfoTypeChange={onShowingInfoTypeChange}
         />
       </View>
 
-      <ScrollView
-        scrollY
-        scrollWithAnimation
-        style={scrollViewStyle}
-        onScroll={onScroll}
-        scrollIntoView={scrollViewPartId}
-      >
-        <View className='info'>
-          <View className='basics' id='basic'>
-            {
-              basicItems.map((item, index) => {
-                if (index === basicItems.length - 1) {
-                  return <BasicItem
-                    key={index}
+      <View className='info'>
+        <View className='basics' id='basic'>
+          {
+            basicItems.map((item, index) => {
+              if (index === basicItems.length - 1) {
+                return <BasicItem
+                  key={index}
+                  className='at-row'
+                  item={item}
+                  value={medicine[item.itemLabel]}
+                  onItemChange={MedicineItemChanged}
+                />
+              }
+              return (
+                <View key={index}>
+                  <BasicItem
                     className='at-row'
                     item={item}
                     value={medicine[item.itemLabel]}
                     onItemChange={MedicineItemChanged}
                   />
-                }
-                return (
-                  <View key={index} >
-                    <BasicItem
-                      className='at-row'
-                      item={item}
-                      value={medicine[item.itemLabel]}
-                      onItemChange={MedicineItemChanged}
-                    />
-                    <MPDivider />
-                  </View>
-                )
-              })
-            }
-            <MPDivider type='dark-gray' />
-          </View>
+                  <MPDivider />
+                </View>
+              )
+            })
+          }
+          <MPDivider type='dark-gray' />
+        </View>
 
-          <View className='mores' id='more'>
-            {
-              moreItems.map((item, index) => {
-                if (index === moreItems.length - 1) {
-                  return <MoreItem
-                    key={index}
+        <View className='mores' id='more'>
+          {
+            moreItems.map((item, index) => {
+              if (index === moreItems.length - 1) {
+                return <MoreItem
+                  key={index}
+                  className='at-row'
+                  item={item}
+                  value={medicine[item.itemLabel]}
+                  onItemChange={MedicineItemChanged}
+                />
+              }
+              return (
+                <View key={index}>
+                  <MoreItem
                     className='at-row'
                     item={item}
                     value={medicine[item.itemLabel]}
                     onItemChange={MedicineItemChanged}
                   />
-                }
-                return (
-                  <View key={index} >
-                    <MoreItem
-                      className='at-row'
-                      item={item}
-                      value={medicine[item.itemLabel]}
-                      onItemChange={MedicineItemChanged}
-                    />
-                    <MPDivider />
-                  </View>
-                )
-              })
-            }
-          </View>
+                  <MPDivider />
+                </View>
+              )
+            })
+          }
         </View>
+      </View>
 
-        <View className='operation'>
-          {props.children}
-        </View>
-      </ScrollView>
-
+      <View className='operation'>
+        {props.children}
+      </View>
     </View>
   )
 }

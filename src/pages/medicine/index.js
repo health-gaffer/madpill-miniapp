@@ -1,5 +1,6 @@
 import Taro, {
   useEffect,
+  usePageScroll,
   useRouter,
   useState,
 } from '@tarojs/taro'
@@ -14,6 +15,12 @@ import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from "../../constants"
 function Medicine() {
 
   const curRouter = useRouter()
+  const [curScrollTop, setCurScrollTop] = new useState(0)
+
+  usePageScroll(res => {
+    setCurScrollTop(res.scrollTop)
+  })
+
 
   // TODO 由子组件 MedicineInfo 中的 medicine 管理，但因为 taro 目前不支持 useImperativeHandle + forwardRef，所以先冗余保存
   const [curMedicine, setCurMedicine] = useState({})
@@ -181,7 +188,11 @@ function Medicine() {
   return (
     <View>
       <AtMessage />
-      <MedicineInfo routerParams={curRouter.params} onCurMedicineChange={curMedicineChange}>
+      <MedicineInfo
+        scrollTop={curScrollTop}
+        routerParams={curRouter.params}
+        onCurMedicineChange={curMedicineChange}
+      >
         <View className='action at-row at-row__justify--center'>
           <View className='at-col-8'>
             {

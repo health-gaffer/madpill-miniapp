@@ -8,13 +8,18 @@ function Banner(props) {
   const {showingInfoType} = props
 
   const basicBannerClicked = () => {
-    // console.log('basicBannerClicked')
-    props.onShowingInfoTypeChange('basic')
+    console.log('basicBannerClicked')
+    Taro.pageScrollTo({
+      scrollTop: 0
+    })
   }
 
   const moreBannerClicked = () => {
-    // console.log('moreBannerClicked')
-    props.onShowingInfoTypeChange('more')
+    console.log('moreBannerClicked')
+    Taro.pageScrollTo({
+      // + 5 是为了完全滑到更多信息处
+      scrollTop: props.basicsHeight + 5
+    })
   }
 
   return (

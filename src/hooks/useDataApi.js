@@ -67,6 +67,7 @@ const useDataApi = ({
       resultDispatch({
         type: 'REQUEST_INIT'
       });
+      console.log(request.data)
       Taro.request({
         url: `${HOST}/${request.url}`,
         method: request.method,

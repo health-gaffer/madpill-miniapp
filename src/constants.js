@@ -33,3 +33,5 @@ export const MADPILL_RESPONSE_CODE ={
   OK: 200,
 
 }
+export const LOGIN_STORAGE_KEY = "code"
+

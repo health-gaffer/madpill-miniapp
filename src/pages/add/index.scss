@@ -1,48 +1,61 @@
 @import "src/custom-variables";
+.container{
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  .top{
+    flex:1;
+    .tip {
+      margin-top: 200px;
+      margin-bottom: 150px;
 
-.tip {
-  margin-top: 200px;
-  margin-bottom: 150px;
+      .at-article__h3 {
+        color: $tip;
+      }
+    }
 
-  .at-article__h3 {
-    color: $tip;
+    .search {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .searched {
+      margin-top: 30px;
+      padding-left: 10px;
+      padding-right: 10px;
+      animation: search-animation 300ms ease;
+    }
+
+    @keyframes search-animation {
+      0% {
+        margin-top: 350px;
+      }
+      100% {
+        margin-top: 30px;
+      }
+    }
+
+    .search-result {
+      margin-top: 10px;
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+
   }
-}
 
-.search {
-  padding-left: 10px;
-  padding-right: 10px;
-}
+  .manually-view{
+    margin-bottom: $iphone-x-indicator-height;
+    //background-color: red;
 
-.searched {
-  margin-top: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
-  animation: search-animation 300ms ease;
-}
+    .manually-input {
 
-@keyframes search-animation {
-  0% {
-    margin-top: 350px;
-  }
-  100% {
-    margin-top: 30px;
-  }
-}
-
-.search-result {
-  margin-top: 10px;
-  padding-left: 50px;
-  padding-right: 50px;
-}
-
-.manually-input {
-  margin-bottom: $iphone-x-indicator-height;
-  position: sticky;
-
-  .manual-btn.at-button {
-    color: $plain-color;
-    background: $plain-background;
-    border: $plain-background;
+      .manual-btn.at-button {
+        color: $plain-color;
+        background: $plain-background;
+        border: $plain-background;
+      }
+    }
   }
 }

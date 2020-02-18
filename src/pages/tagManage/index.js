@@ -33,9 +33,9 @@ export default class TagPage extends Component {
       success: (token) =>{
         let requestHeader = {}
         requestHeader['madpill-token'] = token
-        console.log(HOST + '/tags/user' + token)
+        console.log(HOST + '/tags' + token)
         Taro.request({
-          url: HOST + `/tags/user`,
+          url: HOST + `/tags`,
           method: 'GET',
           header: requestHeader,
           success: result => {
@@ -119,7 +119,7 @@ export default class TagPage extends Component {
           Taro.request({
             url: HOST + '/tags',
             header: requestHeader,
-            method: 'PUT',
+            method: 'POST',
             data: value,
             success: result => {
               value['id'] = result.data.data

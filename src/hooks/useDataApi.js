@@ -1,6 +1,7 @@
 import Taro, {useEffect, useReducer, useState,} from '@tarojs/taro'
 
-import {HOST, MADPILL_RESPONSE_CODE} from "../constants";
+import {HEADER_MADPILL_TOKEN_KEY, HOST, MADPILL_RESPONSE_CODE} from "../constants"
+import {getToken} from "../utils/login"
 
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
@@ -68,32 +69,42 @@ const useDataApi = ({
         type: 'REQUEST_INIT'
       });
       console.log(request.data)
-      Taro.request({
-        url: `${HOST}/${request.url}`,
-        method: request.method,
-        data: request.data,
-        success: result => {
-          console.log('success')
-          console.log(result)
-          const madpillResult = result.data
-          if (!didCancel && result.statusCode === 200 && madpillResult.code === MADPILL_RESPONSE_CODE.OK) {
-            resultDispatch({
-              type: 'REQUEST_SUCCESS',
-              payload: madpillResult.data
-            });
-          } else {
-            resultDispatch({
-              type: 'REQUEST_FAILURE',
-              errorCode: madpillResult.code ? madpillResult.code : madpillResult.status
-            });
-          }
-        },
-        fail: error => {
-          console.log('fail')
-          console.log(error)
-          if (!didCancel) {
-            resultDispatch({type: 'REQUEST_FAILURE', errorCode: 400});
-          }
+
+      getToken({
+        success: token => {
+          let requestHeader = {}
+          requestHeader[HEADER_MADPILL_TOKEN_KEY] = token
+          console.log(requestHeader)
+
+            Taro.request({
+            url: `${HOST}/${request.url}`,
+            method: request.method,
+            header: requestHeader,
+            data: request.data,
+            success: result => {
+              console.log('success')
+              console.log(result)
+              const madpillResult = result.data
+              if (!didCancel && result.statusCode === 200 && madpillResult.code === MADPILL_RESPONSE_CODE.OK) {
+                resultDispatch({
+                  type: 'REQUEST_SUCCESS',
+                  payload: madpillResult.data
+                });
+              } else {
+                resultDispatch({
+                  type: 'REQUEST_FAILURE',
+                  errorCode: madpillResult.code ? madpillResult.code : madpillResult.status
+                });
+              }
+            },
+            fail: error => {
+              console.log('fail')
+              console.log(error)
+              if (!didCancel) {
+                resultDispatch({type: 'REQUEST_FAILURE', errorCode: 400});
+              }
+            }
+          })
         }
       })
     }

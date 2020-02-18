@@ -5,6 +5,8 @@ import {AtButton} from "taro-ui"
 import './index.scss'
 import TagItem from '../../components/MedicineTag'
 import TagInput from '../../components/MedicineTag/TagInput'
+import {getToken} from "../../utils/login"
+import { HOST, MADPILL_RESPONSE_CODE} from "../../constants"
 
 import {set} from '../../global'
 
@@ -27,18 +29,30 @@ export default class TagPage extends Component {
   }
 
   componentWillMount() {
-    //todo userID 获取
-    Taro.request({
-      url: `http://localhost:8081/tags/user?userId=10086`,
-      method: 'GET',
-      success: result => {
-        this.setState({allTags: result.data.data})
+    getToken({
+      success: (token) =>{
+        let requestHeader = {}
+        requestHeader['madpill-token'] = token
+        console.log(HOST + '/tags/user' + token)
+        Taro.request({
+          url: HOST + `/tags/user`,
+          method: 'GET',
+          header: requestHeader,
+          success: result => {
+            this.setState({allTags: result.data.data})
+          },
+          fail: error => {
+            console.log('fail')
+            console.log(error)
+          }
+        })
       },
-      fail: error => {
-        console.log('fail')
-        console.log(error)
+      fail: (err) => {
+        console.log(err)
       }
     })
+
+
 
     const name = "双黄连口服液"
     const tags = JSON.parse(this.$router.params.tags)
@@ -87,7 +101,7 @@ export default class TagPage extends Component {
   }
 
   addNewTag(value) {
-    value['userId'] = 1
+
     //todo get userId
     const {tags, allTags} = this.state
     const index1 = this.indexOfTag(allTags, value.name)
@@ -97,25 +111,38 @@ export default class TagPage extends Component {
         tags.push(allTags[index1])
       }
     } else {
-      Taro.request({
-        url: 'http://localhost:8081/tags',
-        method: 'PUT',
-        data: value,
-        success: result => {
-          value['id'] = result.data.data
-          allTags.push(value);
-          tags.push(value)
-          console.log(value)
-          this.setState({
-            tags: tags,
-            allTags: allTags
+      getToken({
+        success: (token) =>{
+          let requestHeader = {}
+          requestHeader['madpill-token'] = token
+          console.log(token)
+          Taro.request({
+            url: HOST + '/tags',
+            header: requestHeader,
+            method: 'PUT',
+            data: value,
+            success: result => {
+              value['id'] = result.data.data
+
+              allTags.push(value);
+              tags.push(value)
+              console.log(value)
+              this.setState({
+                tags: tags,
+                allTags: allTags
+              })
+            },
+            fail: error => {
+              console.log('fail')
+              console.log(error)
+            }
           })
         },
-        fail: error => {
-          console.log('fail')
-          console.log(error)
+        fail: (err) => {
+          console.log(err)
         }
       })
+
     }
     this.setState({
       tags: tags,
@@ -149,7 +176,7 @@ export default class TagPage extends Component {
     const {tags, allTags} = this.state
     console.log(tag)
     Taro.request({
-      url: `http://localhost:8081/tags/` + tag.id,
+      url: HOST+ `/tags/` + tag.id,
       method: 'DELETE',
       success: result => {
         if (this.indexOfTag(allTags, tag.name) >= 0) {

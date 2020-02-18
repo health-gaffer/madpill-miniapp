@@ -71,8 +71,18 @@
 
   .search-area {
     flex: 0.05;
-    background-color: #ddd;
-    border-radius: 0.2rem;
+    // border: 1px solid #FB9828;
+    // border-radius: 0.2rem;
+
+    .search-input {
+      background-color: #eee;
+      line-height: 1.5;
+      height: 100%;
+      padding: 0 0.8rem;
+      border-radius: 0.3rem;
+      font-size: 0.9rem;
+    }
+
   }
 
   .drug-list-area {

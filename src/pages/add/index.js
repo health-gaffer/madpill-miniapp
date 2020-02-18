@@ -1,7 +1,7 @@
 import Taro ,{
   useState
 } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import {ScrollView, View} from '@tarojs/components'
 import { AtButton } from "taro-ui"
 
 import './index.scss'
@@ -35,7 +35,7 @@ function Add() {
 
   return (
     <View className='container'>
-      <View className='top'>
+
         {/* 输入的提示信息 */}
         <View>
           {
@@ -68,6 +68,7 @@ function Add() {
           <MPDivider type='dark-gray' />
         </View>
 
+      <View className='result-view'>
         {/* 搜索结果*/}
         <View>
         {

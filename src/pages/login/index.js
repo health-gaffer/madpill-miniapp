@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
-import { AtAvatar } from 'taro-ui'
+import { View, Text, Button, Input } from '@tarojs/components'
+import { AtAvatar, AtSearchBar } from 'taro-ui'
 
 import './index.scss'
 import addIcon from '../../assets/icons/add.png'
@@ -18,7 +18,8 @@ export default class Login extends Component {
   constructor() {
     super()
     this.state = {
-      loggedIn: false
+      loggedIn: false,
+      keyword: ''
     }
   }
 
@@ -81,6 +82,14 @@ export default class Login extends Component {
     }
   }
 
+  handleSearch = (e) => {
+    this.setState({
+      keyword: e.detail.value
+    }, () => {
+      console.log('keyword:', this.state.keyword)
+    })
+  }
+
   render () {
     return (
       <View className="login">
@@ -111,9 +120,13 @@ export default class Login extends Component {
         :
           null
         }
-
         <View className="search-area">
-
+          <Input
+            className="search-input"
+            value={this.state.keyword}
+            placeholder="搜索"
+            onInput={this.handleSearch}
+            ></Input>
         </View>
         <View className="drug-list-area">
 

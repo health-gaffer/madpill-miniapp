@@ -1,4 +1,4 @@
-import {Component} from '@tarojs/taro';
+import Taro, {Component} from '@tarojs/taro';
 import {Text, View} from '@tarojs/components';
 import {AtSwipeAction} from 'taro-ui';
 import './index.scss';
@@ -11,6 +11,14 @@ export default class MedicineItem extends Component {
       tags : []
     },
   }
+
+  handleReview = () => {
+    console.log('查看详情: ' + this.props.medicine.id);
+    Taro.navigateTo({
+      url: `/pages/medicine/index?action=review&medicineId=${this.props.medicine.id}`
+    })
+  }
+
   render() {
     const tags = this.props.medicine.tags;
     // 取前 3 个 items
@@ -23,7 +31,7 @@ export default class MedicineItem extends Component {
     });
     const ellipses = (tags.length > 3 && <View className='tag tag-ellipse'>···</View>);
     return (
-      <View className='medicine-item'>
+      <View onClick={this.handleReview} className='medicine-item'>
         <AtSwipeAction
           onClick={this.props.onDelete}
           options={[

@@ -33,7 +33,7 @@
         letter-spacing: 0;
         //vertical-align: top;
         text-align: left;
-        overflow-x: hidden;
+        overflow: hidden;
         text-overflow: ellipsis;
       }
 
@@ -44,7 +44,7 @@
         letter-spacing: 0;
         //vertical-align: center;
         text-align: right;
-        overflow-x: hidden;
+        overflow: hidden;
         text-overflow: ellipsis;
       }
 
@@ -84,7 +84,7 @@
           // border
           border: 1px solid rgba(0, 0, 0, 0.52);
           border-radius: $font-size-middle;
-          overflow-x: hidden;
+          overflow: hidden;
           text-overflow: ellipsis;
         }
 

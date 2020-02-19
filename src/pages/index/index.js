@@ -24,6 +24,13 @@ export default class HomePage extends Component {
     };
   }
 
+  // 搜索框内容改变
+  handleSearch(e) {
+    this.setState({
+      keyword: e.detail.value
+    })
+  };
+
   componentDidMount() {
     this.checkLoginStatus();
     // getToken({
@@ -70,6 +77,9 @@ export default class HomePage extends Component {
 
   handleAddDrug = () => {
     console.log('I will add a new drug.');
+    Taro.navigateTo({
+      url: '/pages/add/index'
+    })
   };
 
   handleGetUserInfo = (e) => {
@@ -81,14 +91,6 @@ export default class HomePage extends Component {
         userInfo: userInfo
       });
     }
-  };
-
-  handleSearch = (e) => {
-    this.setState({
-      keyword: e.detail.value
-    }, () => {
-      console.log('keyword:', this.state.keyword);
-    });
   };
 
   render() {
@@ -129,11 +131,11 @@ export default class HomePage extends Component {
               className='search-input'
               value={this.state.keyword}
               placeholder='搜索'
-              onInput={this.handleSearch}
+              onInput={this.handleSearch.bind(this)}
             />
           </View>
         </View>
-        {this.state.loggedIn && <MedicineList />}
+        {this.state.loggedIn && <MedicineList keyword={this.state.keyword} />}
       </View>
     );
   }

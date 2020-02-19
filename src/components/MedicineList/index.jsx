@@ -1,14 +1,20 @@
-import {Component} from '@tarojs/taro';
+import Taro, {Component} from '@tarojs/taro';
 import {View} from '@tarojs/components';
 import MedicineItem from './MedicineItem';
 import './index.scss';
+import {getToken} from '../../utils/login';
+import {HEADER_MADPILL_TOKEN_KEY, HOST} from '../../constants';
 
 export default class MedicineList extends Component {
+
+  static defaultProps = {
+    keyword: ''
+  }
 
   constructor(props) {
     super(props);
     this.state = {
-      medicines : {
+      medicines: {
         expired: [],
         expiring: [],
         notExpired: []
@@ -17,12 +23,36 @@ export default class MedicineList extends Component {
   }
 
   componentDidMount() {
-    // todo 通过 token 获取数据
+    // getToken({
+    //   success: (token) => {
+    //     let requestHeader = {};
+    //     requestHeader[HEADER_MADPILL_TOKEN_KEY] = token;
+    //     Taro.request({
+    //       url: HOST + '/drugs',
+    //       method: 'GET',
+    //       header: requestHeader,
+    //       success: res => {
+    //         this.setState({
+    //           medicines: res.data.data
+    //         }, () => {
+    //           console.log(medicines);
+    //         });
+    //       },
+    //       fail: error => {
+    //         console.log('fail');
+    //         console.log(error);
+    //       }
+    //     });
+    //   },
+    //   fail: (err) => {
+    //     console.log(err);
+    //   }
+    // });
     const medicines = {
       expired: [
         // 已过期
         {
-          id: 1,
+          id: 100000005,
           name: '奥硝唑片',
           manufacture: '潇然',
           day: '10',
@@ -47,7 +77,7 @@ export default class MedicineList extends Component {
       ],
       expiring: [
         {
-          id: 2,
+          id: 100000006,
           name: '奥硝唑片',
           manufacture: '潇然',
           day: '20',
@@ -72,7 +102,7 @@ export default class MedicineList extends Component {
       ],
       notExpired: [
         {
-          id: 3,
+          id: 105,
           name: '很长很长的很长很长很长的药名',
           manufacture: '很长很长很长很长的厂商名',
           tags: [
@@ -99,7 +129,7 @@ export default class MedicineList extends Component {
           ]
         },
         {
-          id: 4,
+          id: 106,
           name: '两个标签',
           manufacture: '很长很长很长很长的厂商名',
           tags: [
@@ -123,12 +153,15 @@ export default class MedicineList extends Component {
   // 删除药品
   handleDelete(drugId) {
     console.log('被删除药品 id 为' + drugId);
+    // for test
     const expired = this.state.medicines.expired.slice().filter(medicine => medicine.id !== drugId);
     const expiring = this.state.medicines.expiring.slice().filter(medicine => medicine.id !== drugId);
     const notExpired = this.state.medicines.notExpired.slice().filter(medicine => medicine.id !== drugId);
     const medicines = {expired: expired, expiring: expiring, notExpired: notExpired};
     this.setState({medicines: medicines});
-    // todo
+
+    // connect server
+
     // getToken({
     //   success: (token) => {
     //     let requestHeader = {};
@@ -137,9 +170,11 @@ export default class MedicineList extends Component {
     //       url: HOST + '/drugs/' + drugId,
     //       method: 'DELETE',
     //       header: requestHeader,
-    //       success: result => {
-    //         // todo 重新渲染从列表中删除
-    //         let medicines = this.state.medicines.slice();
+    //       success: () => {
+    //         const expired = this.state.medicines.expired.slice().filter(medicine => medicine.id !== drugId);
+    //         const expiring = this.state.medicines.expiring.slice().filter(medicine => medicine.id !== drugId);
+    //         const notExpired = this.state.medicines.notExpired.slice().filter(medicine => medicine.id !== drugId);
+    //         const medicines = {expired: expired, expiring: expiring, notExpired: notExpired};
     //         this.setState({medicines: medicines});
     //       },
     //       fail: error => {
@@ -155,23 +190,29 @@ export default class MedicineList extends Component {
   }
 
   render() {
-    console.log('render');
-    const medicines = this.state.medicines;
-    console.log(medicines);
-    const expiredMedicines = medicines.expired.map(medicine => {
+    const keyword = this.props.keyword.trim();
+    console.log(keyword)
+    let selectedMedicines = this.state.medicines;
+    console.log(selectedMedicines)
+    if (keyword !== '') {
+      selectedMedicines['expired'] = selectedMedicines.expired.filter(m => m.name.indexOf(keyword) > 0 || m.tags.some(tag => tag.name.indexOf(keyword) > 0))
+      selectedMedicines['expiring'] = selectedMedicines.expiring.filter(m => m.name.indexOf(keyword) > 0 || m.tags.some(tag => tag.name.indexOf(keyword) > 0))
+      selectedMedicines['notExpired'] = selectedMedicines.notExpired.filter(m => m.name.indexOf(keyword) > 0 || m.tags.some(tag => tag.name.indexOf(keyword) > 0))
+    }
+    const expiredMedicines = selectedMedicines.expired.map(medicine => {
       return (
         <MedicineItem key={String(medicine.id)} medicine={medicine} status='expired'
           onDelete={() => this.handleDelete(medicine.id)}
         />
       );
     });
-    const expiringMedicines = medicines.expiring.map(medicine => {
+    const expiringMedicines = selectedMedicines.expiring.map(medicine => {
       return (
         <MedicineItem key={String(medicine.id)} medicine={medicine} status='expiring'
           onDelete={() => this.handleDelete(medicine.id)}
         />);
     });
-    const notExpiredMedicines = medicines.notExpired.map(medicine => {
+    const notExpiredMedicines = selectedMedicines.notExpired.map(medicine => {
       return (
         <MedicineItem key={String(medicine.id)} medicine={medicine} status='notExpired'
           onDelete={() => this.handleDelete(medicine.id)}
@@ -180,15 +221,15 @@ export default class MedicineList extends Component {
     return (
       <View className='medicine-list'>
         <View className='at-row at-row__align--center desc-wrapper'>
-          <View className='at-col desc-text'>已过期</View>
+          {selectedMedicines.expired.length > 0 && <Text className='at-col desc-text'>已过期</Text>}
         </View>
         {expiredMedicines}
         <View className='at-row at-row__align--center desc-wrapper'>
-          <Text className='at-col desc-text'>即将过期</Text>
+          {selectedMedicines.expiring.length > 0 && <Text className='at-col desc-text'>即将过期</Text>}
         </View>
         {expiringMedicines}
         <View className='at-row at-row__align--center desc-wrapper'>
-          <Text className='at-col desc-text'>未过期</Text>
+          {selectedMedicines.notExpired.length > 0 && <Text className='at-col desc-text'>未过期</Text>}
         </View>
         {notExpiredMedicines}
       </View>

@@ -1,12 +1,11 @@
-import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import { AtDivider }  from 'taro-ui'
+import {View} from '@tarojs/components';
+import {AtDivider} from 'taro-ui';
 
 function MPDivider(props) {
 
   const {height = '40', padding = '0px', type = 'light-gray'} = props;
   return (
-    <View style={{paddingLeft: padding, paddingRight: padding}}>
+    <View style={{padding: padding}}>
       <View className='at-row'>
         {
           type === 'light-gray' &&
@@ -19,7 +18,7 @@ function MPDivider(props) {
         }
       </View>
     </View>
-  )
+  );
 }
 
-export default MPDivider
+export default MPDivider;

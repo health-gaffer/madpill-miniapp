@@ -1,0 +1,94 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+
+.medicine-item {
+  border-style: none;
+  height: 100px;
+  .medicine-info {
+    width: 750px;
+    height: 98px;
+
+    .pill-img-wrapper {
+      padding-left: 40px;
+      vertical-align: center;
+      align-content: center;
+
+      .pill-img {
+        height: 80px;
+        width: 80px;
+      }
+    }
+
+    .pill-info-wrapper {
+      margin-left: 20px;
+      margin-right: 10px;
+
+      .medicine-name {
+        line-height: 40px;
+        font-family: PingFangSC-Regular;
+        font-size: 40px;
+        color: rgba(0, 0, 0, 0.90);
+        letter-spacing: 0;
+        vertical-align: top;
+        text-align: left;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .manufacture {
+        font-family: PingFangSC-Semibold;
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.90);
+        letter-spacing: 0;
+        vertical-align: center;
+        text-align: right;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tags-wrapper {
+        margin-top: 16px;
+
+        .pill-tags-wrapper {
+          opacity: 0.3;
+          height: 39.2px;
+          text-align: center;
+          vertical-align: middle;
+          // 除了第一个标签
+          :not(:first-child) {
+            margin-left: 16px;
+          }
+        }
+
+        .tag {
+          padding: 0 16px;
+          // text
+          font-family: PingFangSC-Regular;
+          font-size: 28px;
+          color: #000000;
+          letter-spacing: 0;
+          line-height: 39.2px;
+          // border
+          border: 1px solid rgba(0, 0, 0, 0.52);
+          border-radius: 20.6px;
+          overflow-x: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .expire-info-tag {
+          opacity: 1;
+          border-style: none;
+          color: #fff;
+          border-radius: 19.6px;
+        }
+
+        .expired-tag {
+          background: #FA5151;
+        }
+
+        .expiring-tag {
+          background: #FFC300;
+        }
+      }
+    }
+  }
+}

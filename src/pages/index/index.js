@@ -1,56 +1,140 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import Taro, {Component} from '@tarojs/taro';
+import {Button, Input, Text, View} from '@tarojs/components';
+import {AtAvatar} from 'taro-ui';
 
-import './index.scss'
-import {get} from "../../global"
+import './index.scss';
+import addIcon from '../../assets/icons/add.png';
+import {getToken} from '../../utils/login';
+import MedicineList from '../../components/MedicineList';
 
-export default class Index extends Component {
-  //TODO 删除药品后回到主页面如何比较好地进行提示
-  constructor() {
-    super()
-    this.state = {
-      tags:[{id:1,name:'头疼'},{id:2,name:'咳嗽'}],
-      data:1
-    }
-  }
-
-  componentDidShow() {
-    console.log(get("tags"))
-  }
+export default class HomePage extends Component {
 
   config = {
+    navigationBarTitleText: 'Mad Pill',
     enablePullDownRefresh: true,
+    backgroundTextStyle: 'dark'
+  };
+
+  constructor() {
+    super();
+    this.state = {
+      loggedIn: false,
+      keyword: ''
+    };
+  }
+
+  componentDidMount() {
+    this.checkLoginStatus();
+    getToken({
+      success: (token) => {
+        console.log(token);
+      },
+      fail: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   onPullDownRefresh() {
-    this.init()
-  }
-  routeToTag = () => {
-    Taro.navigateTo({
-      url: '/pages/tagManage/index?tags='+ JSON.stringify(this.state.tags)
-    })
+    this.checkLoginStatus();
+    Taro.stopPullDownRefresh();
   }
 
-  routeToAdd = () => {
-    Taro.navigateTo({
-      url: '/pages/add/index'
-    })
-  }
+  checkLoginStatus = () => {
+    Taro.getSetting({
+      success: res => {
+        if (res.authSetting['scope.userInfo']) {
+          this.setState({
+            loggedIn: true
+          }, () => {
+            Taro.getUserInfo({
+              success: res => {
+                console.log(res);
+                this.setState({
+                  userInfo: res.userInfo
+                });
+              },
+              fail: err => {
+                console.error(err);
+                this.setState({
+                  loggedIn: false
+                });
+              }
+            });
+          });
+        }
+      }
+    });
+  };
 
-  routeToDetail = () => {
-    Taro.navigateTo({
-      url: '/pages/medicine/index?action=review&medicineId=100000004'
-    })
-  }
+  handleAddDrug = () => {
+    console.log('I will add a new drug.');
+  };
 
-  render () {
+  handleGetUserInfo = (e) => {
+    if (e.detail.rawData) {
+      const userInfo = JSON.parse(e.detail.rawData);
+      console.log(userInfo);
+      this.setState({
+        loggedIn: true,
+        userInfo: userInfo
+      });
+    }
+  };
+
+  handleSearch = (e) => {
+    this.setState({
+      keyword: e.detail.value
+    }, () => {
+      console.log('keyword:', this.state.keyword);
+    });
+  };
+
+  render() {
+    console.log('render index')
     return (
-      <View className='index'>
-        <Button type='primary' onClick={this.routeToAdd}>添加药品</Button>
-        <Button type='plain' onClick={this.routeToDetail}>查看详情</Button>
-        <Button type='primary' onClick={this.routeToTag}>管理药品</Button>
-        <Button type='primary' onClick={this.routeToTag}>标签管理</Button>
+      <View>
+        <View className='login'>
+          <View className='top-area'>
+            <View className='top-left-area'>
+              <AtAvatar className='avatar' circle size='small'
+                image={this.state.loggedIn ? (this.state.userInfo ? this.state.userInfo.avatarUrl : 'https://jdc.jd.com/img/200') : 'https://jdc.jd.com/img/200'}
+              />
+              <Text className='title'>我的药箱</Text>
+            </View>
+            <View className='top-right-area'>
+              <Image
+                className='add-drug-icon'
+                src={addIcon}
+                mode='aspectFit'
+                onClick={this.handleAddDrug}
+              />
+            </View>
+          </View>
+          {!this.state.loggedIn ?
+            <View className='login-area'>
+              体验更完整的功能，请先
+              <Button
+                className='login-button'
+                size='mini'
+                openType='getUserInfo'
+                onGetUserInfo={this.handleGetUserInfo}
+              >登录</Button>
+            </View>
+            :
+            null
+          }
+          <View className='search-area'>
+            <Input
+              className='search-input'
+              value={this.state.keyword}
+              placeholder='搜索'
+              onInput={this.handleSearch}
+            />
+          </View>
+        </View>
+        {this.state.loggedIn && <MedicineList />}
       </View>
-    )
+    );
   }
 }

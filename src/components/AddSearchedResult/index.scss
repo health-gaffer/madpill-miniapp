@@ -1,0 +1,17 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+@import "src/custom-variables";
+@import "src/assets/iconfont/iconfont";
+
+.more {
+  margin-bottom: 20px;
+  font-size: small;
+
+  .at-article__h3 {
+    color: $tip;
+  }
+
+  .icon-more {
+    color: $tip;
+    font-size: small;
+  }
+}

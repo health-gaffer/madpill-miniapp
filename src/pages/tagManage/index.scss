@@ -1,0 +1,93 @@
+.panel{
+  width: 100%;
+  display: flex;
+
+  flex-direction: column;
+  height: 100vh;
+  font-size: 1rem;
+  //border-top: 1px solid rgba(230, 230, 230, 0.7);
+  //background-color: #0e2c6a;
+  .cur-tags{
+    padding: 0.4rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    .at-input.tag-input{
+      width:5rem;
+      border: 1px dashed red;
+      font-size: 1rem;
+      height: 0.9rem;
+      margin-top: 0.5rem;
+      margin-left: 0rem;
+      padding-top: 0.2rem;
+      padding-left: 0.8rem;
+      border-radius: 1rem;
+    }
+  }
+  .title{
+    padding: 0.8rem 1rem 0rem 1rem;
+    background-color: #f5f4f4;
+    color: #818181;
+    height: 1.3rem;
+    //display: flex;
+    //flex-direction: row;
+    .at-button{
+      display: inline-block;
+      //position: absolute;
+      float: right;
+      border: none;
+      background-color: #f5f4f4;
+      margin-top: -0.5rem;
+    }
+  }
+  .all-tags{
+    padding: 0.4rem 1rem 1rem 1rem;
+    background-color: #f5f4f4;
+    flex: auto;
+
+  }
+  .badge.at-button{
+    position: absolute;
+    right: 0.1rem;
+    top: 0.1rem;
+    border: none;
+    overflow: hidden;
+    background: #ff4949;
+    &--small {
+      padding: 0 10px;
+      width: 1rem;
+      min-width: 1rem;
+      max-width: 1rem;
+      height: 1rem;
+      font-size: 0.4rem;
+      line-height: 1rem;
+      color: white;
+      &.at-button--circle {
+        border-radius: 0.5rem;
+      }
+    }
+  }
+
+  .my-tag.at-tag{
+    margin-top: 0.5rem;
+    margin-right: 0.4rem;
+
+    font-size: 1rem;
+    border: none;
+    &--primary {
+      color: #757474;
+      background-color: #dcdbdb;
+    }
+    &--active {
+      color: #fb9828;
+      background-color: #ffecd7;
+
+    }
+  }
+  .load-panel {
+    margin: 0.5rem auto;
+    position: absolute;
+    text-align: center;
+  }
+}

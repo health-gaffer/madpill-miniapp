@@ -192,12 +192,12 @@ export default class MedicineList extends Component {
   render() {
     const keyword = this.props.keyword.trim();
     console.log(keyword)
-    let selectedMedicines = this.state.medicines;
+    let selectedMedicines = Object.assign({}, this.state.medicines);
     console.log(selectedMedicines)
     if (keyword !== '') {
-      selectedMedicines['expired'] = selectedMedicines.expired.filter(m => m.name.indexOf(keyword) > 0 || m.tags.some(tag => tag.name.indexOf(keyword) > 0))
-      selectedMedicines['expiring'] = selectedMedicines.expiring.filter(m => m.name.indexOf(keyword) > 0 || m.tags.some(tag => tag.name.indexOf(keyword) > 0))
-      selectedMedicines['notExpired'] = selectedMedicines.notExpired.filter(m => m.name.indexOf(keyword) > 0 || m.tags.some(tag => tag.name.indexOf(keyword) > 0))
+      selectedMedicines['expired'] = selectedMedicines.expired.filter(m => m.name.indexOf(keyword) >= 0 || m.tags.some(tag => tag.name.indexOf(keyword) >= 0))
+      selectedMedicines['expiring'] = selectedMedicines.expiring.filter(m => m.name.indexOf(keyword) >= 0 || m.tags.some(tag => tag.name.indexOf(keyword) >= 0))
+      selectedMedicines['notExpired'] = selectedMedicines.notExpired.filter(m => m.name.indexOf(keyword) >= 0 || m.tags.some(tag => tag.name.indexOf(keyword) >= 0))
     }
     const expiredMedicines = selectedMedicines.expired.map(medicine => {
       return (

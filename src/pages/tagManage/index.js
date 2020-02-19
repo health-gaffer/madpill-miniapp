@@ -1,6 +1,6 @@
 import Taro, {Component} from '@tarojs/taro'
 import {Text, View} from '@tarojs/components'
-import {AtButton} from "taro-ui"
+import {AtButton,AtActivityIndicator} from "taro-ui"
 
 import './index.scss'
 import TagItem from '../../components/MedicineTag'
@@ -24,6 +24,7 @@ export default class TagPage extends Component {
     this.state = {
       name: '',
       tags: [],
+      isLoading : true,
       allTags: []
     }
   }
@@ -39,7 +40,10 @@ export default class TagPage extends Component {
           method: 'GET',
           header: requestHeader,
           success: result => {
-            this.setState({allTags: result.data.data})
+            this.setState({
+              allTags: result.data.data,
+              isLoading:true
+            })
           },
           fail: error => {
             console.log('fail')
@@ -231,6 +235,11 @@ export default class TagPage extends Component {
           }
         </View>
         <View className='all-tags'>
+          {this.state.isLoading ?
+            <View className='load-panel'>
+              <AtActivityIndicator content='加载中...'></AtActivityIndicator>
+            </View>: <View/>
+          }
           <View className='all-tag-manage'>
             {allTags.map((tag) => {
               return <TagItem
@@ -246,6 +255,7 @@ export default class TagPage extends Component {
             })}
           </View>
         </View>
+
       </View>
     )
   }

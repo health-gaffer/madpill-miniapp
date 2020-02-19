@@ -6,7 +6,11 @@ import MPDivider from '../../MPDivider';
 import defaultPill from '../../../assets/images/pill-5.png';
 
 export default class MedicineItem extends Component {
-
+  static defaultProps = {
+    medicine : {
+      tags : []
+    },
+  }
   render() {
     const tags = this.props.medicine.tags;
     // 取前 3 个 items

@@ -7,6 +7,13 @@ export default class MedicineList extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      medicines : {
+        expired: [],
+        expiring: [],
+        notExpired: []
+      }
+    };
   }
 
   componentDidMount() {
@@ -187,8 +194,4 @@ export default class MedicineList extends Component {
       </View>
     );
   }
-}
-
-MedicineList.defaultProps = {
-  medicines: {}
 }

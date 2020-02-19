@@ -19,20 +19,21 @@ export default class HomePage extends Component {
     super();
     this.state = {
       loggedIn: false,
+      userInfo:'',
       keyword: ''
     };
   }
 
   componentDidMount() {
     this.checkLoginStatus();
-    getToken({
-      success: (token) => {
-        console.log(token);
-      },
-      fail: (err) => {
-        console.log(err);
-      }
-    });
+    // getToken({
+    //   success: (token) => {
+    //     console.log(token);
+    //   },
+    //   fail: (err) => {
+    //     console.log(err);
+    //   }
+    // });
   }
 
   onPullDownRefresh() {
@@ -91,7 +92,6 @@ export default class HomePage extends Component {
   };
 
   render() {
-    console.log('render index')
     return (
       <View>
         <View className='login'>

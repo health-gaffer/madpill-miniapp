@@ -8,7 +8,7 @@ const config = {
     '828': 1.81 / 2
   },
   sourceRoot: 'src',
-  outputRoot: `dist/${process.env.TARO_ENV}`,
+  outputRoot: 'dist',
   plugins: {
     babel: {
       sourceMap: true,
@@ -24,10 +24,13 @@ const config = {
       ]
     }
   },
-  defineConstants: {},
+  defineConstants: {
+  },
   copy: {
-    patterns: [],
-    options: {}
+    patterns: [
+    ],
+    options: {
+    }
   },
   weapp: {
     module: {
@@ -44,7 +47,9 @@ const config = {
         },
         pxtransform: {
           enable: true,
-          config: {}
+          config: {
+
+          }
         },
         url: {
           enable: true,
@@ -65,7 +70,6 @@ const config = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
-    esnextModules: ['taro-ui'],
     module: {
       postcss: {
         autoprefixer: {

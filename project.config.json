@@ -1,16 +1,13 @@
 {
-	"miniprogramRoot": "dist/",
-	"projectname": "madpill-miniapp",
-	"description": "",
-	"appid": "wxc11444cbc1419ebb",
-	"setting": {
-		"urlCheck": true,
-		"es6": false,
-		"postcss": false,
-		"minified": false
-	},
-	"compileType": "miniprogram",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {}
+  "miniprogramRoot": "./dist",
+  "projectname": "madpill-miniapp",
+  "description": "",
+  "appid": "wxc11444cbc1419ebb",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
 }

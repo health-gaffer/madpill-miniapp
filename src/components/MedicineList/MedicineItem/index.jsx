@@ -16,12 +16,12 @@ export default class MedicineItem extends Component {
     // 取前 3 个 items
     const tagItems = tags.slice(0, 3).map(tag => {
       return (
-        <View key={tag.id} className='at-col at-col-3 tag'>
+        <View key={tag.id} className='tag'>
           {tag.name}
         </View>
       );
     });
-    const ellipses = (tags.length > 3 && <Text>...</Text>);
+    const ellipses = (tags.length > 3 && <View className='tag tag-ellipse'>···</View>);
     return (
       <View className='medicine-item'>
         <AtSwipeAction
@@ -37,7 +37,7 @@ export default class MedicineItem extends Component {
             </View>
             <View className='at-col at-col-9 pill-info-wrapper'>
               <View className='at-row at-row__justify--between at-row__align--center'>
-                <Text className='at-col at-col-5 medicine-name'>
+                <Text className='at-col at-col-8 medicine-name'>
                   {this.props.medicine.name}
                 </Text>
                 <Text className='at-col at-col-3 manufacture'>

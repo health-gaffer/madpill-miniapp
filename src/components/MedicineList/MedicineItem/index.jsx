@@ -31,7 +31,7 @@ export default class MedicineItem extends Component {
     });
     const ellipses = (tags.length > 3 && <View className='tag tag-ellipse'>···</View>);
     return (
-      <View onClick={this.handleReview} className='medicine-item'>
+      <View className='medicine-item'>
         <AtSwipeAction
           onClick={this.props.onDelete}
           options={[
@@ -39,7 +39,7 @@ export default class MedicineItem extends Component {
               text: '删除', style: {backgroundColor: '#FF4949'}
             }]}
         >
-          <View className='at-row medicine-info'>
+          <View onClick={this.handleReview} className='at-row medicine-info'>
             <View className='at-col at-col-1 at-col--auto pill-img-wrapper'>
               <Image src={defaultPill} className='pill-img' />
             </View>

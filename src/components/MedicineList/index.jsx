@@ -23,170 +23,169 @@ export default class MedicineList extends Component {
   }
 
   componentDidMount() {
-    // getToken({
-    //   success: (token) => {
-    //     let requestHeader = {};
-    //     requestHeader[HEADER_MADPILL_TOKEN_KEY] = token;
-    //     Taro.request({
-    //       url: HOST + '/drugs',
-    //       method: 'GET',
-    //       header: requestHeader,
-    //       success: res => {
-    //         this.setState({
-    //           medicines: res.data.data
-    //         }, () => {
-    //           console.log(medicines);
-    //         });
-    //       },
-    //       fail: error => {
-    //         console.log('fail');
-    //         console.log(error);
-    //       }
-    //     });
-    //   },
-    //   fail: (err) => {
-    //     console.log(err);
-    //   }
-    // });
-    const medicines = {
-      expired: [
-        // 已过期
-        {
-          id: 100000005,
-          name: '奥硝唑片',
-          manufacture: '潇然',
-          day: '10',
-          tags: [
-            {
-              id: 1,
-              name: '牙疼',
-              userId: null
-            },
-            {
-              id: 2,
-              name: '抗寄生虫',
-              userId: null
-            },
-            {
-              id: 3,
-              name: '止痛',
-              userId: null
-            }
-          ]
-        }
-      ],
-      expiring: [
-        {
-          id: 100000006,
-          name: '奥硝唑片',
-          manufacture: '潇然',
-          day: '20',
-          tags: [
-            {
-              id: 4,
-              name: '牙疼',
-              userId: null
-            },
-            {
-              id: 5,
-              name: '抗寄生虫',
-              userId: null
-            },
-            {
-              id: 6,
-              name: '止痛',
-              userId: null
-            }
-          ]
-        }
-      ],
-      notExpired: [
-        {
-          id: 105,
-          name: '很长很长的很长很长很长的药名',
-          manufacture: '很长很长很长很长的厂商名',
-          tags: [
-            {
-              id: 7,
-              name: '很长很长的 tag',
-              userId: null
-            },
-            {
-              id: 8,
-              name: '很长很长的 tag',
-              userId: null
-            },
-            {
-              id: 9,
-              name: '很长很长很长的 tag',
-              userId: null
-            },
-            {
-              id: 10,
-              name: '很长很长很长的 tag',
-              userId: null
-            }
-          ]
-        },
-        {
-          id: 106,
-          name: '两个标签',
-          manufacture: '很长很长很长很长的厂商名',
-          tags: [
-            {
-              id: 9,
-              name: 'tag 1',
-              userId: null
-            },
-            {
-              id: 10,
-              name: 'tag 2',
-              userId: null
-            }
-          ]
-        }
-      ]
-    };
-    this.setState({medicines: medicines});
+    getToken({
+      success: (token) => {
+        let requestHeader = {};
+        requestHeader[HEADER_MADPILL_TOKEN_KEY] = token;
+        Taro.request({
+          url: HOST + '/drugs',
+          method: 'GET',
+          header: requestHeader,
+          success: res => {
+            this.setState({
+              medicines: res.data.data
+            });
+          },
+          fail: error => {
+            console.log('fail');
+            console.log(error);
+          }
+        });
+      },
+      fail: (err) => {
+        console.log(err);
+      }
+    });
+    // for test
+    // const medicines = {
+    //   expired: [
+    //     // 已过期
+    //     {
+    //       id: 100000005,
+    //       name: '奥硝唑片',
+    //       manufacture: '潇然',
+    //       day: '10',
+    //       tags: [
+    //         {
+    //           id: 1,
+    //           name: '牙疼',
+    //           userId: null
+    //         },
+    //         {
+    //           id: 2,
+    //           name: '抗寄生虫',
+    //           userId: null
+    //         },
+    //         {
+    //           id: 3,
+    //           name: '止痛',
+    //           userId: null
+    //         }
+    //       ]
+    //     }
+    //   ],
+    //   expiring: [
+    //     {
+    //       id: 100000006,
+    //       name: '奥硝唑片',
+    //       manufacture: '潇然',
+    //       day: '20',
+    //       tags: [
+    //         {
+    //           id: 4,
+    //           name: '牙疼',
+    //           userId: null
+    //         },
+    //         {
+    //           id: 5,
+    //           name: '抗寄生虫',
+    //           userId: null
+    //         },
+    //         {
+    //           id: 6,
+    //           name: '止痛',
+    //           userId: null
+    //         }
+    //       ]
+    //     }
+    //   ],
+    //   notExpired: [
+    //     {
+    //       id: 105,
+    //       name: '很长很长的很长很长很长的药名',
+    //       manufacture: '很长很长很长很长的厂商名',
+    //       tags: [
+    //         {
+    //           id: 7,
+    //           name: '很长很长的 tag',
+    //           userId: null
+    //         },
+    //         {
+    //           id: 8,
+    //           name: '很长很长的 tag',
+    //           userId: null
+    //         },
+    //         {
+    //           id: 9,
+    //           name: '很长很长很长的 tag',
+    //           userId: null
+    //         },
+    //         {
+    //           id: 10,
+    //           name: '很长很长很长的 tag',
+    //           userId: null
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       id: 106,
+    //       name: '两个标签',
+    //       manufacture: '很长很长很长很长的厂商名',
+    //       tags: [
+    //         {
+    //           id: 9,
+    //           name: 'tag 1',
+    //           userId: null
+    //         },
+    //         {
+    //           id: 10,
+    //           name: 'tag 2',
+    //           userId: null
+    //         }
+    //       ]
+    //     }
+    //   ]
+    // };
+    // this.setState({medicines: medicines});
   }
 
   // 删除药品
   handleDelete(drugId) {
     console.log('被删除药品 id 为' + drugId);
     // for test
-    const expired = this.state.medicines.expired.slice().filter(medicine => medicine.id !== drugId);
-    const expiring = this.state.medicines.expiring.slice().filter(medicine => medicine.id !== drugId);
-    const notExpired = this.state.medicines.notExpired.slice().filter(medicine => medicine.id !== drugId);
-    const medicines = {expired: expired, expiring: expiring, notExpired: notExpired};
-    this.setState({medicines: medicines});
+    // const expired = this.state.medicines.expired.filter(medicine => medicine.id !== drugId);
+    // const expiring = this.state.medicines.expiring.filter(medicine => medicine.id !== drugId);
+    // const notExpired = this.state.medicines.notExpired.filter(medicine => medicine.id !== drugId);
+    // const medicines = {expired: expired, expiring: expiring, notExpired: notExpired};
+    // this.setState({medicines: medicines});
 
     // connect server
 
-    // getToken({
-    //   success: (token) => {
-    //     let requestHeader = {};
-    //     requestHeader[HEADER_MADPILL_TOKEN_KEY] = token;
-    //     Taro.request({
-    //       url: HOST + '/drugs/' + drugId,
-    //       method: 'DELETE',
-    //       header: requestHeader,
-    //       success: () => {
-    //         const expired = this.state.medicines.expired.slice().filter(medicine => medicine.id !== drugId);
-    //         const expiring = this.state.medicines.expiring.slice().filter(medicine => medicine.id !== drugId);
-    //         const notExpired = this.state.medicines.notExpired.slice().filter(medicine => medicine.id !== drugId);
-    //         const medicines = {expired: expired, expiring: expiring, notExpired: notExpired};
-    //         this.setState({medicines: medicines});
-    //       },
-    //       fail: error => {
-    //         console.log('fail');
-    //         console.log(error);
-    //       }
-    //     });
-    //   },
-    //   fail: (err) => {
-    //     console.log(err);
-    //   }
-    // });
+    getToken({
+      success: (token) => {
+        let requestHeader = {};
+        requestHeader[HEADER_MADPILL_TOKEN_KEY] = token;
+        Taro.request({
+          url: HOST + '/drugs/' + drugId,
+          method: 'DELETE',
+          header: requestHeader,
+          success: () => {
+            const expired = this.state.medicines.expired.slice().filter(medicine => medicine.id !== drugId);
+            const expiring = this.state.medicines.expiring.slice().filter(medicine => medicine.id !== drugId);
+            const notExpired = this.state.medicines.notExpired.slice().filter(medicine => medicine.id !== drugId);
+            const medicines = {expired: expired, expiring: expiring, notExpired: notExpired};
+            this.setState({medicines: medicines});
+          },
+          fail: error => {
+            console.log('fail');
+            console.log(error);
+          }
+        });
+      },
+      fail: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   render() {

@@ -1,0 +1,109 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+@import "src/custom-variables";
+.medicine-item {
+  border-style: none;
+  //height: 100px;
+  //background-color: red;
+  .medicine-info {
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    //background-color: wheat;
+    .pill-img-wrapper {
+      padding-left: 40px;
+      vertical-align: center;
+      align-content: center;
+
+      .pill-img {
+        height: 80px;
+        width: 80px;
+      }
+    }
+
+    .pill-info-wrapper {
+      margin-left: 20px;
+      margin-right: 10px;
+
+      .medicine-name {
+        line-height: $font-size-base;
+        height: $font-size-base;
+        font-size: $font-size-base;
+        font-family: PingFangSC-Regular;
+        color: rgba(0, 0, 0, 0.90);
+        letter-spacing: 0;
+        //vertical-align: top;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .manufacture {
+        font-family: PingFangSC-Semibold;
+        font-size: $font-size-small;
+        color: rgba(0, 0, 0, 0.70);
+        letter-spacing: 0;
+        //vertical-align: center;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tags-wrapper {
+        margin-top: 16px;
+        .pill-tags-wrapper {
+          //background-color: #24e023;
+          opacity: 0.3;
+          //height: $font-size-base;
+          //text-align: center;
+          vertical-align: middle;
+          // 除了第一个标签
+          height: $font-size-middle * 1.3;
+          .tag{
+            margin-right: 10px;
+            line-height: $font-size-middle * 1.3;
+            font-size: $font-size-small;
+
+          }
+          .tag-ellipse{
+            margin-right: 0;
+            padding: 0 0;
+            width: $font-size-middle*2.4;
+            border: none;
+          }
+        }
+
+        .tag {
+          //margin-top: -5px;
+          padding: 0 16px;
+          // text
+          font-family: PingFangSC-Regular;
+          font-size: $font-size-middle;
+          color: #000000;
+          letter-spacing: 0;
+          //line-height: px;
+          // border
+          border: 1px solid rgba(0, 0, 0, 0.52);
+          border-radius: $font-size-middle;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .expire-info-tag {
+          opacity: 1;
+          border-style: none;
+          color: #fff;
+          border-radius: $font-size-middle;
+          margin-top: -5px;
+        }
+
+        .expired-tag {
+          background: #FA5151;
+        }
+
+        .expiring-tag {
+          background: #FFC300;
+        }
+      }
+    }
+  }
+}

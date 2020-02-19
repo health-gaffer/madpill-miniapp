@@ -1,0 +1,15 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+@import "src/custom-variables";
+@import "src/assets/iconfont/iconfont";
+
+.result-item {
+
+  .name {
+    font-size: large;
+  }
+
+  .manufacture {
+    font-size: small;
+    font-weight: bold;
+  }
+}

@@ -1,12 +1,12 @@
 import Taro, {Component} from '@tarojs/taro';
 import {Button, Input, Text, View} from '@tarojs/components';
-import {AtAvatar} from 'taro-ui';
+import {AtAvatar,AtToast,AtIcon} from 'taro-ui';
 
 import './index.scss';
 import addIcon from '../../assets/icons/add.png';
 import {getToken} from '../../utils/login';
 import MedicineList from '../../components/MedicineList';
-
+import {get, set} from "../../global";
 export default class HomePage extends Component {
 
   config = {
@@ -20,7 +20,9 @@ export default class HomePage extends Component {
     this.state = {
       loggedIn: false,
       userInfo:'',
-      keyword: ''
+      keyword: '',
+      showToast: false,
+      titleToast:''
     };
   }
 
@@ -33,14 +35,21 @@ export default class HomePage extends Component {
 
   componentDidMount() {
     this.checkLoginStatus();
-    // getToken({
-    //   success: (token) => {
-    //     console.log(token);
-    //   },
-    //   fail: (err) => {
-    //     console.log(err);
-    //   }
-    // });
+  }
+  componentDidShow() {
+
+    const option = get('option')
+    if (option != null){
+      console.log(123);
+      if(option['code'] === 'delete'){
+        this.setState({
+          titleToast : option['msg'],
+          showToast : true
+        })
+      }
+      set('option',null)
+      this.child.updateList()
+    }
   }
 
   onPullDownRefresh() {
@@ -100,6 +109,7 @@ export default class HomePage extends Component {
   render() {
     return (
       <View>
+        <AtToast isOpened={this.state.showToast} duration={1000} text= {this.state.titleToast} status={"success"} ></AtToast>
         <View className='login'>
           <View className='top-area'>
             <View className='top-left-area'>

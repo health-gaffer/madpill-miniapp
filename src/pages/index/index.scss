@@ -13,7 +13,7 @@
     margin-bottom: 1rem;
 
     .top-left-area {
-      flex: 0.9;
+      flex: 9;
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -31,16 +31,18 @@
     }
 
     .top-right-area {
-      flex: 0.1;
+      flex: 1;
       display: flex;
       justify-content: flex-end;
+      padding-right: 3px;
       align-items: center;
+      .add-drug-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+      }
     }
 
-    .add-drug-icon {
-      width: 1.3rem;
-      height: 1.3rem;
-    }
+
   }
 
   .login-area {

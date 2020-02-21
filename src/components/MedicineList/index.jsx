@@ -4,7 +4,7 @@ import MedicineItem from './MedicineItem';
 import './index.scss';
 import {getToken} from '../../utils/login';
 import {HEADER_MADPILL_TOKEN_KEY, HOST} from '../../constants';
-
+import {get, set} from '../../global'
 export default class MedicineList extends Component {
 
   static defaultProps = {
@@ -22,7 +22,23 @@ export default class MedicineList extends Component {
     };
   }
 
+
   componentDidMount() {
+    this.props.onRef(this)
+    this.updateList()
+  }
+  componentDidShow() {
+    console.log(get('option'));
+    if (get('option')!=null){
+      console.log(123);
+      set('option',null)
+      if(get('option')['code'] === 'delete'){
+        console.log('成功删除')
+      }
+    }
+  }
+
+  updateList = () => {
     getToken({
       success: (token) => {
         let requestHeader = {};
@@ -46,107 +62,6 @@ export default class MedicineList extends Component {
         console.log(err);
       }
     });
-    // for test
-    // const medicines = {
-    //   expired: [
-    //     // 已过期
-    //     {
-    //       id: 100000005,
-    //       name: '奥硝唑片',
-    //       manufacture: '潇然',
-    //       day: '10',
-    //       tags: [
-    //         {
-    //           id: 1,
-    //           name: '牙疼',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 2,
-    //           name: '抗寄生虫',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 3,
-    //           name: '止痛',
-    //           userId: null
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   expiring: [
-    //     {
-    //       id: 100000006,
-    //       name: '奥硝唑片',
-    //       manufacture: '潇然',
-    //       day: '20',
-    //       tags: [
-    //         {
-    //           id: 4,
-    //           name: '牙疼',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 5,
-    //           name: '抗寄生虫',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 6,
-    //           name: '止痛',
-    //           userId: null
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   notExpired: [
-    //     {
-    //       id: 105,
-    //       name: '很长很长的很长很长很长的药名',
-    //       manufacture: '很长很长很长很长的厂商名',
-    //       tags: [
-    //         {
-    //           id: 7,
-    //           name: '很长很长的 tag',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 8,
-    //           name: '很长很长的 tag',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 9,
-    //           name: '很长很长很长的 tag',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 10,
-    //           name: '很长很长很长的 tag',
-    //           userId: null
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       id: 106,
-    //       name: '两个标签',
-    //       manufacture: '很长很长很长很长的厂商名',
-    //       tags: [
-    //         {
-    //           id: 9,
-    //           name: 'tag 1',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 10,
-    //           name: 'tag 2',
-    //           userId: null
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // };
-    // this.setState({medicines: medicines});
   }
 
   // 删除药品

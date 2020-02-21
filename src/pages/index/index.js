@@ -44,6 +44,7 @@ export default class HomePage extends Component {
   }
 
   onPullDownRefresh() {
+    this.child.updateList()
     this.checkLoginStatus();
     Taro.stopPullDownRefresh();
   }
@@ -57,7 +58,6 @@ export default class HomePage extends Component {
           }, () => {
             Taro.getUserInfo({
               success: res => {
-                console.log(res);
                 this.setState({
                   userInfo: res.userInfo
                 });
@@ -76,11 +76,15 @@ export default class HomePage extends Component {
   };
 
   handleAddDrug = () => {
-    console.log('I will add a new drug.');
+    // console.log('I will add a new drug.');
     Taro.navigateTo({
       url: '/pages/add/index'
     })
   };
+  onRef = (ref) => {
+    this.child = ref
+  }
+
 
   handleGetUserInfo = (e) => {
     if (e.detail.rawData) {
@@ -104,12 +108,11 @@ export default class HomePage extends Component {
               />
               <Text className='title'>我的药箱</Text>
             </View>
-            <View className='top-right-area'>
+            <View className='top-right-area' onClick={this.handleAddDrug}>
               <Image
                 className='add-drug-icon'
                 src={addIcon}
                 mode='aspectFit'
-                onClick={this.handleAddDrug}
               />
             </View>
           </View>
@@ -135,7 +138,7 @@ export default class HomePage extends Component {
             />
           </View>
         </View>
-        {this.state.loggedIn && <MedicineList keyword={this.state.keyword} />}
+        {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
       </View>
     );
   }

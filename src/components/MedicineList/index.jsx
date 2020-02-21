@@ -3,7 +3,7 @@ import {View, Image, Text} from '@tarojs/components';
 import MedicineItem from './MedicineItem';
 import './index.scss';
 import {getToken} from '../../utils/login';
-import {HEADER_MADPILL_TOKEN_KEY} from '../../constants';
+import {HEADER_MADPILL_TOKEN_KEY,HOST} from '../../constants';
 import {AtActivityIndicator} from 'taro-ui'
 import boxIcon from '../../assets/icons/box.png';
 

@@ -3,11 +3,11 @@ import {Text, View} from '@tarojs/components'
 import {AtButton,AtActivityIndicator} from 'taro-ui'
 
 import './index.scss'
-import TagItem from '../../components/MedicineTag'
-import TagInput from '../../components/MedicineTag/TagInput'
-import {getToken} from '../../utils/login'
+import TagItem from '../../../components/MedicineTag'
+import TagInput from '../../../components/MedicineTag/TagInput'
+import {getToken} from '../../../utils/login'
 
-import {set} from '../../global'
+import {set} from '../../../global'
 
 
 export default class TagPage extends Component {

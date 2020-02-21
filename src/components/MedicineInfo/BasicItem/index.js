@@ -17,11 +17,17 @@ function BasicItem(props) {
   }, [props.value])
 
   useDidShow(() => {
-    if (itemType === 'tag') {
-      const curTags = get('tags')
-      // 若不在此立刻 set，而是等 props.onItemChange 通知父组件，父组件修改后再通过上述 useEffect 修改。不能正确监听 props.value 的修改。
-      setValue(curTags)
-      props.onItemChange(curTags, itemLabel)
+    if (itemType === 'non-input') {
+      if (itemLabel === 'tags') {
+        const curTags = get('tags')
+        // 若不在此立刻 set，而是等 props.onItemChange 通知父组件，父组件修改后再通过上述 useEffect 修改。不能正确监听 props.value 的修改。
+        setValue(curTags)
+        props.onItemChange(curTags, itemLabel)
+      } else if (itemLabel === 'group') {
+        const curGroup = get('group')
+        setValue(curGroup)
+        props.onItemChange(curGroup, itemLabel)
+      }
     }
   })
 
@@ -36,16 +42,23 @@ function BasicItem(props) {
   const iconBtnClicked = () => {
     console.log('iconBtnClicked')
     console.log(JSON.stringify(value))
-    if (itemType === 'tag') {
+    if (itemLabel === 'tags') {
       Taro.navigateTo({
-        url: `/pages/tagManage/index?tags=${JSON.stringify(value)}`
+        url: `/pages/medicine/tagManage/index?tags=${JSON.stringify(value)}`
+      })
+    } else if (itemLabel === 'group') {
+      Taro.navigateTo({
+        url: `/pages/medicine/groupManage/index?groupId=${value.id}`
       })
     }
   }
 
-  const representAtTag = () => {
-    // console.log('representAtTag')
-    return value.map(tag => tag.name).join(', ')
+  const representAtNonInput = () => {
+    if (itemLabel === 'tags') {
+      return value.map(tag => tag.name).join(', ')
+    } else if (itemLabel === 'group') {
+      return value.name
+    }
   }
 
   return (
@@ -98,14 +111,14 @@ function BasicItem(props) {
 
           {
             // 不可输入的标签
-            itemType === 'tag' &&
+            itemType === 'non-input' &&
             <View className='at-col-10'>
               <Input
                 disabled
                 name={itemName}
                 type={inputType}
-                placeholder={representAtTag()}
-                placeholderClass='tag'
+                placeholder={representAtNonInput()}
+                placeholderClass='non-input'
                 maxLength={12}
               />
             </View>
@@ -113,12 +126,12 @@ function BasicItem(props) {
 
           {
             // 最右的图标
-            itemType === 'tag' &&
+            itemType === 'non-input' &&
             <View className='at-col-2'>
               <View className='at-row at-row__justify--end'>
                 {
                   value.length > 12 &&
-                  <Text className='tag'>
+                  <Text className='non-input'>
                     ...
                   </Text>
                 }

@@ -11,6 +11,7 @@ import './index.scss'
 import MedicineInfo from "../../components/MedicineInfo"
 import useDataApi from "../../hooks/useDataApi"
 import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from "../../constants"
+import { set } from '../../global'
 
 function Medicine() {
 
@@ -44,6 +45,7 @@ function Medicine() {
   useEffect(() => {
     console.log(`add success ${addStatusCode}`)
     if (addStatusCode === MADPILL_RESPONSE_CODE.OK) {
+      setGlobalMedicineUpdate('add','添加成功')
       // 关闭上两层添加页面，以便可以直接返回首页
       Taro.navigateBack({
         delta: Taro.getCurrentPages().length
@@ -66,6 +68,7 @@ function Medicine() {
         message: '修改成功！',
         type: 'success',
       })
+
     } else {
       handleError(modifyStatusCode)
     }
@@ -75,6 +78,7 @@ function Medicine() {
   useEffect(() => {
     console.log(`delete success ${deleteStatusCode}`)
     if (deleteStatusCode === MADPILL_RESPONSE_CODE.OK) {
+      setGlobalMedicineUpdate('delete','删除成功')
       returnToHome()
     } else {
       handleError(deleteStatusCode)
@@ -100,6 +104,7 @@ function Medicine() {
       })
     }
   }
+
 
   // 校验药品信息的合法性
   const medicineValidityCheck = () => {
@@ -179,6 +184,13 @@ function Medicine() {
         }
       }
     })
+  }
+
+  const setGlobalMedicineUpdate = (code, msg) =>{
+    const option = {}
+    option['code'] = code;
+    option['msg'] = msg;
+    set('option', option)
   }
 
   const curMedicineChange = (m) => {

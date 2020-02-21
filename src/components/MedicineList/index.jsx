@@ -1,9 +1,11 @@
 import Taro, {Component} from '@tarojs/taro';
-import {View} from '@tarojs/components';
+import {View, Image, Text} from '@tarojs/components';
 import MedicineItem from './MedicineItem';
 import './index.scss';
 import {getToken} from '../../utils/login';
 import {HEADER_MADPILL_TOKEN_KEY} from '../../constants';
+import {AtActivityIndicator} from 'taro-ui'
+import boxIcon from '../../assets/icons/box.png';
 
 export default class MedicineList extends Component {
 
@@ -18,11 +20,21 @@ export default class MedicineList extends Component {
         expired: [],
         expiring: [],
         notExpired: []
-      }
+      },
+      isLoading: false
     };
   }
 
+
   componentDidMount() {
+    this.props.onRef(this)
+    this.setState({
+      isLoading: true
+    })
+    this.updateList()
+  }
+
+  updateList = () => {
     getToken({
       success: (token) => {
         let requestHeader = {};
@@ -32,9 +44,14 @@ export default class MedicineList extends Component {
           method: 'GET',
           header: requestHeader,
           success: res => {
+            if (res.data.data != null) {
+              this.setState({
+                medicines: res.data.data
+              });
+            }
             this.setState({
-              medicines: res.data.data
-            });
+              isLoading: false
+            })
           },
           fail: error => {
             console.log('fail');
@@ -46,107 +63,6 @@ export default class MedicineList extends Component {
         console.log(err);
       }
     });
-    // for test
-    // const medicines = {
-    //   expired: [
-    //     // 已过期
-    //     {
-    //       id: 100000005,
-    //       name: '奥硝唑片',
-    //       manufacture: '潇然',
-    //       day: '10',
-    //       tags: [
-    //         {
-    //           id: 1,
-    //           name: '牙疼',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 2,
-    //           name: '抗寄生虫',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 3,
-    //           name: '止痛',
-    //           userId: null
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   expiring: [
-    //     {
-    //       id: 100000006,
-    //       name: '奥硝唑片',
-    //       manufacture: '潇然',
-    //       day: '20',
-    //       tags: [
-    //         {
-    //           id: 4,
-    //           name: '牙疼',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 5,
-    //           name: '抗寄生虫',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 6,
-    //           name: '止痛',
-    //           userId: null
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   notExpired: [
-    //     {
-    //       id: 105,
-    //       name: '很长很长的很长很长很长的药名',
-    //       manufacture: '很长很长很长很长的厂商名',
-    //       tags: [
-    //         {
-    //           id: 7,
-    //           name: '很长很长的 tag',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 8,
-    //           name: '很长很长的 tag',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 9,
-    //           name: '很长很长很长的 tag',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 10,
-    //           name: '很长很长很长的 tag',
-    //           userId: null
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       id: 106,
-    //       name: '两个标签',
-    //       manufacture: '很长很长很长很长的厂商名',
-    //       tags: [
-    //         {
-    //           id: 9,
-    //           name: 'tag 1',
-    //           userId: null
-    //         },
-    //         {
-    //           id: 10,
-    //           name: 'tag 2',
-    //           userId: null
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // };
-    // this.setState({medicines: medicines});
   }
 
   // 删除药品
@@ -201,36 +117,56 @@ export default class MedicineList extends Component {
     const expiredMedicines = selectedMedicines.expired.map(medicine => {
       return (
         <MedicineItem key={String(medicine.id)} medicine={medicine} status='expired'
-          onDelete={() => this.handleDelete(medicine.id)}
+                      onDelete={() => this.handleDelete(medicine.id)}
         />
       );
     });
     const expiringMedicines = selectedMedicines.expiring.map(medicine => {
       return (
         <MedicineItem key={String(medicine.id)} medicine={medicine} status='expiring'
-          onDelete={() => this.handleDelete(medicine.id)}
+                      onDelete={() => this.handleDelete(medicine.id)}
         />);
     });
     const notExpiredMedicines = selectedMedicines.notExpired.map(medicine => {
       return (
         <MedicineItem key={String(medicine.id)} medicine={medicine} status='notExpired'
-          onDelete={() => this.handleDelete(medicine.id)}
+                      onDelete={() => this.handleDelete(medicine.id)}
         />);
     });
     return (
       <View className='medicine-list'>
-        <View className='at-row at-row__align--center desc-wrapper'>
-          {selectedMedicines.expired.length > 0 && <Text className='at-col desc-text'>已过期</Text>}
-        </View>
-        {expiredMedicines}
-        <View className='at-row at-row__align--center desc-wrapper'>
-          {selectedMedicines.expiring.length > 0 && <Text className='at-col desc-text'>即将过期</Text>}
-        </View>
-        {expiringMedicines}
-        <View className='at-row at-row__align--center desc-wrapper'>
-          {selectedMedicines.notExpired.length > 0 && <Text className='at-col desc-text'>未过期</Text>}
-        </View>
-        {notExpiredMedicines}
+        {this.state.isLoading ?
+          <View className='loading'>
+            <AtActivityIndicator content='加载中...' size={50}></AtActivityIndicator>
+          </View> :
+          this.state.medicine == null ?
+            <View className='empty-panel'>
+              <View className='inner-panel'>
+                <Image
+                  className='box-icon'
+                  src={boxIcon}
+                  mode='aspectFit'
+                />
+              </View>
+              <View className='inner-panel'>
+                <View>~添加一个药品吧~</View>
+              </View>
+            </View> :
+            <View>
+              <View className='at-row at-row__align--center desc-wrapper'>
+                {selectedMedicines.expired.length > 0 && <Text className='at-col desc-text'>已过期</Text>}
+              </View>
+              {expiredMedicines}
+              <View className='at-row at-row__align--center desc-wrapper'>
+                {selectedMedicines.expiring.length > 0 && <Text className='at-col desc-text'>即将过期</Text>}
+              </View>
+              {expiringMedicines}
+              <View className='at-row at-row__align--center desc-wrapper'>
+                {selectedMedicines.notExpired.length > 0 && <Text className='at-col desc-text'>未过期</Text>}
+              </View>
+              {notExpiredMedicines}
+            </View>
+        }
       </View>
     );
   }

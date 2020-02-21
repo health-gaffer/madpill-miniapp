@@ -1,12 +1,12 @@
 import Taro, {Component} from '@tarojs/taro';
 import {Button, Input, Text, View} from '@tarojs/components';
-import {AtAvatar} from 'taro-ui';
+import {AtAvatar,AtToast,AtIcon} from 'taro-ui';
 
 import './index.scss';
 import addIcon from '../../assets/icons/add.png';
 import {getToken} from '../../utils/login';
 import MedicineList from '../../components/MedicineList';
-
+import {get, set} from "../../global";
 export default class HomePage extends Component {
 
   config = {
@@ -20,7 +20,9 @@ export default class HomePage extends Component {
     this.state = {
       loggedIn: false,
       userInfo:'',
-      keyword: ''
+      keyword: '',
+      showToast: false,
+      titleToast:''
     };
   }
 
@@ -33,17 +35,25 @@ export default class HomePage extends Component {
 
   componentDidMount() {
     this.checkLoginStatus();
-    // getToken({
-    //   success: (token) => {
-    //     console.log(token);
-    //   },
-    //   fail: (err) => {
-    //     console.log(err);
-    //   }
-    // });
+  }
+  componentDidShow() {
+
+    const option = get('option')
+    if (option != null){
+      console.log(123);
+      if(option['code'] === 'delete'){
+        this.setState({
+          titleToast : option['msg'],
+          showToast : true
+        })
+      }
+      set('option',null)
+      this.child.updateList()
+    }
   }
 
   onPullDownRefresh() {
+    this.child.updateList()
     this.checkLoginStatus();
     Taro.stopPullDownRefresh();
   }
@@ -57,7 +67,6 @@ export default class HomePage extends Component {
           }, () => {
             Taro.getUserInfo({
               success: res => {
-                console.log(res);
                 this.setState({
                   userInfo: res.userInfo
                 });
@@ -76,11 +85,15 @@ export default class HomePage extends Component {
   };
 
   handleAddDrug = () => {
-    console.log('I will add a new drug.');
+    // console.log('I will add a new drug.');
     Taro.navigateTo({
       url: '/pages/add/index'
     })
   };
+  onRef = (ref) => {
+    this.child = ref
+  }
+
 
   handleGetUserInfo = (e) => {
     if (e.detail.rawData) {
@@ -96,6 +109,7 @@ export default class HomePage extends Component {
   render() {
     return (
       <View>
+        <AtToast isOpened={this.state.showToast} duration={1000} text= {this.state.titleToast} status={"success"} ></AtToast>
         <View className='login'>
           <View className='top-area'>
             <View className='top-left-area'>
@@ -104,12 +118,11 @@ export default class HomePage extends Component {
               />
               <Text className='title'>我的药箱</Text>
             </View>
-            <View className='top-right-area'>
+            <View className='top-right-area' onClick={this.handleAddDrug}>
               <Image
                 className='add-drug-icon'
                 src={addIcon}
                 mode='aspectFit'
-                onClick={this.handleAddDrug}
               />
             </View>
           </View>
@@ -135,7 +148,7 @@ export default class HomePage extends Component {
             />
           </View>
         </View>
-        {this.state.loggedIn && <MedicineList keyword={this.state.keyword} />}
+        {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
       </View>
     );
   }

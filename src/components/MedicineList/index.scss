@@ -3,6 +3,32 @@
 .medicine-list {
   background: #ffffff;
 
+  .loading{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  .empty-panel{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .box-icon{
+      width: 200px;
+      height: 200px;
+      margin-bottom: 40px;
+      //background-color: red;
+      //width: 30%;
+    }
+    .inner-panel{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+    }
+
+  }
   .desc-wrapper {
     //height: 80px;
     margin-top: 10px;

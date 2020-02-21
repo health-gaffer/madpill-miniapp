@@ -3,7 +3,7 @@ import {View} from '@tarojs/components';
 import MedicineItem from './MedicineItem';
 import './index.scss';
 import {getToken} from '../../utils/login';
-import {HEADER_MADPILL_TOKEN_KEY, HOST} from '../../constants';
+import {HEADER_MADPILL_TOKEN_KEY} from '../../constants';
 
 export default class MedicineList extends Component {
 

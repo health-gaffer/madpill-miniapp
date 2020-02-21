@@ -1,12 +1,11 @@
 import Taro, {Component} from '@tarojs/taro'
 import {Text, View} from '@tarojs/components'
-import {AtButton,AtActivityIndicator} from "taro-ui"
+import {AtButton,AtActivityIndicator} from 'taro-ui'
 
 import './index.scss'
 import TagItem from '../../components/MedicineTag'
 import TagInput from '../../components/MedicineTag/TagInput'
-import {getToken} from "../../utils/login"
-import { HOST, MADPILL_RESPONSE_CODE} from "../../constants"
+import {getToken} from '../../utils/login'
 
 import {set} from '../../global'
 
@@ -36,7 +35,7 @@ export default class TagPage extends Component {
         requestHeader['madpill-token'] = token
         console.log(HOST + '/tags' + token)
         Taro.request({
-          url: HOST + `/tags`,
+          url: HOST + '/tags',
           method: 'GET',
           header: requestHeader,
           success: result => {

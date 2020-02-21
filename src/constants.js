@@ -1,4 +1,3 @@
-export const HOST = 'https://tokindle.top/madpill'
 export const HEADER_MADPILL_TOKEN_KEY = 'madpill-token'
 
 export const MADPILL_COLORS = [
@@ -34,5 +33,5 @@ export const MADPILL_RESPONSE_CODE ={
   OK: 200,
 
 }
-export const LOGIN_STORAGE_KEY = "code"
+export const LOGIN_STORAGE_KEY = 'code'
 

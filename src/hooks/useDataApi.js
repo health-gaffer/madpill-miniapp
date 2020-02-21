@@ -1,7 +1,7 @@
 import Taro, {useEffect, useReducer, useState,} from '@tarojs/taro'
 
-import {HEADER_MADPILL_TOKEN_KEY, HOST, MADPILL_RESPONSE_CODE} from "../constants"
-import {getToken} from "../utils/login"
+import {HEADER_MADPILL_TOKEN_KEY, MADPILL_RESPONSE_CODE} from '../constants'
+import {getToken} from '../utils/login'
 
 const dataFetchReducer = (state, action) => {
   switch (action.type) {

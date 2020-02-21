@@ -1,6 +1,6 @@
-import Taro from "@tarojs/taro";
+import Taro from '@tarojs/taro';
 
-import {HOST, MADPILL_COLORS} from "./constants";
+import {MADPILL_COLORS} from './constants';
 
 export const fetchAuthorizationInfo = callback => {
   Taro.login({

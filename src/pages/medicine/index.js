@@ -5,12 +5,12 @@ import Taro, {
   useState,
 } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtButton, AtMessage, AtActivityIndicator } from "taro-ui"
+import { AtButton, AtMessage, AtActivityIndicator } from 'taro-ui'
 
 import './index.scss'
-import MedicineInfo from "../../components/MedicineInfo"
-import useDataApi from "../../hooks/useDataApi"
-import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from "../../constants"
+import MedicineInfo from '../../components/MedicineInfo'
+import useDataApi from '../../hooks/useDataApi'
+import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from '../../constants'
 import { set } from '../../global'
 
 function Medicine() {

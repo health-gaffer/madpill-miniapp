@@ -40,24 +40,13 @@ export const getDateString = (date) => {
 }
 
 /**
- * @param {string} before
- * @param {string | number} dayNum
- * @return {string}
+ * @param {Date} cur
+ * @return {Date}
  */
-export const calDateAfterAddDays = (before, dayNum) => {
-  let date = new Date(before)
-  date.setDate(date.getDate() + parseInt(dayNum))
-  return getDateString(date)
-}
-
-/**
- *
- * @param {string} date1
- * @param {string} date2
- * @return {number}
- */
-export const calDateDiffDays = (date1, date2) => {
-  return Math.abs(Date.parse(date1) - Date.parse(date2)) / (1000 * 60 * 60 * 24)
+export const getTodayOfLastYear = (cur) => {
+  const date = new Date(cur)
+  date.setFullYear(date.getFullYear() - 1)
+  return date
 }
 
 /**

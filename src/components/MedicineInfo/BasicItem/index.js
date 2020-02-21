@@ -3,7 +3,7 @@ import {Input, Picker, Text, View} from '@tarojs/components'
 import {AtButton, AtIcon} from 'taro-ui'
 
 import './index.scss'
-import {get} from "../../../global";
+import {get} from '../../../global'
 
 function BasicItem(props) {
 
@@ -18,7 +18,7 @@ function BasicItem(props) {
 
   useDidShow(() => {
     if (itemType === 'tag') {
-      const curTags = get("tags")
+      const curTags = get('tags')
       // 若不在此立刻 set，而是等 props.onItemChange 通知父组件，父组件修改后再通过上述 useEffect 修改。不能正确监听 props.value 的修改。
       setValue(curTags)
       props.onItemChange(curTags, itemLabel)

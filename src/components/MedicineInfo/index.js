@@ -5,14 +5,14 @@ import Taro, {
 import { View } from '@tarojs/components'
 
 import './index.scss'
-import MedicineImage from "./MedicineImage"
-import Banner from "./Banner"
-import BasicItem from "./BasicItem"
-import MoreItem from "./MoreItem"
-import MPDivider from "../MPDivider"
-import useDataApi from "../../hooks/useDataApi"
-import {MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE} from "../../constants"
-import {calDateAfterAddDays, calDateDiffDays, getDateString} from "../../utils"
+import MedicineImage from './MedicineImage'
+import Banner from './Banner'
+import BasicItem from './BasicItem'
+import MoreItem from './MoreItem'
+import MPDivider from '../MPDivider'
+import useDataApi from '../../hooks/useDataApi'
+import {MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE} from '../../constants'
+import {getDateString, getTodayOfLastYear} from '../../utils'
 
 function MedicineInfo(props) {
 
@@ -38,9 +38,9 @@ function MedicineInfo(props) {
   const basicItems = [
     {itemLabel: 'name', itemName: '药品名称', itemType: 'input', isRequired: true,},
     {itemLabel: 'producedDate', itemName: '生产时间', itemType: 'date', isRequired: true,},
-    {itemLabel: 'period', itemName: '保质天数', itemType: 'input', isRequired: true, inputType: 'number',},
     {itemLabel: 'expireDate', itemName: '过期时间', itemType: 'date', isRequired: true,},
     {itemLabel: 'description', itemName: '用药说明', itemType: 'input', isRequired: false,},
+    {itemLabel: 'group', itemName: '所属群组', itemType: 'tag', isRequired: true, iconValue: 'chevron-right'},
     {itemLabel: 'tags', itemName: '药品标签', itemType: 'tag', isRequired: false, iconValue: 'chevron-right'},
   ]
   const moreItems = [
@@ -53,7 +53,7 @@ function MedicineInfo(props) {
     name: '',
     producedDate: '',
     expireDate: '',
-    period: 0,
+    group: '',
     description: '',
     indication: JSON.stringify({
       content: ''
@@ -97,12 +97,6 @@ function MedicineInfo(props) {
     // console.log('medicineRequest finish')
     // console.log(medicineRequestedData)
     setMedicine(medicineRequestedData)
-    setMedicine(preMedicine => {
-      return {
-        ...preMedicine,
-        period: calDateDiffDays(medicineRequestedData.producedDate, medicineRequestedData.expireDate)
-      }
-    })
   }, [medicineRequestedData])
 
   useEffect(() => {
@@ -190,57 +184,24 @@ function MedicineInfo(props) {
   }, [warehouseStatusCode, medicineStatusCode])
 
 
-  const dateRelatedLabels = ['producedDate', 'period', 'expireDate']
-  const dateRelatedExtraProcess = (curItemLabel, curValue) => {
-    if (curItemLabel === 'producedDate') {
-      setMedicine(preMedicine => {
-        return {
-          ...preMedicine,
-          expireDate: calDateAfterAddDays(curValue, preMedicine.period)
-        }
-      })
-    } else if (curItemLabel === 'period') {
-      setMedicine(preMedicine => {
-        return {
-          ...preMedicine,
-          expireDate: calDateAfterAddDays(preMedicine.producedDate, curValue)
-        }
-      })
-    } else if (curItemLabel === 'expireDate') {
-      setMedicine(preMedicine => {
-        return {
-          ...preMedicine,
-          period: calDateDiffDays(preMedicine.producedDate, curValue)
-        }
-      })
-    }
-  }
-
   const MedicineItemChanged = (curValue, itemLabel) => {
     // console.log('MedicineItemClicked')
     // console.log(curValue)
     // console.log(itemLabel)
-    // if (itemLabel === 'period') {
-    //  TODO regex and focus
-    // }
     setMedicine(preMedicine => {
       preMedicine[itemLabel] = curValue
       return preMedicine
     })
-
-    if (dateRelatedLabels.includes(itemLabel)) {
-      dateRelatedExtraProcess(itemLabel, curValue)
-    }
   }
 
   // 新增时设置初始化的时间
   const setDefaultDateWhenAdd = () => {
     setMedicine(preMedicine => {
+      const curDate = new Date()
       return {
         ...preMedicine,
-        producedDate: getDateString(new Date()),
-        expireDate: getDateString(new Date()),
-        period: 0,
+        producedDate: getDateString(getTodayOfLastYear(curDate)),
+        expireDate: getDateString(curDate),
       }
     })
   }

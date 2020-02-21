@@ -1,4 +1,3 @@
-export const HOST = 'http://localhost:8081'
 export const HEADER_MADPILL_TOKEN_KEY = 'madpill-token'
 
 export const MADPILL_COLORS = [

@@ -53,7 +53,7 @@ function MedicineInfo(props) {
     name: '',
     producedDate: '',
     expireDate: '',
-    group: '',
+    group: {},
     description: '',
     indication: JSON.stringify({
       content: ''

@@ -17,16 +17,20 @@ function BasicItem(props) {
   }, [props.value])
 
   useDidShow(() => {
+    // 若不在此立刻 setValue，而是等 props.onItemChange 通知父组件，父组件修改后再通过上述 useEffect 修改。不能正确监听 props.value 的修改。
     if (itemType === 'non-input') {
       if (itemLabel === 'tags') {
         const curTags = get('tags')
-        // 若不在此立刻 set，而是等 props.onItemChange 通知父组件，父组件修改后再通过上述 useEffect 修改。不能正确监听 props.value 的修改。
-        setValue(curTags)
-        props.onItemChange(curTags, itemLabel)
+        if (curTags) {
+          setValue(curTags)
+          props.onItemChange(curTags, itemLabel)
+        }
       } else if (itemLabel === 'group') {
         const curGroup = get('group')
-        setValue(curGroup)
-        props.onItemChange(curGroup, itemLabel)
+        if (curGroup) {
+          setValue(curGroup)
+          props.onItemChange(curGroup, itemLabel)
+        }
       }
     }
   })

@@ -11,7 +11,6 @@
     justify-content: space-between;
     align-items: stretch;
     margin-bottom: 1rem;
-
     .top-left-area {
       flex: 9;
       display: flex;
@@ -23,10 +22,10 @@
         height: 2.5rem;
       }
 
-      .title {
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-left: 1rem;
+      .group {
+        height: 100%;
+        margin-top: 1rem;
+        margin-left: 0.5rem;
       }
     }
 

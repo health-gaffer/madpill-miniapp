@@ -1,12 +1,12 @@
 import Taro, {Component} from '@tarojs/taro';
 import {Button, Input, Text, View} from '@tarojs/components';
-import {AtAvatar,AtToast,AtIcon} from 'taro-ui';
+import {AtAvatar,AtToast} from 'taro-ui';
 
 import './index.scss';
 import addIcon from '../../assets/icons/add.png';
-import {getToken} from '../../utils/login';
 import MedicineList from '../../components/MedicineList';
 import {get, set} from "../../global";
+import GroupMenu from '../../components/GroupMenu'
 export default class HomePage extends Component {
 
   config = {
@@ -22,7 +22,9 @@ export default class HomePage extends Component {
       userInfo:'',
       keyword: '',
       showToast: false,
-      titleToast:''
+      titleToast:'',
+      curGroup:{},
+      groupList:[]
     };
   }
 
@@ -35,7 +37,16 @@ export default class HomePage extends Component {
 
   componentDidMount() {
     this.checkLoginStatus();
+    //todo getList
+    this.setState({
+      curGroup:{id : 1, name: "我的药箱",alias: "我的药箱",createBy:1},
+      groupList:[
+        {id : 2, name: "我的药箱", alias:"办公室药箱",createBy: 1},
+        {id : 3, name: "我的药箱", alias:"父母的药箱",createBy: 1}
+      ]
+    })
   }
+
   componentDidShow() {
 
     const option = get('option')
@@ -83,7 +94,10 @@ export default class HomePage extends Component {
       }
     });
   };
-
+  changeGroup = (value) => {
+    //todo change the viewList
+    console.log(value)
+  }
   handleAddDrug = () => {
     // console.log('I will add a new drug.');
     Taro.navigateTo({
@@ -116,7 +130,10 @@ export default class HomePage extends Component {
               <AtAvatar className='avatar' circle size='small'
                 image={this.state.loggedIn ? (this.state.userInfo ? this.state.userInfo.avatarUrl : 'https://jdc.jd.com/img/200') : 'https://jdc.jd.com/img/200'}
               />
-              <Text className='title'>我的药箱</Text>
+              <View className='group'>
+                <GroupMenu curGroup={this.state.curGroup} groupList={this.state.groupList} onChangeGroup={this.changeGroup}/>
+              </View>
+
             </View>
             <View className='top-right-area' onClick={this.handleAddDrug}>
               <Image

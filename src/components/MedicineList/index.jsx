@@ -4,11 +4,10 @@ import MedicineItem from './MedicineItem';
 import './index.scss';
 import {getToken} from '../../utils/login';
 import {HEADER_MADPILL_TOKEN_KEY} from '../../constants';
-import {AtActivityIndicator} from 'taro-ui'
+import {AtActivityIndicator, AtIcon} from 'taro-ui'
 import boxIcon from '../../assets/icons/box.png';
 
 export default class MedicineList extends Component {
-
   static defaultProps = {
     keyword: ''
   }

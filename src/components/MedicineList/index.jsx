@@ -133,13 +133,17 @@ export default class MedicineList extends Component {
                       onDelete={() => this.handleDelete(medicine.id)}
         />);
     });
+
+    const hasMedicine = (this.state.medicines == null || typeof (this.state.medicines) == "undefined" || this.state.medicines === 0
+      || (this.state.medicines['expired'].length === 0 && this.state.medicines['expiring'].length === 0 && this.state.medicines['notExpired'].length === 0))
+
     return (
       <View className='medicine-list'>
         {this.state.isLoading ?
           <View className='loading'>
             <AtActivityIndicator content='加载中...' size={50}></AtActivityIndicator>
           </View> :
-          this.state.medicine == null ?
+          (hasMedicine ?
             <View className='empty-panel'>
               <View className='inner-panel'>
                 <Image
@@ -165,7 +169,7 @@ export default class MedicineList extends Component {
                 {selectedMedicines.notExpired.length > 0 && <Text className='at-col desc-text'>未过期</Text>}
               </View>
               {notExpiredMedicines}
-            </View>
+            </View>)
         }
       </View>
     );

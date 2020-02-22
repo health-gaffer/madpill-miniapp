@@ -22,7 +22,7 @@
     //width: 100px;
     background-color: white;
     margin-top: 5px;
-    border: gray 1px solid;
+    border: #eeeeee 1px solid;
     border-radius: 6px;
     max-width: 10rem;
     position: relative;
@@ -32,23 +32,23 @@
     font-size: $font-size-base;
     .switch-group{
       .group-item{
-        padding: 0.3rem 0.6rem;
+        padding: 0.4rem 0.7rem;
         max-width: 10rem;
         //white-space: nowrap;
         //overflow: hidden;
         //text-overflow: ellipsis;
-        border-bottom: #dcdbdb 1px solid;
+        border-bottom: #eeeeee 1px solid;
       }
     }
     .options{
-      padding: 0.3rem 0.6rem 0.3rem 0.3rem;
+      padding: 0.3rem 0.7rem 0.3rem 0.3rem;
       background-color: #eeeeee;
       display: flex;
       flex-direction: row;
 
       .title{
         margin-top: 3px;
-        margin-left: 5px;
+        margin-left: 9px;
       }
     }
   }

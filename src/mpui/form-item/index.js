@@ -25,7 +25,7 @@ function MPFormItem(props) {
     <View className='form-item'>
       {
         vertical === false &&
-        <View className='at-row at-row__align--center'>
+        <View className='at-row at-row__align--center at-row__justify--center'>
           {/* 左部提示信息 */}
           <View className='left at-col-3'>
             <View className='at-row at-row__align--center at-row__justify--center'>

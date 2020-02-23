@@ -1,12 +1,10 @@
-import {useEffect, useState} from '@tarojs/taro'
+import Taro, {useEffect, useState} from '@tarojs/taro'
 import {Picker, View} from '@tarojs/components'
 
-import './index.scss'
-
-function MPDatePicker(props) {
+function MPPicker(props) {
 
   // 项索引ID、提示信息、
-  const {mpid} = props
+  const {mpid, mode} = props
 
   // 因为通过 props.onItemChange 父组件只更新了部分属性而不是整个对象，所以比较时父组件的传递 data 与子组件中的 props 是一个对象，故需要自己维护状态
   const [value, setValue] = useState(props.value)
@@ -25,25 +23,24 @@ function MPDatePicker(props) {
   }
 
   return (
-    <View className='at-row'>
-      <View className='at-col-10'>
-        <Picker
-          mode='date'
-          value={value}
-          onChange={handleChange}
-        >
-          <View className='picker'>
-            {value}
-          </View>
-        </Picker>
-      </View>
+    <View>
+      <Picker
+        mode={mode}
+        value={value}
+        onChange={handleChange}
+      >
+        <View className='picker'>
+          {value}
+        </View>
+      </Picker>
     </View>
   )
 }
 
-MPDatePicker.defaultProps = {
+MPPicker.defaultProps = {
   mpid: '',
   value: '',
+  mode: 'date',
 }
 
-export default MPDatePicker
+export default MPPicker

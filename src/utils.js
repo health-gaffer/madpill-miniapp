@@ -39,6 +39,13 @@ export const getDateString = (date) => {
   return y + '-' + m + '-' + d;
 }
 
+export const getTimeString = (date) => {
+  const hour = date.getHours();
+  let minute = date.getMinutes();
+  minute = minute < 10 ? ('0' + minute) : minute;
+  return hour + ':' + minute;
+}
+
 /**
  * @param {Date} cur
  * @return {Date}

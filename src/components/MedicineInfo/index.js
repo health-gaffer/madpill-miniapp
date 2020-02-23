@@ -11,8 +11,9 @@ import MPDivider from '../MPDivider'
 import MPForm from '../../mpui/form'
 import MPFormItem from '../../mpui/form-item'
 import MPInput from '../../mpui/input'
-import MPDatePicker from '../../mpui/date-picker'
+import MPPicker from '../../mpui/picker'
 import MPInputNavigation from '../../mpui/input-navigation'
+import MPInputDynamic from '../../mpui/input-dynamic'
 import MPTextArea from '../../mpui/input-textarea'
 import useDataApi from '../../hooks/useDataApi'
 import {MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE} from '../../constants'
@@ -50,14 +51,15 @@ function MedicineInfo(props) {
       id: '',
       name: '',
     },
+    tags: [],
     description: '',
+    reminders: [],
     indication: JSON.stringify({
       content: ''
     }),
     contraindication: JSON.stringify({
       content: ''
     }),
-    tags: [],
   })
 
   useEffect(() => {
@@ -235,7 +237,7 @@ function MedicineInfo(props) {
               required: true, message: '生产时间必填哦',
             }]}
           >
-            <MPDatePicker
+            <MPPicker
               mpid='producedDate'
               value={medicine.producedDate}
               onItemChange={medicineItemChanged}
@@ -247,7 +249,7 @@ function MedicineInfo(props) {
               required: true, message: '有效期至必填哦',
             }]}
           >
-            <MPDatePicker
+            <MPPicker
               mpid='expireDate'
               value={medicine.expireDate}
               onItemChange={medicineItemChanged}
@@ -271,14 +273,6 @@ function MedicineInfo(props) {
               onItemChange={medicineItemChanged}
             />
           </MPFormItem>
-          <MPFormItem label='用药说明'>
-            <MPInput
-              mpid='description'
-              value={medicine.description}
-              placeholder='请输入用药说明'
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
           <MPFormItem label='药品标签'>
             <MPInputNavigation
               mpid='tags'
@@ -290,6 +284,21 @@ function MedicineInfo(props) {
                 if (medicine.tags) return medicine.tags.map(tag => tag.name).join(', ')
               }}
               onItemChange={medicineItemChanged}
+            />
+          </MPFormItem>
+          <MPFormItem label='用药说明'>
+            <MPInput
+              mpid='description'
+              value={medicine.description}
+              placeholder='请输入用药说明'
+              onItemChange={medicineItemChanged}
+            />
+          </MPFormItem>
+          <MPFormItem label='用药提醒'>
+            <MPInputDynamic
+              mpid='reminder'
+              value={medicine.reminders}
+              // onItemChange={medicineItemChanged}
             />
           </MPFormItem>
 

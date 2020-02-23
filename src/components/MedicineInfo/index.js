@@ -261,10 +261,13 @@ function MedicineInfo(props) {
           >
             <MPInputNavigation
               mpid='group'
-              value={medicine.group}
               iconValue='chevron-right'
-              // urlToNavigate={'/pages/medicine/groupManage/index?groupId=' + medicine.group.id}
-              represent={() => medicine.group.name}
+              urlToNavigate={() => {
+                if (medicine.group) return `/pages/medicine/groupManage/index?groupId=${medicine.group.id}`
+              }}
+              represent={() => {
+                if (medicine.group) return medicine.group.name
+              }}
               onItemChange={medicineItemChanged}
             />
           </MPFormItem>
@@ -279,10 +282,13 @@ function MedicineInfo(props) {
           <MPFormItem label='药品标签'>
             <MPInputNavigation
               mpid='tags'
-              value={medicine.tags}
               iconValue='chevron-right'
-              urlToNavigate={`/pages/medicine/tagManage/index?tags=${JSON.stringify(medicine.tags)}`}
-              represent={() => medicine.tags.map(tag => tag.name).join(', ')}
+              urlToNavigate={() => {
+                if (medicine.tags) return `/pages/medicine/tagManage/index?tags=${JSON.stringify(medicine.tags)}`
+              }}
+              represent={() => {
+                if (medicine.tags) return medicine.tags.map(tag => tag.name).join(', ')
+              }}
               onItemChange={medicineItemChanged}
             />
           </MPFormItem>

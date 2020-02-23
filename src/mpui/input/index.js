@@ -18,7 +18,7 @@ function MPInput(props) {
   }, [props.value])
 
   const handleChange = (e) => {
-    console.log(e)
+    // console.log(e)
     setValue(e.target.value)
     props.onItemChange(e.target.value, mpid)
     return e.target.value

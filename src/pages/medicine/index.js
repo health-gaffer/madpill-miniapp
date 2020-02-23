@@ -186,7 +186,7 @@ function Medicine() {
     })
   }
 
-  const setGlobalMedicineUpdate = (code, msg) =>{
+  const setGlobalMedicineUpdate = (code, msg) => {
     const option = {}
     option['code'] = code;
     option['msg'] = msg;

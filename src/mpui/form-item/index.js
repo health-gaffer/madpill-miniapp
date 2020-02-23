@@ -12,17 +12,14 @@ function MPFormItem(props) {
   // 项展示名称、展示形式
   const {label, vertical, rules} = props
 
-  const [required, setRequired] = useState(false)
-  useEffect(() => {
-    console.log('MPFormItem useEffect rule')
-    console.log(rules)
-    rules.map(rule => rule.required === true ? setRequired(true): '')
-  }, [rules])
-
-  useEffect(() => {
-    console.log('MPFormItem useEffect label')
-    console.log(label)
-  }, [label])
+  const required = () => {
+    for (let i = 0; i < rules.length; i++) {
+      if (rules[i].required === true) {
+        return true
+      }
+    }
+    return false
+  }
 
   return (
     <View className='form-item'>
@@ -35,7 +32,7 @@ function MPFormItem(props) {
               <View className='at-col-2'>
                 <View className='at-row at-row__justify--end'>
                   {
-                    required &&
+                    required() &&
                     <AtIcon value='star-2' size='10' color='#F00' />
                   }
                 </View>

@@ -10,19 +10,9 @@ function MPInputNavigation(props) {
   // 项索引ID、提示信息、
   const {mpid, urlToNavigate, iconValue} = props
 
-  // 因为通过 props.onItemChange 父组件只更新了部分属性而不是整个对象，所以比较时父组件的传递 data 与子组件中的 props 是一个对象，故需要自己维护状态
-  const [value, setValue] = useState(props.value)
-
-  // 父组件中数据加载变动
-  useEffect(() => {
-    // console.log(`${mpid}'s props value changed`)
-    setValue(props.value)
-  }, [props.value])
-
   useDidShow(() => {
     const curValue = get(mpid)
     if (curValue) {
-      setValue(curValue)
       props.onItemChange(curValue, mpid)
     }
   })
@@ -39,14 +29,14 @@ function MPInputNavigation(props) {
         <Input
           disabled
           type='text'
-          placeholder={props.represent()}
+          placeholder={props.represent}
           placeholderClass='non-input'
         />
       </View>
       <View className='at-col-2'>
         <View className='at-row at-row__justify--end'>
           {
-            value.length > 12 &&
+            props.value.length > 12 &&
             <Text className='non-input'>
               ...
             </Text>

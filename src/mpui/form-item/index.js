@@ -1,4 +1,7 @@
-import Taro from '@tarojs/taro'
+import Taro, {
+  useEffect,
+  useState,
+} from '@tarojs/taro'
 import {View} from '@tarojs/components'
 import {AtIcon} from 'taro-ui'
 
@@ -7,7 +10,19 @@ import './index.scss'
 function MPFormItem(props) {
 
   // 项展示名称、展示形式
-  const {label, vertical} = props
+  const {label, vertical, rules} = props
+
+  const [required, setRequired] = useState(false)
+  useEffect(() => {
+    console.log('MPFormItem useEffect rule')
+    console.log(rules)
+    rules.map(rule => rule.required === true ? setRequired(true): '')
+  }, [rules])
+
+  useEffect(() => {
+    console.log('MPFormItem useEffect label')
+    console.log(label)
+  }, [label])
 
   return (
     <View className='form-item'>
@@ -19,10 +34,10 @@ function MPFormItem(props) {
             <View className='at-row at-row__align--center at-row__justify--center'>
               <View className='at-col-2'>
                 <View className='at-row at-row__justify--end'>
-                  {/*{*/}
-                  {/*  isRequired &&*/}
-                  <AtIcon value='star-2' size='10' color='#F00' />
-                  {/*}*/}
+                  {
+                    required &&
+                    <AtIcon value='star-2' size='10' color='#F00' />
+                  }
                 </View>
               </View>
               <View className='at-col__offset-1 at-col-auto'>
@@ -63,6 +78,7 @@ function MPFormItem(props) {
 MPFormItem.defaultProps = {
   label: '',
   vertical: false,
+  rules: [],
 }
 
 export default MPFormItem

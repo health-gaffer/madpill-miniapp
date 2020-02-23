@@ -39,10 +39,15 @@ export default class TagPage extends Component {
           method: 'GET',
           header: requestHeader,
           success: result => {
+            console.log(this.state.isLoading)
             this.setState({
-              allTags: result.data.data,
-              isLoading:true
+              isLoading:false,
             })
+            if (result.data.data!=null){
+              this.setState({
+                allTags: result.data.data
+              })
+            }
           },
           fail: error => {
             console.log('fail')
@@ -114,6 +119,9 @@ export default class TagPage extends Component {
         tags.push(allTags[index1])
       }
     } else {
+      this.setState({
+        isLoading:true
+      })
       getToken({
         success: (token) =>{
           let requestHeader = {}
@@ -125,6 +133,7 @@ export default class TagPage extends Component {
             method: 'POST',
             data: value,
             success: result => {
+
               value['id'] = result.data.data
 
               allTags.push(value);
@@ -133,6 +142,9 @@ export default class TagPage extends Component {
               this.setState({
                 tags: tags,
                 allTags: allTags
+              })
+              this.setState({
+                isLoading:false
               })
             },
             fail: error => {
@@ -178,6 +190,9 @@ export default class TagPage extends Component {
   confirmRemoveTag(tag) {
     const {tags, allTags} = this.state
     console.log(tag)
+    this.setState({
+      isLoading:true
+    })
     Taro.request({
       url: HOST+ `/tags/` + tag.id,
       method: 'DELETE',
@@ -191,7 +206,8 @@ export default class TagPage extends Component {
         this.setState({
           confirmDelete: '',
           tags: tags,
-          allTags: allTags
+          allTags: allTags,
+          isLoading:false
         })
       },
       fail: error => {
@@ -234,11 +250,6 @@ export default class TagPage extends Component {
           }
         </View>
         <View className='all-tags'>
-          {this.state.isLoading ?
-            <View className='load-panel'>
-              <AtActivityIndicator content='加载中...'></AtActivityIndicator>
-            </View>: <View/>
-          }
           <View className='all-tag-manage'>
             {allTags.map((tag) => {
               return <TagItem
@@ -253,6 +264,11 @@ export default class TagPage extends Component {
               />
             })}
           </View>
+          {this.state.isLoading?
+            <View className='load-panel'>
+              <AtActivityIndicator content='加载中...'></AtActivityIndicator>
+            </View>: <View/>
+          }
         </View>
 
       </View>

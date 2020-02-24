@@ -4,11 +4,10 @@ import MedicineItem from './MedicineItem';
 import './index.scss';
 import {getToken} from '../../utils/login';
 import {HEADER_MADPILL_TOKEN_KEY} from '../../constants';
-import {AtActivityIndicator} from 'taro-ui'
+import {AtActivityIndicator, AtIcon} from 'taro-ui'
 import boxIcon from '../../assets/icons/box.png';
 
 export default class MedicineList extends Component {
-
   static defaultProps = {
     keyword: ''
   }
@@ -40,7 +39,7 @@ export default class MedicineList extends Component {
         let requestHeader = {};
         requestHeader[HEADER_MADPILL_TOKEN_KEY] = token;
         Taro.request({
-          url: HOST + '/drugs',
+          url: HOST + '/drugs?group=' + this.props.groupId,
           method: 'GET',
           header: requestHeader,
           success: res => {
@@ -133,13 +132,17 @@ export default class MedicineList extends Component {
                       onDelete={() => this.handleDelete(medicine.id)}
         />);
     });
+
+    const hasMedicine = (this.state.medicines == null || typeof (this.state.medicines) == "undefined" || this.state.medicines === 0
+      || (this.state.medicines['expired'].length === 0 && this.state.medicines['expiring'].length === 0 && this.state.medicines['notExpired'].length === 0))
+
     return (
       <View className='medicine-list'>
         {this.state.isLoading ?
           <View className='loading'>
             <AtActivityIndicator content='加载中...' size={50}></AtActivityIndicator>
           </View> :
-          this.state.medicine == null ?
+          (hasMedicine ?
             <View className='empty-panel'>
               <View className='inner-panel'>
                 <Image
@@ -165,7 +168,7 @@ export default class MedicineList extends Component {
                 {selectedMedicines.notExpired.length > 0 && <Text className='at-col desc-text'>未过期</Text>}
               </View>
               {notExpiredMedicines}
-            </View>
+            </View>)
         }
       </View>
     );

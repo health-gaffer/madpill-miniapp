@@ -53,7 +53,7 @@ function MedicineInfo(props) {
     },
     tags: [],
     description: '',
-    reminders: [],
+    reminders: JSON.stringify([]),
     indication: JSON.stringify({
       content: ''
     }),
@@ -190,7 +190,8 @@ function MedicineInfo(props) {
     // console.log(`${mpid}: ${curValue}`)
     setMedicine(preMedicine => {
       preMedicine[mpid] = curValue
-      return preMedicine
+      // console.log(preMedicine)
+      return JSON.parse(JSON.stringify(preMedicine))
     })
   }
 
@@ -296,9 +297,9 @@ function MedicineInfo(props) {
           </MPFormItem>
           <MPFormItem label='用药提醒'>
             <MPInputDynamic
-              mpid='reminder'
+              mpid='reminders'
               value={medicine.reminders}
-              // onItemChange={medicineItemChanged}
+              onItemChange={medicineItemChanged}
             />
           </MPFormItem>
 

@@ -1,4 +1,3 @@
-import Taro from '@tarojs/taro'
 import {Input, View} from '@tarojs/components'
 import {AtButton, AtIcon} from 'taro-ui'
 import MPPicker from '../../picker'
@@ -10,17 +9,20 @@ function MPInputDynamicItemTime(props) {
   // 项索引ID、
   const {time} = props
 
-  const timeChanged = () => {
-    console.log('timeChanged')
+  // 保存当前的值，以避免未修改重复渲染
+  const preTime = time
+
+  const timeChanged = (curTime) => {
+    if (curTime !== preTime) {
+      props.onChange(preTime, curTime)
+    }
   }
 
   const onDeleteClick = () => {
-    console.log(`onDeleteClick: ${time}`)
     props.onDelete(time)
   }
 
   const onAddClick = () => {
-    console.log('onAddClick')
     props.onAdd()
   }
 

@@ -7,6 +7,8 @@ import addIcon from '../../assets/icons/add.png';
 import MedicineList from '../../components/MedicineList';
 import {get, set} from "../../global";
 import GroupMenu from '../../components/GroupMenu'
+import {getToken} from '../../utils/login'
+
 export default class HomePage extends Component {
 
   config = {
@@ -23,6 +25,7 @@ export default class HomePage extends Component {
       keyword: '',
       showToast: false,
       titleToast:'',
+      loadingGroup:false,
       curGroup:{},
       groupList:[]
     };
@@ -37,13 +40,37 @@ export default class HomePage extends Component {
 
   componentDidMount() {
     this.checkLoginStatus();
-    //todo getList
+    //todo initList
+    getToken({
+      success: (token) =>{
+        let requestHeader = {}
+        requestHeader['madpill-token'] = token
+        console.log(HOST + '/groups  ' + token)
+        Taro.request({
+          url: HOST+ `/users/groups`,
+          method: 'GET',
+          header: requestHeader,
+          success: result => {
+            console.log(result.data.data)
+            this.setState({
+              groupList: result.data.data,
+              loadingGroup: true
+            })
+          },
+          fail: error => {
+            console.log('fail')
+            console.log(error)
+          }
+        })
+      },
+      fail: (err) => {
+        console.log(err)
+      }
+    })
+
+    //todo 需要细节化
     this.setState({
       curGroup:{id : 1, name: "我的药箱",alias: "我的药箱",createBy:1},
-      groupList:[
-        {id : 2, name: "我的药箱", alias:"办公室药箱",createBy: 1},
-        {id : 3, name: "我的药箱", alias:"父母的药箱",createBy: 1}
-      ]
     })
   }
 
@@ -108,6 +135,15 @@ export default class HomePage extends Component {
     this.child = ref
   }
 
+  handleNewGroup = (value) => {
+    console.log(value)
+    const groupList =  this.state.groupList
+    groupList.push(value)
+    this.setState({
+      curGroup : value,
+      groupList : groupList
+    })
+  }
 
   handleGetUserInfo = (e) => {
     if (e.detail.rawData) {
@@ -123,7 +159,7 @@ export default class HomePage extends Component {
   render() {
     return (
       <View>
-        <AtToast isOpened={this.state.showToast} duration={1000} text= {this.state.titleToast} status={"success"} ></AtToast>
+        <AtToast isOpened={this.state.showToast} duration={1000} text= {this.state.titleToast} status={"success"} />
         <View className='login'>
           <View className='top-area'>
             <View className='top-left-area'>
@@ -131,9 +167,8 @@ export default class HomePage extends Component {
                 image={this.state.loggedIn ? (this.state.userInfo ? this.state.userInfo.avatarUrl : 'https://jdc.jd.com/img/200') : 'https://jdc.jd.com/img/200'}
               />
               <View className='group'>
-                <GroupMenu curGroup={this.state.curGroup} groupList={this.state.groupList} onChangeGroup={this.changeGroup}/>
+                <GroupMenu loading={this.state.loadingGroup} curGroup={this.state.curGroup} onCreateGroup={this.handleNewGroup} groupList={this.state.groupList} onChangeGroup={this.changeGroup}/>
               </View>
-
             </View>
             <View className='top-right-area' onClick={this.handleAddDrug}>
               <Image
@@ -165,7 +200,7 @@ export default class HomePage extends Component {
             />
           </View>
         </View>
-        {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
+        {this.state.loggedIn && <MedicineList onRef={this.onRef} groupId={this.state.curGroup.id} keyword={this.state.keyword} />}
       </View>
     );
   }

@@ -22,26 +22,29 @@
     //width: 100px;
     background-color: white;
     margin-top: 5px;
-    border: #eeeeee 1px solid;
+    border: #ffeeee 1px solid;
     border-radius: 6px;
     max-width: 10rem;
     position: relative;
-    padding-right: 2px;
-    padding-bottom: 2px;
+    padding-right: 1px;
+    padding-bottom: 1px;
     z-index: 100000;
     font-size: $font-size-base;
     .switch-group{
       .group-item{
-        padding: 0.4rem 0.7rem;
+        padding: 0.4rem 0.6rem;
         max-width: 10rem;
         //white-space: nowrap;
         //overflow: hidden;
         //text-overflow: ellipsis;
         border-bottom: #eeeeee 1px solid;
       }
+      .loading{
+        padding: 0.2rem 2.5rem;
+      }
     }
     .options{
-      padding: 0.3rem 0.7rem 0.3rem 0.3rem;
+      padding: 0.3rem 0.5rem;
       background-color: #eeeeee;
       display: flex;
       flex-direction: row;

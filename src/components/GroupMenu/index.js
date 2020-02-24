@@ -1,13 +1,25 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Input} from '@tarojs/components'
-import {AtIcon, AtInput, AtModal, AtModalHeader, AtModalContent, AtModalAction} from "taro-ui"
+import {View, Input, Text} from '@tarojs/components'
+import {
+  AtIcon,
+  AtInput,
+  AtModal,
+  AtModalHeader,
+  AtModalContent,
+  AtToast,
+  AtModalAction,
+  AtActivityIndicator
+} from "taro-ui"
 import './index.scss'
-import TagItem from "../MedicineTag";
+import {getToken} from "../../utils/login";
+import {set} from "../../global";
 
 export default class GroupMenu extends Component {
   static defaultProps = {
     curGroup: {alias: '我的药箱', id: 1},
   }
+
+
 
   constructor(props) {
     super(props)
@@ -15,7 +27,12 @@ export default class GroupMenu extends Component {
       showPanel: false,
       createGroupModal: false,
       addGroupModal: false,
-      newGroupName: ''
+      newGroupName: '',
+      toast: {
+        status: 'loading',
+        showToast: false,
+        message: ''
+      }
     }
     console.log(props)
   }
@@ -49,7 +66,77 @@ export default class GroupMenu extends Component {
 
   createGroup = () => {
     //todo 创建群组
-    console.log(this.state.newGroupName)
+    this.setState({
+      toast: {
+        status: 'loading',
+        showToast: true,
+        message: '正在创建...'
+      }
+    })
+    getToken({
+      success: (token) =>{
+        let requestHeader = {}
+        requestHeader['madpill-token'] = token
+        Taro.request({
+          url: HOST+ `/users/groups`,
+          method: 'POST',
+          header: requestHeader,
+          data: this.state.newGroupName,
+          success: result => {
+            console.log(result.data.data)
+            this.setState({
+              toast: {
+                status: 'success',
+                showToast: true,
+                message: '创建成功'
+              },
+              createGroupModal:false
+            })
+
+            this.props.onCreateGroup({
+              id: result.data.data,
+              name: this.state.newGroupName
+            });
+            this.interval = setInterval(() => {
+              this.setState({
+                toast: {
+                  status: 'success',
+                  showToast: false,
+                  message: ''
+                },
+                newGroupName: ''
+              })
+              this.handleCreateChange('')
+              clearInterval(this.interval);
+            }, 1000);
+          },
+          fail: error => {
+            console.log('fail')
+            console.log(error)
+            this.setState({
+              toast: {
+                status: 'fail',
+                showToast: true,
+                message: '创建失败，请重试'
+              }
+            })
+            this.interval = setInterval(() => {
+              this.setState({
+                toast: {
+                  status: '',
+                  showToast: false,
+                  message: ''
+                },
+              })
+              clearInterval(this.interval);
+            }, 1000);
+          }
+        })
+      },
+      fail: (err) => {
+        console.log(err)
+      }
+    })
   }
   render() {
     const {groupList} = this.props
@@ -59,7 +146,7 @@ export default class GroupMenu extends Component {
       <View className='menu'>
 
         <View className='current' onClick={this.togglePanel}>
-          <View className='cur-group'>{this.props.curGroup['alias']}</View>
+          <View className='cur-group'>{this.props.curGroup['name']}</View>
           <View>
             <AtIcon value='chevron-down' size='24'></AtIcon>
           </View>
@@ -67,11 +154,17 @@ export default class GroupMenu extends Component {
         {this.props.showPanel ?
           <View className='panel'>
             <View className='switch-group'>
-              {groupList.map((group) =>
-                <View key={group.id} className='group-item' onClick={this.handleClick.bind(this, group['id'])}>
-                  {group['alias']}
+              {this.props.loading ?
+                groupList.map((group) =>
+                  <View key={group.id} className='group-item' onClick={this.handleClick.bind(this, group['id'])}>
+                    {group['name']}
+                  </View>
+                )
+                :
+                <View className='loading'>
+                  <AtActivityIndicator/>
                 </View>
-              )}
+              }
             </View>
             <View className='options' onClick={this.showCreateModel}>
               <View className='icon'>
@@ -107,7 +200,7 @@ export default class GroupMenu extends Component {
             <Button onClick={this.createGroup}>确定</Button>
           </AtModalAction>
         </AtModal>
-
+        <AtToast isOpened = {this.state.toast.showToast} duration = {0} text={this.state.toast.message} status={this.state.toast.status}/>
       </View>
     )
   }

@@ -39,7 +39,7 @@ export default class MedicineList extends Component {
         let requestHeader = {};
         requestHeader[HEADER_MADPILL_TOKEN_KEY] = token;
         Taro.request({
-          url: HOST + '/drugs',
+          url: HOST + '/drugs?group=' + this.props.groupId,
           method: 'GET',
           header: requestHeader,
           success: res => {

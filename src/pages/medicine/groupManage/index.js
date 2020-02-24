@@ -29,7 +29,7 @@ function GroupManage() {
 
   const [{data, isLoading, statusCode}] = useDataApi({
     requestMethod: 'GET',
-    requestUrl: '/users/groups',
+    requestUrl: '/groups',
     initialResultData: [],
     execNow: true,
   })

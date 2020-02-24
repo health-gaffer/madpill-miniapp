@@ -7,19 +7,19 @@ import './index.scss'
 function MPInputDynamicItemTime(props) {
 
   // 项索引ID、
-  const {time} = props
+  const {time, index} = props
 
   // 保存当前的值，以避免未修改重复渲染
   const preTime = time
 
   const timeChanged = (curTime) => {
     if (curTime !== preTime) {
-      props.onChange(preTime, curTime)
+      props.onChange(index, curTime)
     }
   }
 
   const onDeleteClick = () => {
-    props.onDelete(time)
+    props.onDelete(index)
   }
 
   const onAddClick = () => {

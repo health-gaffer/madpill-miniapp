@@ -10,9 +10,9 @@ function MPInputDynamic(props) {
   // 项索引ID、时间数组json、
   const {mpid, value} = props
 
-  const [items, setItems] = useState(JSON.parse(value))
+  const [items, setItems] = useState(value === null ? [] : JSON.parse(value))
   useEffect(() => {
-    setItems(JSON.parse(value))
+    setItems(value === null ? [] : JSON.parse(value))
   }, [value])
 
   const addReminder = () => {
@@ -21,17 +21,15 @@ function MPInputDynamic(props) {
     props.onItemChange(JSON.stringify(curItems), mpid)
   }
 
-  const deleteReminder = (toDeleteTime) => {
+  const deleteReminder = (toDeleteIndex) => {
     let curItems = JSON.parse(JSON.stringify(items))
-    const toDeleteIndex = curItems.indexOf(toDeleteTime)
     curItems.splice(toDeleteIndex, 1)
     props.onItemChange(JSON.stringify(curItems), mpid)
   }
 
-  const changeReminder = (preTime, curTime) => {
+  const changeReminder = (toChangeIndex, curTime) => {
     // console.log(`${preTime} => ${curTime}`)
     let curItems = JSON.parse(JSON.stringify(items))
-    const toChangeIndex = curItems.indexOf(preTime)
     curItems.splice(toChangeIndex, 1, curTime)
     props.onItemChange(JSON.stringify(curItems), mpid)
   }
@@ -39,12 +37,13 @@ function MPInputDynamic(props) {
   return (
     <View>
       {
-        items && items.length > 0 &&
-        items.map(time =>
+        items.length > 0 &&
+        items.map((time, index) =>
           <MPInputDynamicItemTime
             className='at-row'
-            key={time}
+            key={index}
             time={time}
+            index={index}
             onDelete={deleteReminder}
             onChange={changeReminder}
           />

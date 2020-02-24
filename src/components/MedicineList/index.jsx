@@ -30,16 +30,19 @@ export default class MedicineList extends Component {
     this.setState({
       isLoading: true
     })
-    this.updateList()
+    // this.updateList()
   }
 
-  updateList = () => {
+  updateList = (groupId) => {
+    this.setState({
+      isLoading: true
+    })
     getToken({
       success: (token) => {
         let requestHeader = {};
         requestHeader[HEADER_MADPILL_TOKEN_KEY] = token;
         Taro.request({
-          url: HOST + '/drugs?group=' + this.props.groupId,
+          url: HOST + '/drugs?group=' + groupId,
           method: 'GET',
           header: requestHeader,
           success: res => {

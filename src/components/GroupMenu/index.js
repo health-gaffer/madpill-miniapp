@@ -155,15 +155,15 @@ export default class GroupMenu extends Component {
           <View className='panel'>
             <View className='switch-group'>
               {this.props.loading ?
+                <View className='loading'>
+                  <AtActivityIndicator/>
+                </View>
+                :
                 groupList.map((group) =>
                   <View key={group.id} className='group-item' onClick={this.handleClick.bind(this, group['id'])}>
                     {group['name']}
                   </View>
                 )
-                :
-                <View className='loading'>
-                  <AtActivityIndicator/>
-                </View>
               }
             </View>
             <View className='options' onClick={this.showCreateModel}>

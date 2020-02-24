@@ -25,7 +25,7 @@ export default class HomePage extends Component {
       keyword: '',
       showToast: false,
       titleToast:'',
-      loadingGroup:false,
+      loadingGroup:true,
       curGroup:{},
       groupList:[]
     };
@@ -40,7 +40,9 @@ export default class HomePage extends Component {
 
   componentDidMount() {
     this.checkLoginStatus();
-    //todo initList
+  }
+
+  getGroupInfo(){
     getToken({
       success: (token) =>{
         let requestHeader = {}
@@ -54,8 +56,10 @@ export default class HomePage extends Component {
             console.log(result.data.data)
             this.setState({
               groupList: result.data.data,
-              loadingGroup: true
+              curGroup: result.data.data[0],
+              loadingGroup: false
             })
+            this.child.updateList(result.data.data[0].id)
           },
           fail: error => {
             console.log('fail')
@@ -67,18 +71,11 @@ export default class HomePage extends Component {
         console.log(err)
       }
     })
-
-    //todo 需要细节化
-    this.setState({
-      curGroup:{id : 1, name: "我的药箱",alias: "我的药箱",createBy:1},
-    })
   }
 
   componentDidShow() {
-
     const option = get('option')
     if (option != null){
-      console.log(123);
       if(option['code'] === 'delete'){
         this.setState({
           titleToast : option['msg'],
@@ -86,13 +83,16 @@ export default class HomePage extends Component {
         })
       }
       set('option',null)
-      this.child.updateList()
+      this.child.updateList(this.state.curGroup.id)
     }
   }
 
   onPullDownRefresh() {
-    this.child.updateList()
-    this.checkLoginStatus();
+    if(this.state.loggedIn){
+      this.child.updateList(this.state.curGroup.id)
+    }else {
+      this.checkLoginStatus();
+    }
     Taro.stopPullDownRefresh();
   }
 
@@ -108,6 +108,7 @@ export default class HomePage extends Component {
                 this.setState({
                   userInfo: res.userInfo
                 });
+                this.getGroupInfo()
               },
               fail: err => {
                 console.error(err);
@@ -124,6 +125,15 @@ export default class HomePage extends Component {
   changeGroup = (value) => {
     //todo change the viewList
     console.log(value)
+    console.log(this.state.groupList)
+    this.state.groupList.map(group => {
+       if(group.id === value){
+         this.setState({
+           curGroup: group
+         })
+       }
+    })
+    this.child.updateList(value)
   }
   handleAddDrug = () => {
     // console.log('I will add a new drug.');
@@ -153,6 +163,7 @@ export default class HomePage extends Component {
         loggedIn: true,
         userInfo: userInfo
       });
+      this.getGroupInfo()
     }
   };
 
@@ -200,7 +211,7 @@ export default class HomePage extends Component {
             />
           </View>
         </View>
-        {this.state.loggedIn && <MedicineList onRef={this.onRef} groupId={this.state.curGroup.id} keyword={this.state.keyword} />}
+        {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
       </View>
     );
   }

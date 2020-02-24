@@ -87,7 +87,7 @@ function MedicineInfo(props) {
   const [{data: medicineRequestedData, isLoading: medicineLoading, statusCode: medicineStatusCode}, medicineRequest] = useDataApi({
     requestMethod: 'GET',
     requestUrl: `drugs/${props.routerParams.medicineId}`,
-    initialResultData: {},
+    initialResultData: medicine,
   })
 
   // medicineRequest 加载结果返回后设置本组件中药品 medicine 的相关信息
@@ -265,13 +265,8 @@ function MedicineInfo(props) {
             <MPInputNavigation
               mpid='group'
               iconValue='chevron-right'
-              urlToNavigate={() => {
-                if (medicine.group && medicine.group.id) return `/pages/medicine/groupManage/index?groupId=${medicine.group.id}`
-                else return '/pages/medicine/groupManage/index'
-              }}
-              represent={() => {
-                if (medicine.group) return medicine.group.name
-              }}
+              urlToNavigate={`/pages/medicine/groupManage/index?groupId=${medicine.group.id}`}
+              represent={medicine.group.name}
               onItemChange={medicineItemChanged}
             />
           </MPFormItem>
@@ -279,12 +274,8 @@ function MedicineInfo(props) {
             <MPInputNavigation
               mpid='tags'
               iconValue='chevron-right'
-              urlToNavigate={() => {
-                if (medicine.tags) return `/pages/medicine/tagManage/index?tags=${JSON.stringify(medicine.tags)}`
-              }}
-              represent={() => {
-                if (medicine.tags) return medicine.tags.map(tag => tag.name).join(', ')
-              }}
+              urlToNavigate={`/pages/medicine/tagManage/index?tags=${JSON.stringify(medicine.tags)}`}
+              represent={medicine.tags.map(tag => tag.name).join(', ')}
               onItemChange={medicineItemChanged}
             />
           </MPFormItem>

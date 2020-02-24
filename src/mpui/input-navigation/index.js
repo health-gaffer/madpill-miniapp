@@ -3,25 +3,26 @@ import {Input, Text, View} from '@tarojs/components'
 import {AtButton, AtIcon} from 'taro-ui'
 
 import './index.scss'
-import {get} from '../../global'
+import {get, set} from '../../global'
 
 function MPInputNavigation(props) {
 
   // 项索引ID、提示信息、
-  const {mpid, urlToNavigate, iconValue} = props
-
-  const representStr = props.represent()
+  const {mpid, iconValue, urlToNavigate, represent} = props
 
   useDidShow(() => {
     const curValue = get(mpid)
     if (curValue) {
       props.onItemChange(curValue, mpid)
+
+      // 避免二次消费
+      set(mpid, null)
     }
   })
 
   const iconBtnClicked = () => {
     Taro.navigateTo({
-      url: `${urlToNavigate()}`
+      url: urlToNavigate
     })
   }
 
@@ -31,14 +32,14 @@ function MPInputNavigation(props) {
         <Input
           disabled
           type='text'
-          placeholder={representStr}
+          placeholder={represent}
           placeholderClass='non-input'
         />
       </View>
       <View className='at-col-2'>
         <View className='at-row at-row__justify--end'>
           {
-            representStr.length > 12 &&
+            represent.length > 12 &&
             <Text className='non-input'>
               ...
             </Text>
@@ -58,8 +59,8 @@ function MPInputNavigation(props) {
 MPInputNavigation.defaultProps = {
   mpid: '',
   iconValue: '',
-  urlToNavigate: () => '',
-  represent: () => '',
+  urlToNavigate: '',
+  represent: '',
 }
 
 export default MPInputNavigation

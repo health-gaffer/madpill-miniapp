@@ -266,7 +266,8 @@ function MedicineInfo(props) {
               mpid='group'
               iconValue='chevron-right'
               urlToNavigate={() => {
-                if (medicine.group) return `/pages/medicine/groupManage/index?groupId=${medicine.group.id}`
+                if (medicine.group && medicine.group.id) return `/pages/medicine/groupManage/index?groupId=${medicine.group.id}`
+                else return '/pages/medicine/groupManage/index'
               }}
               represent={() => {
                 if (medicine.group) return medicine.group.name

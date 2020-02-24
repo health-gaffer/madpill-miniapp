@@ -39,7 +39,7 @@ function MPInputDynamic(props) {
   return (
     <View>
       {
-        items.length > 0 &&
+        items && items.length > 0 &&
         items.map(time =>
           <MPInputDynamicItemTime
             className='at-row'

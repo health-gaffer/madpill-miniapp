@@ -36,7 +36,7 @@ function GroupManage() {
 
   // 加载群组数据
   useEffect(() => {
-    let presentData =[]
+    let presentData = []
     for (let i = 0; i < data.length; i++) {
       presentData.push({
         label: data[i].name,
@@ -70,22 +70,19 @@ function GroupManage() {
     }
   }, [statusCode])
 
-  const handleChange = (value) =>  {
+  const handleChange = (value) => {
     setChosenGroupId(value)
   }
 
   return (
     <View>
-      {
-        curGroupId !== undefined &&
-          <View>
-            <AtRadio
-              options={groupOptions}
-              value={chosenGroupId}
-              onClick={handleChange}
-            />
-          </View>
-      }
+      <View>
+        <AtRadio
+          options={groupOptions}
+          value={chosenGroupId}
+          onClick={handleChange}
+        />
+      </View>
     </View>
   )
 }

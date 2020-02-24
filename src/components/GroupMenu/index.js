@@ -78,7 +78,7 @@ export default class GroupMenu extends Component {
         let requestHeader = {}
         requestHeader['madpill-token'] = token
         Taro.request({
-          url: HOST+ `/users/groups`,
+          url: HOST+ '/groups',
           method: 'POST',
           header: requestHeader,
           data: this.state.newGroupName,

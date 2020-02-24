@@ -49,7 +49,7 @@ export default class HomePage extends Component {
         requestHeader['madpill-token'] = token
         console.log(HOST + '/groups  ' + token)
         Taro.request({
-          url: HOST+ `/users/groups`,
+          url: HOST+ `/groups`,
           method: 'GET',
           header: requestHeader,
           success: result => {
@@ -167,6 +167,12 @@ export default class HomePage extends Component {
     }
   };
 
+  routeToDetail = () => {
+    Taro.navigateTo({
+      url: '/pages/medicine/index?action=review&medicineId=119'
+    })
+  }
+
   render() {
     return (
       <View>
@@ -212,6 +218,7 @@ export default class HomePage extends Component {
           </View>
         </View>
         {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
+        <Button type='primary' onClick={this.routeToDetail}>查看详情</Button>
       </View>
     );
   }

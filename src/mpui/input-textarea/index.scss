@@ -1,5 +1,6 @@
 @import "~taro-ui/dist/style/components/flex.scss";
+@import "src/custom-variables";
 
-.content {
-  margin-top: 8px;
+.non-input {
+  color: $tip;
 }

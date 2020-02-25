@@ -20,6 +20,7 @@ function MPTextArea(props) {
     <Textarea
       value={JSON.parse(value).content}
       placeholder={placeholder}
+      placeholderClass='non-input'
       autoHeight
       cursorSpacing={20}
       maxlength={800}

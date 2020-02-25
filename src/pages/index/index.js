@@ -79,7 +79,7 @@ export default class HomePage extends Component {
   componentDidShow() {
     const option = get('option')
     if (option != null){
-      if(option['code'] === 'delete'){
+      if(option['code'] === 'delete' || option['code'] === 'update'){
         this.setState({
           titleToast : option['msg'],
           showToast : true
@@ -138,12 +138,14 @@ export default class HomePage extends Component {
     })
     this.child.updateList(value)
   }
+
   handleAddDrug = () => {
     // console.log('I will add a new drug.');
     Taro.navigateTo({
       url: '/pages/add/index'
     })
   };
+
   onRef = (ref) => {
     this.child = ref
   }
@@ -156,6 +158,7 @@ export default class HomePage extends Component {
       curGroup : value,
       groupList : groupList
     })
+    this.child.updateList(value.id)
   }
 
   handleGetUserInfo = (e) => {

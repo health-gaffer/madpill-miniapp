@@ -3,11 +3,15 @@ import {Text, View} from '@tarojs/components';
 import {AtSwipeAction} from 'taro-ui';
 import './index.scss';
 import MPDivider from '../../MPDivider';
-import defaultPill from '../../../assets/images/pill-5.png';
+import { getPillColor } from '../../../utils'
 
 export default class MedicineItem extends Component {
   static defaultProps = {
     medicine : {
+      id: '',
+      name: '',
+      day: 0,
+      manufacture: '',
       tags : []
     },
   }
@@ -30,6 +34,7 @@ export default class MedicineItem extends Component {
       );
     });
     const ellipses = (tags.length > 3 && <View className='tag tag-ellipse'>···</View>);
+    const curPillColor = getPillColor(this.props.medicine.manufacture + this.props.medicine.name)
     return (
       <View className='medicine-item'>
         <AtSwipeAction
@@ -41,7 +46,10 @@ export default class MedicineItem extends Component {
         >
           <View onClick={this.handleReview} className='at-row medicine-info'>
             <View className='at-col at-col-1 at-col--auto pill-img-wrapper'>
-              <Image src={defaultPill} className='pill-img' />
+              <View
+                className='madpill icon-pill pill-img'
+                style={{color: curPillColor}}
+              />
             </View>
             <View className='at-col at-col-9 pill-info-wrapper'>
               <View className='at-row at-row__justify--between at-row__align--center'>

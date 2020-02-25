@@ -11,6 +11,7 @@
     justify-content: space-between;
     align-items: stretch;
     margin-bottom: 1rem;
+
     .top-left-area {
       flex: 9;
       display: flex;
@@ -35,6 +36,7 @@
       justify-content: flex-end;
       padding-right: 3px;
       align-items: center;
+
       .add-drug-icon {
         width: 1.3rem;
         height: 1.3rem;

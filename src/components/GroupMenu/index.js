@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Input, Text} from '@tarojs/components'
+import {View} from '@tarojs/components'
 import {
   AtIcon,
   AtInput,
@@ -9,10 +9,9 @@ import {
   AtToast,
   AtModalAction,
   AtActivityIndicator
-} from "taro-ui"
+} from 'taro-ui'
 import './index.scss'
-import {getToken} from "../../utils/login";
-import {set} from "../../global";
+import {getToken} from '../../utils/login'
 
 export default class GroupMenu extends Component {
   static defaultProps = {
@@ -26,7 +25,6 @@ export default class GroupMenu extends Component {
     this.state = {
       showPanel: false,
       createGroupModal: false,
-      addGroupModal: false,
       newGroupName: '',
       toast: {
         status: 'loading',
@@ -140,8 +138,8 @@ export default class GroupMenu extends Component {
   }
   render() {
     const {groupList} = this.props
-    const createIcon = <AtIcon value='home' size='20'/>
-    const addIcon = <AtIcon value='add' size='20'/>
+    const createIcon = <AtIcon value='home' size='20' />
+    const addIcon = <AtIcon value='add' size='20' />
     return (
       <View className='menu'>
 
@@ -156,7 +154,7 @@ export default class GroupMenu extends Component {
             <View className='switch-group'>
               {this.props.loading ?
                 <View className='loading'>
-                  <AtActivityIndicator/>
+                  <AtActivityIndicator />
                 </View>
                 :
                 groupList.map((group) =>
@@ -179,11 +177,11 @@ export default class GroupMenu extends Component {
               <View className='title'>加入药箱</View>
             </View>
           </View>
-          : <View/>
+          : <View />
         }
         {this.props.showPanel ?
-          <View className='blank-panel' onClick={this.togglePanel}/>
-          : <View/>
+          <View className='blank-panel' onClick={this.togglePanel} />
+          : <View />
         }
         <AtModal
           isOpened={this.state.createGroupModal}
@@ -193,14 +191,16 @@ export default class GroupMenu extends Component {
         >
           <AtModalHeader>创建药箱</AtModalHeader>
           <AtModalContent>
-            <AtInput clear type='text' placeholder='输入药箱名称' maxLength='10'
-                     onChange={this.handleCreateChange} onConfirm={this.createGroup}/>
+            <AtInput
+              clear type='text' placeholder='输入药箱名称' maxLength='10'
+              onChange={this.handleCreateChange} onConfirm={this.createGroup}
+            />
           </AtModalContent>
           <AtModalAction>
             <Button onClick={this.createGroup}>确定</Button>
           </AtModalAction>
         </AtModal>
-        <AtToast isOpened = {this.state.toast.showToast} duration = {0} text={this.state.toast.message} status={this.state.toast.status}/>
+        <AtToast isOpened={this.state.toast.showToast} duration={0} text={this.state.toast.message} status={this.state.toast.status} />
       </View>
     )
   }

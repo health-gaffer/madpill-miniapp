@@ -1,11 +1,11 @@
 import Taro, {Component} from '@tarojs/taro';
-import {Button, Input, Text, View} from '@tarojs/components';
+import {Button, Input, View} from '@tarojs/components';
 import {AtAvatar,AtToast} from 'taro-ui';
 
 import './index.scss';
 import addIcon from '../../assets/icons/add.png';
 import MedicineList from '../../components/MedicineList';
-import {get, set} from "../../global";
+import {get, set} from '../../global'
 import GroupMenu from '../../components/GroupMenu'
 import {getToken} from '../../utils/login'
 
@@ -49,7 +49,7 @@ export default class HomePage extends Component {
         requestHeader['madpill-token'] = token
         console.log(HOST + '/groups  ' + token)
         Taro.request({
-          url: HOST+ `/groups`,
+          url: HOST + '/groups',
           method: 'GET',
           header: requestHeader,
           success: result => {
@@ -98,15 +98,15 @@ export default class HomePage extends Component {
 
   checkLoginStatus = () => {
     Taro.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
+      success: res1 => {
+        if (res1.authSetting['scope.userInfo']) {
           this.setState({
             loggedIn: true
           }, () => {
             Taro.getUserInfo({
-              success: res => {
+              success: res2 => {
                 this.setState({
-                  userInfo: res.userInfo
+                  userInfo: res2.userInfo
                 });
                 this.getGroupInfo()
               },
@@ -167,16 +167,10 @@ export default class HomePage extends Component {
     }
   };
 
-  routeToDetail = () => {
-    Taro.navigateTo({
-      url: '/pages/medicine/index?action=review&medicineId=119'
-    })
-  }
-
   render() {
     return (
       <View>
-        <AtToast isOpened={this.state.showToast} duration={1000} text= {this.state.titleToast} status={"success"} />
+        <AtToast isOpened={this.state.showToast} duration={1000} text={this.state.titleToast} status='success' />
         <View className='login'>
           <View className='top-area'>
             <View className='top-left-area'>
@@ -184,7 +178,7 @@ export default class HomePage extends Component {
                 image={this.state.loggedIn ? (this.state.userInfo ? this.state.userInfo.avatarUrl : 'https://jdc.jd.com/img/200') : 'https://jdc.jd.com/img/200'}
               />
               <View className='group'>
-                <GroupMenu loading={this.state.loadingGroup} curGroup={this.state.curGroup} onCreateGroup={this.handleNewGroup} groupList={this.state.groupList} onChangeGroup={this.changeGroup}/>
+                <GroupMenu loading={this.state.loadingGroup} curGroup={this.state.curGroup} onCreateGroup={this.handleNewGroup} groupList={this.state.groupList} onChangeGroup={this.changeGroup} />
               </View>
             </View>
             <View className='top-right-area' onClick={this.handleAddDrug}>
@@ -218,7 +212,6 @@ export default class HomePage extends Component {
           </View>
         </View>
         {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
-        <Button type='primary' onClick={this.routeToDetail}>查看详情</Button>
       </View>
     );
   }

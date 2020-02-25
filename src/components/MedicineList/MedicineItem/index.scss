@@ -1,5 +1,7 @@
 @import "~taro-ui/dist/style/components/flex.scss";
 @import "src/custom-variables";
+@import "src/assets/iconfont/iconfont";
+
 .medicine-item {
   border-style: none;
   //height: 100px;
@@ -15,8 +17,7 @@
       align-content: center;
 
       .pill-img {
-        height: 80px;
-        width: 80px;
+        font-size: 80px;
       }
     }
 
@@ -50,6 +51,7 @@
 
       .tags-wrapper {
         margin-top: 16px;
+
         .pill-tags-wrapper {
           //background-color: #24e023;
           opacity: 0.3;
@@ -58,13 +60,15 @@
           vertical-align: middle;
           // 除了第一个标签
           height: $font-size-middle * 1.3;
-          .tag{
+
+          .tag {
             margin-right: 10px;
             line-height: $font-size-middle * 1.3;
             font-size: $font-size-small;
 
           }
-          .tag-ellipse{
+
+          .tag-ellipse {
             margin-right: 0;
             padding: 0 0;
             width: $font-size-middle*2.4;

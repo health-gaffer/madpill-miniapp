@@ -1,10 +1,11 @@
 import Taro, {Component} from '@tarojs/taro';
 import {View, Image, Text} from '@tarojs/components';
+import {AtActivityIndicator} from 'taro-ui'
+
 import MedicineItem from './MedicineItem';
 import './index.scss';
 import {getToken} from '../../utils/login';
 import {HEADER_MADPILL_TOKEN_KEY} from '../../constants';
-import {AtActivityIndicator, AtIcon} from 'taro-ui'
 import boxIcon from '../../assets/icons/box.png';
 
 export default class MedicineList extends Component {
@@ -118,25 +119,31 @@ export default class MedicineList extends Component {
     }
     const expiredMedicines = selectedMedicines.expired.map(medicine => {
       return (
-        <MedicineItem key={String(medicine.id)} medicine={medicine} status='expired'
-                      onDelete={() => this.handleDelete(medicine.id)}
+        <MedicineItem
+          key={String(medicine.id)}
+          medicine={medicine} status='expired'
+          onDelete={() => this.handleDelete(medicine.id)}
         />
       );
     });
     const expiringMedicines = selectedMedicines.expiring.map(medicine => {
       return (
-        <MedicineItem key={String(medicine.id)} medicine={medicine} status='expiring'
-                      onDelete={() => this.handleDelete(medicine.id)}
+        <MedicineItem
+          key={String(medicine.id)}
+          medicine={medicine} status='expiring'
+          onDelete={() => this.handleDelete(medicine.id)}
         />);
     });
     const notExpiredMedicines = selectedMedicines.notExpired.map(medicine => {
       return (
-        <MedicineItem key={String(medicine.id)} medicine={medicine} status='notExpired'
-                      onDelete={() => this.handleDelete(medicine.id)}
+        <MedicineItem
+          key={String(medicine.id)}
+          medicine={medicine} status='notExpired'
+          onDelete={() => this.handleDelete(medicine.id)}
         />);
     });
 
-    const hasMedicine = (this.state.medicines == null || typeof (this.state.medicines) == "undefined" || this.state.medicines === 0
+    const hasMedicine = (this.state.medicines == null || typeof (this.state.medicines) == 'undefined' || this.state.medicines === 0
       || (this.state.medicines['expired'].length === 0 && this.state.medicines['expiring'].length === 0 && this.state.medicines['notExpired'].length === 0))
 
     return (

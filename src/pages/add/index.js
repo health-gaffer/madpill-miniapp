@@ -1,13 +1,13 @@
 import Taro ,{
   useState
 } from '@tarojs/taro'
-import {ScrollView, View} from '@tarojs/components'
-import { AtButton } from "taro-ui"
+import {View} from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 
 import './index.scss'
-import BasicItem from "../../components/MedicineInfo/BasicItem"
-import MPDivider from "../../components/MPDivider"
-import AddSearchedResult from "../../components/AddSearchedResult"
+import BasicItem from '../../components/MedicineInfo/BasicItem'
+import MPDivider from '../../components/MPDivider'
+import AddSearchedResult from '../../components/AddSearchedResult'
 
 function Add() {
 

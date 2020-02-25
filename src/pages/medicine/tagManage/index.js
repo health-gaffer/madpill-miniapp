@@ -62,7 +62,7 @@ export default class TagPage extends Component {
 
 
 
-    const name = "双黄连口服液"
+    const name = '双黄连口服液'
     const tags = JSON.parse(this.$router.params.tags)
     // const allTags =  [{id:1,name:'感冒'},{id:2,name:'发烧'},{id:3,name:'治脚气'}];
     this.setState({
@@ -194,7 +194,7 @@ export default class TagPage extends Component {
       isLoading:true
     })
     Taro.request({
-      url: HOST+ `/tags/` + tag.id,
+      url: HOST+ '/tags/' + tag.id,
       method: 'DELETE',
       success: result => {
         if (this.indexOfTag(allTags, tag.name) >= 0) {
@@ -218,7 +218,7 @@ export default class TagPage extends Component {
   }
 
   componentWillUnmount() {
-    set("tags", this.state.tags)
+    set('tags', this.state.tags)
   }
 
   render() {
@@ -234,7 +234,7 @@ export default class TagPage extends Component {
               disabled={disabled}
               isManage={false}
               onClick={this.handleClickTag.bind(this)}
-              active={true}
+              active
             />
           )}
           <TagInput disabled={disabled} onAddNewTag={this.addNewTag.bind(this)} />
@@ -267,7 +267,7 @@ export default class TagPage extends Component {
           {this.state.isLoading?
             <View className='load-panel'>
               <AtActivityIndicator content='加载中...'></AtActivityIndicator>
-            </View>: <View/>
+            </View>: <View />
           }
         </View>
 

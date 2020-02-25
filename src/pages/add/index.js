@@ -5,13 +5,13 @@ import {View} from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 
 import './index.scss'
-import BasicItem from '../../components/MedicineInfo/BasicItem'
 import MPDivider from '../../components/MPDivider'
 import AddSearchedResult from '../../components/AddSearchedResult'
+import MPForm from '../../mpui/form';
+import MPFormItem from '../../mpui/form-item';
+import MPInput from '../../mpui/input';
 
 function Add() {
-
-  const searchItem = {itemLabel: 'search', itemName: '药品名称', itemType: 'input', isRequired: true, iconValue: 'search'}
 
   const [showingResult, setShowingResult] = useState(false)
   const [query, setQuery] = useState('')
@@ -64,7 +64,15 @@ function Add() {
 
         {/* 搜索框 */}
         <View className={showingResult ? 'searched' : 'search'}>
-          <BasicItem item={searchItem} onItemChange={searchItemChanged} />
+          <MPForm>
+            <MPFormItem label='药品名称'>
+              <MPInput
+                value={query}
+                placeholder='请输入药品名称'
+                onItemChange={searchItemChanged}
+              />
+            </MPFormItem>
+          </MPForm>
           <MPDivider type='dark-gray' />
         </View>
 

@@ -21,8 +21,8 @@ export const fetchAuthorizationInfo = callback => {
         fail: err => {
           console.error(err);
           Taro.showToast({
-            title: "网络好像有点问题...",
-            icon: "none"
+            title: '网络好像有点问题...',
+            icon: 'none'
           });
         }
       });
@@ -90,7 +90,7 @@ const stringHashCode = (str, asString, seed) => {
   }
   if (asString) {
     // Convert to 8 digit hex string
-    return ("0000000" + (hval >>> 0).toString(16)).substr(-8);
+    return ('0000000' + (hval >>> 0).toString(16)).substr(-8);
   }
   return hval >>> 0;
 
@@ -102,4 +102,27 @@ const stringHashCode = (str, asString, seed) => {
   //   hash |= 0; // Convert to 32bit integer
   // }
   // return hash;
+}
+
+
+/**
+ * @param obj
+ * @param path
+ * @return {undefined|*}
+ */
+export const getObjValueByPath = (obj, path) => {
+  const reg = /(?:(?:^|\.)([^\.\[\]]+))|(?:\[([^\[\]]+)\])/g;
+  const names = [];
+  let name = null;
+  while ((name = reg.exec(path)) != null) {
+    names.push(name[1] || name[2]);
+  }
+  let o = obj;
+  for (let i = 0; i < names.length; i++) {
+    o = o[names[i]];
+    if (o === undefined) {
+      return undefined;
+    }
+  }
+  return o;
 }

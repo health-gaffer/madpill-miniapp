@@ -13,6 +13,7 @@ import MPButton from '../../components/MPButtons'
 import useDataApi from '../../hooks/useDataApi'
 import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from '../../constants'
 import { set } from '../../global'
+import { getObjValueByPath } from '../../utils'
 
 function Medicine() {
 
@@ -108,16 +109,19 @@ function Medicine() {
 
 
   // 校验药品信息的合法性
+  // TODO 理应由子组件 MedicineInfo 中的 form 管理，但因为 taro 目前不支持 useImperativeHandle + forwardRef，
+  // TODO form 拿不到子组件的相关信息，所以现在就提交前校验
   const medicineValidityCheck = () => {
     const requiredRules = [
       {label: 'name', msg: '药品名称必填哦'},
       {label: 'producedDate', msg: '生产时间必填哦'},
       {label: 'expireDate', msg: '过期时间必填哦'},
+      {label: 'group.id', msg: '所属群组必填哦'},
     ]
     for (let i = 0; i < requiredRules.length; i++) {
       const rule = requiredRules[i]
-      const checkedLabel = curMedicine[rule.label]
-      if (checkedLabel === undefined || checkedLabel === '') {
+      const checked = getObjValueByPath(curMedicine, rule.label)
+      if (checked === undefined || checked === '') {
         Taro.showToast({
           title: rule.msg,
           icon: 'none'

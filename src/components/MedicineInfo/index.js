@@ -209,117 +209,122 @@ function MedicineInfo(props) {
 
   return (
     <View className='medicine'>
-      <View className='image-and-banner'>
+      <View className='image'>
         <MedicineImage />
-        <Banner
-          basicsHeight={infoBasicsHeight}
-          showingInfoType={showingInfoType}
-        />
       </View>
 
-      <View className='info'>
-        <MPForm>
-          <MPFormItem
-            label='药品名称'
-            rules={[{
-              required: true, message: '生产时间必填哦',
-            }]}
-          >
-            <MPInput
-              mpid='name'
-              value={medicine.name}
-              placeholder='请输入药品名称'
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
-          <MPFormItem
-            label='生产日期'
-            rules={[{
-              required: true, message: '生产时间必填哦',
-            }]}
-          >
-            <MPPicker
-              mpid='producedDate'
-              value={medicine.producedDate}
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
-          <MPFormItem
-            label='有效期至'
-            rules={[{
-              required: true, message: '有效期至必填哦',
-            }]}
-          >
-            <MPPicker
-              mpid='expireDate'
-              value={medicine.expireDate}
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
-          <MPFormItem
-            label='所属群组'
-            rules={[{
-              required: true, message: '所属群组必填哦',
-            }]}
-          >
-            <MPInputNavigation
-              mpid='group'
-              iconValue='chevron-right'
-              urlToNavigate={`/pages/medicine/groupManage/index?groupId=${medicine.group.id}`}
-              represent={medicine.group.name}
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
-          <MPFormItem label='药品标签'>
-            <MPInputNavigation
-              mpid='tags'
-              iconValue='chevron-right'
-              urlToNavigate={`/pages/medicine/tagManage/index?tags=${JSON.stringify(medicine.tags)}`}
-              represent={medicine.tags.map(tag => tag.name).join(', ')}
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
-          <MPFormItem label='用药说明'>
-            <MPInput
-              mpid='description'
-              value={medicine.description}
-              placeholder='请输入用药说明'
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
-          <MPFormItem label='用药提醒'>
-            <MPInputDynamic
-              mpid='reminders'
-              value={medicine.reminders}
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
+      <View className='rest'>
+        <View className='banner'>
+          <Banner
+            basicsHeight={infoBasicsHeight}
+            showingInfoType={showingInfoType}
+          />
+        </View>
 
-          <View className='mp-form-divider'>
-            <MPDivider type='dark-gray' />
-          </View>
+        <View className='info'>
+          <MPForm>
+            <MPFormItem
+              label='药品名称'
+              rules={[{
+                required: true, message: '生产时间必填哦',
+              }]}
+            >
+              <MPInput
+                mpid='name'
+                value={medicine.name}
+                placeholder='请输入药品名称'
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
+            <MPFormItem
+              label='生产日期'
+              rules={[{
+                required: true, message: '生产时间必填哦',
+              }]}
+            >
+              <MPPicker
+                mpid='producedDate'
+                value={medicine.producedDate}
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
+            <MPFormItem
+              label='有效期至'
+              rules={[{
+                required: true, message: '有效期至必填哦',
+              }]}
+            >
+              <MPPicker
+                mpid='expireDate'
+                value={medicine.expireDate}
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
+            <MPFormItem
+              label='所属群组'
+              rules={[{
+                required: true, message: '所属群组必填哦',
+              }]}
+            >
+              <MPInputNavigation
+                mpid='group'
+                iconValue='chevron-right'
+                urlToNavigate={`/pages/medicine/groupManage/index?groupId=${medicine.group.id}`}
+                represent={medicine.group.name}
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
+            <MPFormItem label='药品标签'>
+              <MPInputNavigation
+                mpid='tags'
+                iconValue='chevron-right'
+                urlToNavigate={`/pages/medicine/tagManage/index?tags=${JSON.stringify(medicine.tags)}`}
+                represent={medicine.tags.map(tag => tag.name).join(', ')}
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
+            <MPFormItem label='用药说明'>
+              <MPInput
+                mpid='description'
+                value={medicine.description}
+                placeholder='请输入用药说明'
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
+            <MPFormItem label='用药提醒'>
+              <MPInputDynamic
+                mpid='reminders'
+                value={medicine.reminders}
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
 
-          <MPFormItem label='适用症' vertical>
-            <MPTextArea
-              mpid='indication'
-              value={medicine.indication}
-              placeholder='请输入适用症'
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
-          <MPFormItem label='药品禁忌' vertical>
-            <MPTextArea
-              mpid='contraindication'
-              value={medicine.contraindication}
-              placeholder='请输入药品禁忌'
-              onItemChange={medicineItemChanged}
-            />
-          </MPFormItem>
-        </MPForm>
-      </View>
+            <View className='mp-form-divider'>
+              <MPDivider type='dark-gray' />
+            </View>
 
-      <View className='operation'>
-        {props.children}
+            <MPFormItem label='适用症' vertical>
+              <MPTextArea
+                mpid='indication'
+                value={medicine.indication}
+                placeholder='请输入适用症'
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
+            <MPFormItem label='药品禁忌' vertical>
+              <MPTextArea
+                mpid='contraindication'
+                value={medicine.contraindication}
+                placeholder='请输入药品禁忌'
+                onItemChange={medicineItemChanged}
+              />
+            </MPFormItem>
+          </MPForm>
+        </View>
+
+        <View className='operation'>
+          {props.children}
+        </View>
       </View>
     </View>
   )

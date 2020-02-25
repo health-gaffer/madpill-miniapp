@@ -1,5 +1,7 @@
 @import "src/custom-variables";
 
+$search-and-result-padding: 50px;
+
 .container {
   display: flex;
   flex-direction: column;
@@ -15,25 +17,27 @@
     }
   }
 
+  .search-bar {
 
-  .search {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
+    padding-left: $search-and-result-padding;
+    padding-right: $search-and-result-padding;
 
-  .searched {
-    margin-top: 30px;
-    padding-left: 10px;
-    padding-right: 10px;
-    animation: search-animation 300ms ease;
-  }
-
-  @keyframes search-animation {
-    0% {
-      margin-top: 350px;
+    .search {
     }
-    100% {
+
+    .searched {
       margin-top: 30px;
+      margin-bottom: 20px;
+      animation: search-animation 300ms ease;
+    }
+
+    @keyframes search-animation {
+      0% {
+        margin-top: 350px;
+      }
+      100% {
+        margin-top: 30px;
+      }
     }
   }
 
@@ -43,8 +47,8 @@
 
     .search-result {
       margin-top: 10px;
-      padding-left: 50px;
-      padding-right: 50px;
+      padding-left: $search-and-result-padding;
+      padding-right: $search-and-result-padding;
     }
 
   }

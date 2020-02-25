@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro';
-import {Button, Input, View} from '@tarojs/components';
+import {Button, View} from '@tarojs/components';
 import {AtAvatar,AtToast} from 'taro-ui';
 
 import './index.scss';
@@ -8,6 +8,9 @@ import MedicineList from '../../components/MedicineList';
 import {get, set} from '../../global'
 import GroupMenu from '../../components/GroupMenu'
 import {getToken} from '../../utils/login'
+import MPForm from '../../mpui/form';
+import MPFormItem from '../../mpui/form-item';
+import MPSearchBar from '../../mpui/search-bar';
 
 export default class HomePage extends Component {
 
@@ -32,9 +35,9 @@ export default class HomePage extends Component {
   }
 
   // 搜索框内容改变
-  handleSearch(e) {
+  handleSearch(newKeyword) {
     this.setState({
-      keyword: e.detail.value
+      keyword: newKeyword
     })
   };
 
@@ -202,14 +205,17 @@ export default class HomePage extends Component {
             :
             null
           }
-          <View className='search-area'>
-            <Input
-              className='search-input'
-              value={this.state.keyword}
-              placeholder='搜索'
-              onInput={this.handleSearch.bind(this)}
-            />
-          </View>
+
+          {/* 搜索框 */}
+          <MPForm>
+            <MPFormItem>
+              <MPSearchBar
+                keyword={this.state.keyword}
+                placeholder='搜索'
+                onChange={this.handleSearch.bind(this)}
+              />
+            </MPFormItem>
+          </MPForm>
         </View>
         {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
       </View>

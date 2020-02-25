@@ -1,37 +1,43 @@
-// 因为覆写的 button 样式 scss 必须在 Page 上。。
-// 所以暂时抽不出来组件。。
-// 见 https://taro-ui.jd.com/#/docs/customizetheme
+import {Text, View} from '@tarojs/components'
+import {AtActivityIndicator, AtButton} from 'taro-ui'
 
-// import Taro, {
-//   useEffect
-// } from '@tarojs/taro'
-// import { View } from '@tarojs/components'
-// import { AtButton } from "taro-ui"
-//
-// import './index.scss'
-//
-// function MPButtons(props) {
-//
-//   const items = props.items
-//
-//   useEffect(() => {
-//     console.log(items)
-//     console.log(typeof items)
-//   })
-//
-//   return (
-//     <View className='action at-row at-row__justify--center'>
-//       <View className='at-col-8'>
-//         {
-//           items.map((item, index) => <AtButton className={item.type} key={index}>{item.msg}</AtButton>)
-//         }
-//       </View>
-//     </View>
-//   )
-// }
-//
-// MPButtons.defaultProps = {
-//   items: []
-// }
-//
-// export default MPButtons
+import './index.scss'
+
+function MPButton(props) {
+
+  const {loading, label, type = 'primary'} = props
+
+  const indicatorColor = () => {
+    switch (type) {
+      case 'primary':
+        return 'white'
+      case 'danger':
+        return 'red'
+      default:
+        return 'white'
+    }
+  }
+
+  return (
+    <AtButton className={type} onClick={props.onClick}>
+      {
+        loading === true
+          ?
+          <View className='at-row at-row__justify--center at-row__align--center'>
+            <AtActivityIndicator className='at-col-2' color={indicatorColor()} />
+            <Text className='at-col--auto'>正在{label}</Text>
+          </View>
+          :
+          <Text>确认{label}</Text>
+      }
+    </AtButton>
+  )
+}
+
+MPButton.defaultProps = {
+  loading: false,
+  label: '',
+  type: 'primary',
+}
+
+export default MPButton

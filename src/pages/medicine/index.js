@@ -4,11 +4,12 @@ import Taro, {
   useRouter,
   useState,
 } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { AtButton, AtMessage, AtActivityIndicator } from 'taro-ui'
+import { View } from '@tarojs/components'
+import { AtMessage } from 'taro-ui'
 
 import './index.scss'
 import MedicineInfo from '../../components/MedicineInfo'
+import MPButton from '../../components/MPButtons'
 import useDataApi from '../../hooks/useDataApi'
 import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from '../../constants'
 import { set } from '../../global'
@@ -209,47 +210,27 @@ function Medicine() {
           <View className='at-col-8'>
             {
               curRouter.params.action === MADPILL_ADD_CONFIG.ACTION_ADD &&
-              <AtButton className='add' onClick={addClicked}>
-                {
-                  addLoading === true
-                    ?
-                    <View className='at-row at-row__justify--center at-row__align--center'>
-                      <AtActivityIndicator className='at-col-2' color='white' />
-                      <Text className='at-col--auto'>正在添加</Text>
-                    </View>
-                    :
-                    <Text>确认添加</Text>
-                }
-              </AtButton>
+              <MPButton
+                loading={addLoading}
+                label='添加'
+                onClick={addClicked}
+              />
             }
 
             {
               curRouter.params.action === MADPILL_ADD_CONFIG.ACTION_REVIEW &&
               <View>
-                <AtButton className='add' onClick={modifyClicked}>
-                  {
-                    modifyLoading === true
-                      ?
-                      <View className='at-row at-row__justify--center at-row__align--center'>
-                        <AtActivityIndicator className='at-col-2' color='white' />
-                        <Text className='at-col--auto'>正在修改</Text>
-                      </View>
-                      :
-                      <Text>确认修改</Text>
-                  }
-                </AtButton>
-                <AtButton className='delete' onClick={deleteClicked}>
-                  {
-                    deleteLoading === true
-                      ?
-                      <View className='at-row at-row__justify--center at-row__align--center'>
-                        <AtActivityIndicator className='at-col-2' color='#F00' />
-                        <Text className='at-col--auto'>正在删除</Text>
-                      </View>
-                      :
-                      <Text>删除药品</Text>
-                  }
-                </AtButton>
+                <MPButton
+                  loading={modifyLoading}
+                  label='修改'
+                  onClick={modifyClicked}
+                />
+                <MPButton
+                  loading={deleteLoading}
+                  label='删除'
+                  type='danger'
+                  onClick={deleteClicked}
+                />
               </View>
             }
           </View>

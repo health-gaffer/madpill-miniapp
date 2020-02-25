@@ -4,7 +4,7 @@
 .action {
   margin-bottom: $iphone-x-indicator-height;
 
-  .add.at-button {
+  .primary.at-button {
     color: $primary-color;
     background: $primary-background;
     border: $primary-background;
@@ -13,7 +13,7 @@
     line-height: $at-button-height - 2;
   }
 
-  .delete.at-button {
+  .danger.at-button {
     color: $danger-color;
     background: $danger-background;
     border: $danger-background;

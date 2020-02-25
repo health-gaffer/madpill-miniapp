@@ -64,11 +64,12 @@ function Medicine() {
   useEffect(() => {
     console.log(`modify success ${modifyStatusCode}`)
     if (modifyStatusCode === MADPILL_RESPONSE_CODE.OK) {
-      Taro.atMessage({
-        message: '修改成功！',
-        type: 'success',
-      })
-
+      setGlobalMedicineUpdate('update','修改成功')
+      // Taro.atMessage({
+      //   message: '修改成功！',
+      //   type: 'success',
+      // })
+      Taro.navigateBack({ delta: 1 })
     } else {
       handleError(modifyStatusCode)
     }

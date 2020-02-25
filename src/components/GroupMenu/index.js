@@ -66,6 +66,9 @@ export default class GroupMenu extends Component {
 
   createGroup = () => {
     //todo 创建群组
+    if (this.state.newGroupName.trim() == ""){
+      return
+    }
     this.setState({
       toast: {
         status: 'loading',
@@ -151,7 +154,7 @@ export default class GroupMenu extends Component {
             <AtIcon value='chevron-down' size='24'></AtIcon>
           </View>
         </View>
-        {this.props.showPanel ?
+        {this.state.showPanel ?
           <View className='panel'>
             <View className='switch-group'>
               {this.props.loading ?
@@ -181,7 +184,7 @@ export default class GroupMenu extends Component {
           </View>
           : <View/>
         }
-        {this.props.showPanel ?
+        {this.state.showPanel ?
           <View className='blank-panel' onClick={this.togglePanel}/>
           : <View/>
         }

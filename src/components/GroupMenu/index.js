@@ -148,12 +148,13 @@ export default class GroupMenu extends Component {
 
         <View className='current' onClick={this.togglePanel}>
           <View className='cur-group'>{this.props.curGroup['name']}</View>
+
           {this.state.showPanel?
 
             <View className='upArrow'>
               <AtIcon value='chevron-up' size='24'></AtIcon>
             </View>:
-            <View>
+            <View className='upArrow'>
               <AtIcon value='chevron-down' size='24'></AtIcon>
             </View>
           }

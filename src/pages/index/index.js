@@ -1,16 +1,16 @@
-import Taro, {Component} from '@tarojs/taro';
-import {Button, View} from '@tarojs/components';
-import {AtAvatar,AtToast} from 'taro-ui';
+import Taro, {Component} from '@tarojs/taro'
+import {Button, View} from '@tarojs/components'
+import {AtAvatar, AtToast} from 'taro-ui'
 
-import './index.scss';
-import addIcon from '../../assets/icons/add.png';
-import MedicineList from '../../components/MedicineList';
+import './index.scss'
+import addIcon from '../../assets/icons/add.png'
+import MedicineList from '../../components/MedicineList'
 import {get, set} from '../../global'
 import GroupMenu from '../../components/GroupMenu'
 import {getToken} from '../../utils/login'
-import MPForm from '../../mpui/form';
-import MPFormItem from '../../mpui/form-item';
-import MPSearchBar from '../../mpui/search-bar';
+import MPForm from '../../mpui/form'
+import MPFormItem from '../../mpui/form-item'
+import MPSearchBar from '../../mpui/search-bar'
 
 export default class HomePage extends Component {
 
@@ -18,20 +18,20 @@ export default class HomePage extends Component {
     navigationBarTitleText: 'Mad Pill',
     enablePullDownRefresh: true,
     backgroundTextStyle: 'dark'
-  };
+  }
 
   constructor() {
-    super();
+    super()
     this.state = {
       loggedIn: false,
-      userInfo:'',
+      userInfo: '',
       keyword: '',
       showToast: false,
-      titleToast:'',
-      loadingGroup:true,
-      curGroup:{},
-      groupList:[]
-    };
+      titleToast: '',
+      loadingGroup: true,
+      curGroup: {},
+      groupList: []
+    }
   }
 
   // 搜索框内容改变
@@ -42,12 +42,12 @@ export default class HomePage extends Component {
   };
 
   componentDidMount() {
-    this.checkLoginStatus();
+    this.checkLoginStatus()
   }
 
-  getGroupInfo(){
+  getGroupInfo() {
     getToken({
-      success: (token) =>{
+      success: (token) => {
         let requestHeader = {}
         requestHeader['madpill-token'] = token
         console.log(HOST + '/groups  ' + token)
@@ -78,25 +78,25 @@ export default class HomePage extends Component {
 
   componentDidShow() {
     const option = get('option')
-    if (option != null){
-      if(option['code'] === 'delete' || option['code'] === 'update'){
+    if (option != null) {
+      if (option['code'] === 'delete' || option['code'] === 'update') {
         this.setState({
-          titleToast : option['msg'],
-          showToast : true
+          titleToast: option['msg'],
+          showToast: true
         })
       }
-      set('option',null)
+      set('option', null)
       this.child.updateList(this.state.curGroup.id)
     }
   }
 
   onPullDownRefresh() {
-    if(this.state.loggedIn){
+    if (this.state.loggedIn) {
       this.child.updateList(this.state.curGroup.id)
-    }else {
-      this.checkLoginStatus();
+    } else {
+      this.checkLoginStatus()
     }
-    Taro.stopPullDownRefresh();
+    Taro.stopPullDownRefresh()
   }
 
   checkLoginStatus = () => {
@@ -110,31 +110,31 @@ export default class HomePage extends Component {
               success: res2 => {
                 this.setState({
                   userInfo: res2.userInfo
-                });
+                })
                 this.getGroupInfo()
               },
               fail: err => {
-                console.error(err);
+                console.error(err)
                 this.setState({
                   loggedIn: false
-                });
+                })
               }
-            });
-          });
+            })
+          })
         }
       }
-    });
-  };
+    })
+  }
   changeGroup = (value) => {
     //todo change the viewList
     console.log(value)
     console.log(this.state.groupList)
     this.state.groupList.map(group => {
-       if(group.id === value){
-         this.setState({
-           curGroup: group
-         })
-       }
+      if (group.id === value) {
+        this.setState({
+          curGroup: group
+        })
+      }
     })
     this.child.updateList(value)
   }
@@ -144,7 +144,7 @@ export default class HomePage extends Component {
     Taro.navigateTo({
       url: '/pages/add/index'
     })
-  };
+  }
 
   onRef = (ref) => {
     this.child = ref
@@ -152,26 +152,26 @@ export default class HomePage extends Component {
 
   handleNewGroup = (value) => {
     console.log(value)
-    const groupList =  this.state.groupList
+    const groupList = this.state.groupList
     groupList.push(value)
     this.setState({
-      curGroup : value,
-      groupList : groupList
+      curGroup: value,
+      groupList: groupList
     })
     this.child.updateList(value.id)
   }
 
   handleGetUserInfo = (e) => {
     if (e.detail.rawData) {
-      const userInfo = JSON.parse(e.detail.rawData);
-      console.log(userInfo);
+      const userInfo = JSON.parse(e.detail.rawData)
+      console.log(userInfo)
       this.setState({
         loggedIn: true,
         userInfo: userInfo
-      });
+      })
       this.getGroupInfo()
     }
-  };
+  }
 
   render() {
     return (
@@ -184,7 +184,10 @@ export default class HomePage extends Component {
                 image={this.state.loggedIn ? (this.state.userInfo ? this.state.userInfo.avatarUrl : 'https://jdc.jd.com/img/200') : 'https://jdc.jd.com/img/200'}
               />
               <View className='group'>
-                <GroupMenu loading={this.state.loadingGroup} curGroup={this.state.curGroup} onCreateGroup={this.handleNewGroup} groupList={this.state.groupList} onChangeGroup={this.changeGroup} />
+                <GroupMenu loading={this.state.loadingGroup} curGroup={this.state.curGroup}
+                  onCreateGroup={this.handleNewGroup} groupList={this.state.groupList}
+                  onChangeGroup={this.changeGroup}
+                />
               </View>
             </View>
             <View className='top-right-area' onClick={this.handleAddDrug}>
@@ -222,6 +225,6 @@ export default class HomePage extends Component {
         </View>
         {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
       </View>
-    );
+    )
   }
 }

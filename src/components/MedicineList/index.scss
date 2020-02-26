@@ -1,6 +1,13 @@
 @import "~taro-ui/dist/style/components/flex.scss";
+@import "~taro-ui/dist/style/variables/default.scss";
 
-.medicine-list {
+.medicine-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.list-info {
   background: #ffffff;
 
   .loading {
@@ -45,5 +52,80 @@
       letter-spacing: 0;
       padding-left: 42.66px;
     }
+  }
+}
+
+.option-box {
+  position: fixed;
+  /* @keyframes duration | timing-function | delay |
+   iteration-count | direction | fill-mode | play-state | name */
+  animation: 0.5s ease-out forwards option-box-rise;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  height: 70px;
+  width: 100vw;
+  left:0;
+  right:0;
+  margin: 0 auto;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #4d69a4;
+  border-left: none;
+  border-right: none;
+
+  .delete-btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    border: none;
+    background: red;
+    font-family: PingFangSC-Regular;
+    color: rgba(0, 0, 0, 0.90);
+    text-align: center;
+    vertical-align: center;
+    border-radius: 0;
+  }
+
+  .delete-btn {
+    padding: 0 20px;
+  }
+
+  .group-picker-wrapper {
+    margin: 0 30px;
+  }
+
+  .cancel-btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border: none;
+    background: orange;
+    font-family: PingFangSC-Regular;
+    color: rgba(0, 0, 0, 0.90);
+    text-align: center;
+    vertical-align: center;
+    border-radius: 0;
+  }
+
+  .cancel-btn {
+    padding: 0 20px;
+  }
+}
+
+@keyframes option-box-rise {
+  from {
+    bottom: 0;
+  }
+  to {
+    bottom: 10vh;
   }
 }

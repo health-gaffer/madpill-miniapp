@@ -1,6 +1,6 @@
-import Taro from '@tarojs/taro';
+import Taro from '@tarojs/taro'
 
-import {MADPILL_COLORS} from './constants';
+import {MADPILL_COLORS} from './constants'
 
 export const fetchAuthorizationInfo = callback => {
   Taro.login({
@@ -12,38 +12,38 @@ export const fetchAuthorizationInfo = callback => {
             Taro.showToast({
               title: '初始化失败',
               icon: 'none'
-            });
-            return;
+            })
+            return
           }
-          const {token, registered} = res2.data.data;
-          callback(token, registered);
+          const {token, registered} = res2.data.data
+          callback(token, registered)
         },
         fail: err => {
-          console.error(err);
+          console.error(err)
           Taro.showToast({
             title: '网络好像有点问题...',
             icon: 'none'
-          });
+          })
         }
-      });
+      })
     }
-  });
-};
+  })
+}
 
 export const getDateString = (date) => {
-  const y = date.getFullYear();
-  let m = date.getMonth() + 1;
-  m = m < 10 ? ('0' + m) : m;
-  let d = date.getDate();
-  d = d < 10 ? ('0' + d) : d;
-  return y + '-' + m + '-' + d;
+  const y = date.getFullYear()
+  let m = date.getMonth() + 1
+  m = m < 10 ? ('0' + m) : m
+  let d = date.getDate()
+  d = d < 10 ? ('0' + d) : d
+  return y + '-' + m + '-' + d
 }
 
 export const getTimeString = (date) => {
-  const hour = date.getHours();
-  let minute = date.getMinutes();
-  minute = minute < 10 ? ('0' + minute) : minute;
-  return hour + ':' + minute;
+  const hour = date.getHours()
+  let minute = date.getMinutes()
+  minute = minute < 10 ? ('0' + minute) : minute
+  return hour + ':' + minute
 }
 
 /**
@@ -62,7 +62,7 @@ export const getTodayOfLastYear = (cur) => {
 export const getPillColor = (name) => {
   let hashCode = stringHashCode(name, false, MADPILL_COLORS.length)
   const MAX_VALUE = Math.pow(2, 32)
-  const curIndex = Math.floor(Math.abs(hashCode) / MAX_VALUE * MADPILL_COLORS.length);
+  const curIndex = Math.floor(Math.abs(hashCode) / MAX_VALUE * MADPILL_COLORS.length)
   // console.log(Math.abs(hashCode))
   // console.log(curIndex)
   // console.log('---------------')
@@ -82,17 +82,17 @@ export const getPillColor = (name) => {
  */
 const stringHashCode = (str, asString, seed) => {
   /*jshint bitwise:false */
-  let i, l, hval = (seed === undefined) ? 0x811c9dc5 : seed;
+  let i, l, hval = (seed === undefined) ? 0x811c9dc5 : seed
 
   for (i = 0, l = str.length; i < l; i++) {
-    hval ^= str.charCodeAt(i);
-    hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
+    hval ^= str.charCodeAt(i)
+    hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24)
   }
   if (asString) {
     // Convert to 8 digit hex string
-    return ('0000000' + (hval >>> 0).toString(16)).substr(-8);
+    return ('0000000' + (hval >>> 0).toString(16)).substr(-8)
   }
-  return hval >>> 0;
+  return hval >>> 0
 
   // let hash = 0, i, chr;
   // if (str.length === 0) return hash;
@@ -111,18 +111,18 @@ const stringHashCode = (str, asString, seed) => {
  * @return {undefined|*}
  */
 export const getObjValueByPath = (obj, path) => {
-  const reg = /(?:(?:^|\.)([^\.\[\]]+))|(?:\[([^\[\]]+)\])/g;
-  const names = [];
-  let name = null;
+  const reg = /(?:(?:^|\.)([^\.\[\]]+))|(?:\[([^\[\]]+)\])/g
+  const names = []
+  let name = null
   while ((name = reg.exec(path)) != null) {
-    names.push(name[1] || name[2]);
+    names.push(name[1] || name[2])
   }
-  let o = obj;
+  let o = obj
   for (let i = 0; i < names.length; i++) {
-    o = o[names[i]];
+    o = o[names[i]]
     if (o === undefined) {
-      return undefined;
+      return undefined
     }
   }
-  return o;
+  return o
 }

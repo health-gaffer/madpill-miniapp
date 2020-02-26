@@ -148,9 +148,15 @@ export default class GroupMenu extends Component {
 
         <View className='current' onClick={this.togglePanel}>
           <View className='cur-group'>{this.props.curGroup['name']}</View>
-          <View>
-            <AtIcon value='chevron-down' size='24'></AtIcon>
-          </View>
+          {this.state.showPanel?
+
+            <View className='upArrow'>
+              <AtIcon value='chevron-up' size='24'></AtIcon>
+            </View>:
+            <View>
+              <AtIcon value='chevron-down' size='24'></AtIcon>
+            </View>
+          }
         </View>
         {this.state.showPanel ?
           <View className='panel'>
@@ -161,9 +167,13 @@ export default class GroupMenu extends Component {
                 </View>
                 :
                 groupList.map((group) =>
-                  <View key={group.id} className='group-item' onClick={this.handleClick.bind(this, group['id'])}>
-                    {group['name']}
-                  </View>
+
+                    <View key={group.id}
+                          className= {group.id === this.props.curGroup['id']?'group-item-active':'group-item'}
+                          onClick={this.handleClick.bind(this, group['id'])}>
+                      {group['name']}
+                    </View>
+
                 )
               }
             </View>
@@ -194,10 +204,12 @@ export default class GroupMenu extends Component {
         >
           <AtModalHeader>创建药箱</AtModalHeader>
           <AtModalContent>
+            {this.state.createGroupModal?
             <AtInput
               clear type='text' placeholder='输入药箱名称' maxLength='10'
               onChange={this.handleCreateChange} onConfirm={this.createGroup}
-            />
+            /> : null
+            }
           </AtModalContent>
           <AtModalAction>
             <Button onClick={this.createGroup}>确定</Button>
@@ -205,6 +217,7 @@ export default class GroupMenu extends Component {
         </AtModal>
         <AtToast isOpened={this.state.toast.showToast} duration={0} text={this.state.toast.message} status={this.state.toast.status} />
       </View>
+
     )
   }
 }

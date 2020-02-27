@@ -4,7 +4,7 @@
 .action {
   margin-bottom: $iphone-x-indicator-height;
 
-  .add.at-button {
+  .primary.at-button {
     color: $primary-color;
     background: $primary-background;
     border: $primary-background;
@@ -13,7 +13,7 @@
     line-height: $at-button-height - 2;
   }
 
-  .delete.at-button {
+  .danger.at-button {
     color: $danger-color;
     background: $danger-background;
     border: $danger-background;
@@ -24,13 +24,20 @@
 }
 
 .delete-confirm {
-  color: red;
+  color: $danger-color;
 }
 
-.at-button{
+.at-button {
   border: none;
   height: 1.5rem;
   line-height: 1.5rem;
   color: $tip;
 }
 
+.input-dynamic-item-time-delete-btn.at-button {
+  color: $danger-color;
+}
+
+.input-dynamic-item-time-add-btn.at-button {
+  color: $primary-background;
+}

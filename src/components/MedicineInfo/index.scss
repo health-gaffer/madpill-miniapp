@@ -3,33 +3,38 @@
 
 .medicine {
 
-  .image-and-banner {
-    background: white;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
+
+  .image {
   }
 
-  .info {
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    background: white;
-    z-index: 1;
+  .rest {
+    flex: 1;
 
-    .basics {
-      margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .banner {
+      position: sticky;
+      top: 0;
+      background: white;
     }
 
-    .mores {
+    .info {
+      padding-top: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
+      background: white;
+      flex: 1;
+    }
+
+    .operation {
+      width: 100%;
       margin-top: 20px;
     }
-  }
-
-  .operation {
-    width: 100%;
-    margin-top: 20px;
-    position: sticky;
   }
 
 }

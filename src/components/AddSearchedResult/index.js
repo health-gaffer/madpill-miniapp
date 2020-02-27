@@ -1,12 +1,12 @@
 import Taro, {useEffect, useState} from '@tarojs/taro'
 import {View} from '@tarojs/components'
-import {AtActivityIndicator} from "taro-ui"
+import {AtActivityIndicator} from 'taro-ui'
 
 import './index.scss'
-import AddSearchedResultItem from "./AddSearchedResultItem"
-import MPDivider from "../MPDivider"
-import useDataApi from "../../hooks/useDataApi"
-import {MADPILL_RESPONSE_CODE} from "../../constants"
+import AddSearchedResultItem from './AddSearchedResultItem'
+import MPDivider from '../MPDivider'
+import useDataApi from '../../hooks/useDataApi'
+import {MADPILL_RESPONSE_CODE} from '../../constants'
 
 function AddSearchedResult(props) {
 

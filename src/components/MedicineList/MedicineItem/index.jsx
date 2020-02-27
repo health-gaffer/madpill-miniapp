@@ -1,81 +1,174 @@
-import Taro, {Component} from '@tarojs/taro';
-import {Text, View} from '@tarojs/components';
-import {AtSwipeAction} from 'taro-ui';
-import './index.scss';
-import MPDivider from '../../MPDivider';
-import defaultPill from '../../../assets/images/pill-5.png';
+import Taro, {Component} from '@tarojs/taro'
+import {Checkbox, Label, Text, View} from '@tarojs/components'
+import {AtSwipeAction} from 'taro-ui'
+import './index.scss'
+import MPDivider from '../../MPDivider'
+import {getPillColor} from '../../../utils'
 
 export default class MedicineItem extends Component {
+
   static defaultProps = {
-    medicine : {
-      tags : []
-    },
+    medicine: {
+      id: '',
+      name: '',
+      day: 0,
+      manufacture: '',
+      tags: []
+    }
   }
 
-  handleReview = () => {
-    console.log('查看详情: ' + this.props.medicine.id);
-    Taro.navigateTo({
-      url: `/pages/medicine/index?action=review&medicineId=${this.props.medicine.id}`
+  constructor(props) {
+    super(props)
+    this.state = {
+      showMore : false
+    }
+  }
+
+  // 根据当前状态判断如何操作
+  handleItemClick = () => {
+    if (this.props.isMultipleSelection) {
+      if (this.props.checked) {
+        this.props.onRemoveFromList()
+      } else {
+        this.props.onAddToList()
+      }
+    } else {
+      console.log('查看详情: ' + this.props.medicine.id)
+      Taro.navigateTo({
+        url: `/pages/medicine/index?action=review&medicineId=${this.props.medicine.id}`
+      })
+    }
+  }
+
+  handleLongPress = () => {
+    this.props.onMultipleSelection(this.props.medicine.id)
+  }
+
+  showMore = (e) => {
+    e.stopPropagation()
+    const more = this.state.showMore
+    this.setState({
+      showMore : !more
     })
   }
 
-  render() {
-    const tags = this.props.medicine.tags;
+  renderMedicineInfo() {
+    const {medicine, status, isMultipleSelection, checked} = this.props
+    const tags = medicine.tags
     // 取前 3 个 items
-    const tagItems = tags.slice(0, 3).map(tag => {
+    var tag_width = 0.0
+    var needArrow = false
+    var needArc = false
+    var cancel_arc = false
+    tags.map(tag => {
+      tag_width += 1.6 + tag.name.length
+      if(tag_width < 14.42 && tag_width > 14.35 ) {
+        cancel_arc = true
+      }
+    })
+    if(tag_width > 14.42){
+      needArc= !cancel_arc
+      // if(!needArc){
+        needArrow = true
+      // }
+    }
+
+    console.log(needArrow)
+    const tagItems = tags.map(tag => {
+      tag_width += 1.6 + tag.name.length
+      // if(!this.state.needArrow && tag_width > 14.35 ) {
+      //
+      // }
+      // this.state({
+      //   needArc : false,
+      //   needArrow: false
+      // })
+      // console.log(tag_width)
       return (
         <View key={tag.id} className='tag'>
           {tag.name}
         </View>
-      );
-    });
-    const ellipses = (tags.length > 3 && <View className='tag tag-ellipse'>···</View>);
+      )
+    })
+    const curPillColor = getPillColor(medicine.manufacture + medicine.name)
+    return (
+      <View onClick={this.handleItemClick} onLongPress={this.handleLongPress} className='medicine-info'>
+        {/*多选模式下，隐藏图片，显示多选框*/}
+        <View className='left-part-wrapper'>
+          {isMultipleSelection ?
+            <View className='checkbox-wrapper'>
+            <Checkbox className='checkbox' id={'checkbox-' + medicine.id} value={medicine.id} checked={checked} />
+            <View className='checkbox-label-wrapper'>
+              <Label className='checkbox-label' for={'checkbox-' + medicine.id} />
+            </View>
+            </View>
+            :
+            <View
+              className='madpill icon-pill pill-img'
+              style={{color: curPillColor}}
+            />
+          }
+        </View>
+        <View className='at-col at-col-9 pill-info-wrapper'>
+          <View className='at-row '>
+            <Text className='at-col at-col-8 medicine-name'>
+              {medicine.name}
+            </Text>
+            <Text className='at-col at-col-3 manufacture'>
+              {medicine.manufacture}
+            </Text>
+          </View>
+          <View className='at-row  tags-wrapper'>
+            <View className='at-col-8' onClick={this.showMore}>
+              <View className={this.state.showMore?'pill-tags-wrapper wrapper':'pill-tags-wrapper'}>
+                {tagItems}
+              </View>
+            </View>
+            {!this.state.showMore &&
+            <View onClick={this.showMore}>
+              <View className='pill-tags-wrapper'>
+                {needArc && <View className='tag extra-tag'>1</View>}
+                {needArrow && (needArc ? <View className='more no-space' /> : <View className='more' />)}
+              </View>
+            </View>
+            }
+            {
+              {
+                'expired':
+                  <View className='at-col--auto tag expire-info-tag expired-tag'>
+                    过期 {medicine.day} 日
+                  </View>,
+                'expiring':
+                  <View className='at-col--auto tag expire-info-tag expiring-tag'>
+                    剩余 {medicine.day} 日
+                  </View>,
+                'notExpired': ''
+              }[status]
+            }
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  render() {
     return (
       <View className='medicine-item'>
-        <AtSwipeAction
-          onClick={this.props.onDelete}
-          options={[
-            {
-              text: '删除', style: {backgroundColor: '#FF4949'}
-            }]}
-        >
-          <View onClick={this.handleReview} className='at-row medicine-info'>
-            <View className='at-col at-col-1 at-col--auto pill-img-wrapper'>
-              <Image src={defaultPill} className='pill-img' />
-            </View>
-            <View className='at-col at-col-9 pill-info-wrapper'>
-              <View className='at-row at-row__justify--between at-row__align--center'>
-                <Text className='at-col at-col-8 medicine-name'>
-                  {this.props.medicine.name}
-                </Text>
-                <Text className='at-col at-col-3 manufacture'>
-                  {this.props.medicine.manufacture}
-                </Text>
-              </View>
-              <View className='at-row at-row__justify--between at-row__align--center tags-wrapper'>
-                <View className='at-row at-col-8 at-row__justify--start pill-tags-wrapper'>
-                  {tagItems}
-                  {ellipses}
-                </View>
-                {
-                  {
-                    'expired':
-                      <View className='at-col--auto tag expire-info-tag expired-tag'>
-                        过期 {this.props.medicine.day} 日
-                      </View>,
-                    'expiring':
-                      <View className='at-col--auto tag expire-info-tag expiring-tag'>
-                        剩余 {this.props.medicine.day} 日
-                      </View>,
-                    'notExpired': ''
-                  }[this.props.status]
-                }
-              </View>
-            </View>
-          </View>
-        </AtSwipeAction>
+        {/*多选模式下，不允许左滑删除*/}
+        {this.props.isMultipleSelection ?
+          this.renderMedicineInfo() :
+          <AtSwipeAction
+            onClick={this.props.onDelete}
+            options={[
+              {
+                text: '删除', style: {backgroundColor: '#FF4949'}
+              }]}
+          >
+            {this.renderMedicineInfo()}
+          </AtSwipeAction>
+        }
         <MPDivider height='1px' padding='0 16px 0 70px' />
       </View>
-    );
+    )
   }
 }

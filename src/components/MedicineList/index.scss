@@ -1,11 +1,49 @@
 @import "~taro-ui/dist/style/components/flex.scss";
+@import "~taro-ui/dist/style/variables/default.scss";
 
-.medicine-list {
+.medicine-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.list-info {
   background: #ffffff;
+
+  .loading {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .empty-panel {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .box-icon {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 40px;
+      //background-color: red;
+      //width: 30%;
+    }
+
+    .inner-panel {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+    }
+
+  }
 
   .desc-wrapper {
     //height: 80px;
     margin-top: 10px;
+
     .desc-text {
       opacity: 0.3;
       font-family: PingFangSC-Regular;
@@ -14,5 +52,61 @@
       letter-spacing: 0;
       padding-left: 42.66px;
     }
+  }
+}
+
+.option-box {
+  // 字体
+  font-size: small;
+  font-family: PingFangSC-Regular;
+
+  position: fixed;
+  /* @keyframes duration | timing-function | delay |
+   iteration-count | direction | fill-mode | play-state | name */
+  animation: 0.5s ease-out forwards option-box-rise;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 70px;
+  width: 100vw;
+  left:0;
+  right:0;
+  margin: 0 auto;
+  text-align: center;
+
+  .delete-btn-wrapper {
+    height: 100%;
+    width: 40vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    border: 1px solid #e4e5e4;
+    .delete-btn {
+      color: rgba(0, 0, 0, 0.90);
+    }
+  }
+
+  .group-picker-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 40vw;
+    background: #3670f6;
+    color: #ffffff;
+  }
+}
+
+@keyframes option-box-rise {
+  from {
+    bottom: 0;
+  }
+  to {
+    bottom: 2vh;
   }
 }

@@ -51,8 +51,8 @@ function MedicineImage(props) {
     // })
 
     Taro.showToast({
-      title: "定制化图片功能暂未开放，敬请期待（≧∇≦）",
-      icon: "none"
+      title: '定制化图片功能暂未开放，敬请期待（≧∇≦）',
+      icon: 'none'
     })
   }
 

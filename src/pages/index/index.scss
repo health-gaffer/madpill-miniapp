@@ -13,7 +13,7 @@
     margin-bottom: 1rem;
 
     .top-left-area {
-      flex: 0.9;
+      flex: 9;
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -23,24 +23,27 @@
         height: 2.5rem;
       }
 
-      .title {
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-left: 1rem;
+      .group {
+        height: 100%;
+        margin-top: 1rem;
+        margin-left: 0.5rem;
       }
     }
 
     .top-right-area {
-      flex: 0.1;
+      flex: 1;
       display: flex;
       justify-content: flex-end;
+      padding-right: 3px;
       align-items: center;
+
+      .add-drug-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+      }
     }
 
-    .add-drug-icon {
-      width: 1.3rem;
-      height: 1.3rem;
-    }
+
   }
 
   .login-area {
@@ -49,7 +52,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    color: #A9A9A9;
+    color: rgba(gray, 0.1);
     margin-bottom: 1rem;
     font-size: 0.9rem;
 
@@ -67,21 +70,24 @@
       border: none;
     }
   }
-
-  .search-area {
-    height: 60px;
-    flex: 0.05;
-    // border: 1px solid #FB9828;
-    // border-radius: 0.2rem;
-
-    .search-input {
-      background-color: #eee;
-      line-height: 1.5;
-      height: 100%;
-      padding: 0 0.8rem;
-      border-radius: 0.3rem;
-      font-size: 0.9rem;
-    }
-
-  }
 }
+
+.multi-title-wrapper {
+  margin: 1vh 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+
+  .group-name {
+    font-size: 110%;
+    font-weight: 400;
+  }
+
+  > view {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+}
+

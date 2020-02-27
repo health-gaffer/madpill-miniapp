@@ -1,6 +1,5 @@
 import Taro from '@tarojs/taro'
 
-import { HOST } from '../constants'
 
 /**
  * Get token to send requests those require authorization.

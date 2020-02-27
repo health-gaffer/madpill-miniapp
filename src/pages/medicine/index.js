@@ -4,13 +4,16 @@ import Taro, {
   useRouter,
   useState,
 } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { AtButton, AtMessage, AtActivityIndicator } from "taro-ui"
+import { View } from '@tarojs/components'
+import { AtMessage } from 'taro-ui'
 
 import './index.scss'
-import MedicineInfo from "../../components/MedicineInfo"
-import useDataApi from "../../hooks/useDataApi"
-import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from "../../constants"
+import MedicineInfo from '../../components/MedicineInfo'
+import MPButton from '../../components/MPButtons'
+import useDataApi from '../../hooks/useDataApi'
+import { MADPILL_ADD_CONFIG, MADPILL_RESPONSE_CODE } from '../../constants'
+import { set } from '../../global'
+import { getObjValueByPath } from '../../utils'
 
 function Medicine() {
 
@@ -44,6 +47,7 @@ function Medicine() {
   useEffect(() => {
     console.log(`add success ${addStatusCode}`)
     if (addStatusCode === MADPILL_RESPONSE_CODE.OK) {
+      setGlobalMedicineUpdate('add','添加成功')
       // 关闭上两层添加页面，以便可以直接返回首页
       Taro.navigateBack({
         delta: Taro.getCurrentPages().length
@@ -62,10 +66,12 @@ function Medicine() {
   useEffect(() => {
     console.log(`modify success ${modifyStatusCode}`)
     if (modifyStatusCode === MADPILL_RESPONSE_CODE.OK) {
-      Taro.atMessage({
-        message: '修改成功！',
-        type: 'success',
-      })
+      setGlobalMedicineUpdate('update','修改成功')
+      // Taro.atMessage({
+      //   message: '修改成功！',
+      //   type: 'success',
+      // })
+      Taro.navigateBack({ delta: 1 })
     } else {
       handleError(modifyStatusCode)
     }
@@ -75,6 +81,7 @@ function Medicine() {
   useEffect(() => {
     console.log(`delete success ${deleteStatusCode}`)
     if (deleteStatusCode === MADPILL_RESPONSE_CODE.OK) {
+      setGlobalMedicineUpdate('delete','删除成功')
       returnToHome()
     } else {
       handleError(deleteStatusCode)
@@ -101,17 +108,21 @@ function Medicine() {
     }
   }
 
+
   // 校验药品信息的合法性
+  // TODO 理应由子组件 MedicineInfo 中的 form 管理，但因为 taro 目前不支持 useImperativeHandle + forwardRef，
+  // TODO form 拿不到子组件的相关信息，所以现在就提交前校验
   const medicineValidityCheck = () => {
     const requiredRules = [
       {label: 'name', msg: '药品名称必填哦'},
       {label: 'producedDate', msg: '生产时间必填哦'},
       {label: 'expireDate', msg: '过期时间必填哦'},
+      {label: 'group.id', msg: '所属群组必填哦'},
     ]
     for (let i = 0; i < requiredRules.length; i++) {
       const rule = requiredRules[i]
-      const checkedLabel = curMedicine[rule.label]
-      if (checkedLabel === undefined || checkedLabel === '') {
+      const checked = getObjValueByPath(curMedicine, rule.label)
+      if (checked === undefined || checked === '') {
         Taro.showToast({
           title: rule.msg,
           icon: 'none'
@@ -181,6 +192,13 @@ function Medicine() {
     })
   }
 
+  const setGlobalMedicineUpdate = (code, msg) => {
+    const option = {}
+    option['code'] = code;
+    option['msg'] = msg;
+    set('option', option)
+  }
+
   const curMedicineChange = (m) => {
     setCurMedicine(m)
   }
@@ -197,47 +215,27 @@ function Medicine() {
           <View className='at-col-8'>
             {
               curRouter.params.action === MADPILL_ADD_CONFIG.ACTION_ADD &&
-              <AtButton className='add' onClick={addClicked}>
-                {
-                  addLoading === true
-                    ?
-                    <View className='at-row at-row__justify--center at-row__align--center'>
-                      <AtActivityIndicator className='at-col-2' color='white' />
-                      <Text className='at-col--auto'>正在添加</Text>
-                    </View>
-                    :
-                    <Text>确认添加</Text>
-                }
-              </AtButton>
+              <MPButton
+                loading={addLoading}
+                label='添加'
+                onClick={addClicked}
+              />
             }
 
             {
               curRouter.params.action === MADPILL_ADD_CONFIG.ACTION_REVIEW &&
               <View>
-                <AtButton className='add' onClick={modifyClicked}>
-                  {
-                    modifyLoading === true
-                      ?
-                      <View className='at-row at-row__justify--center at-row__align--center'>
-                        <AtActivityIndicator className='at-col-2' color='white' />
-                        <Text className='at-col--auto'>正在修改</Text>
-                      </View>
-                      :
-                      <Text>确认修改</Text>
-                  }
-                </AtButton>
-                <AtButton className='delete' onClick={deleteClicked}>
-                  {
-                    deleteLoading === true
-                      ?
-                      <View className='at-row at-row__justify--center at-row__align--center'>
-                        <AtActivityIndicator className='at-col-2' color='#F00' />
-                        <Text className='at-col--auto'>正在删除</Text>
-                      </View>
-                      :
-                      <Text>删除药品</Text>
-                  }
-                </AtButton>
+                <MPButton
+                  loading={modifyLoading}
+                  label='修改'
+                  onClick={modifyClicked}
+                />
+                <MPButton
+                  loading={deleteLoading}
+                  label='删除'
+                  type='danger'
+                  onClick={deleteClicked}
+                />
               </View>
             }
           </View>

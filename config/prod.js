@@ -3,6 +3,7 @@ module.exports = {
     NODE_ENV: '"production"'
   },
   defineConstants: {
+    'HOST': '"https://tokindle.top/madpill"'
   },
   weapp: {},
   h5: {}

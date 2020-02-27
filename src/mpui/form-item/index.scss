@@ -1,0 +1,13 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+
+.form-item-without-label {
+}
+
+.form-item-with-label {
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  .content {
+    margin-top: 8px;
+  }
+}

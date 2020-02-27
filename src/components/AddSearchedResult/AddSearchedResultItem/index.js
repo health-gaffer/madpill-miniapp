@@ -5,7 +5,7 @@ import Taro, {
 import { View } from '@tarojs/components'
 
 import './index.scss'
-import { getPillColor } from "../../../utils"
+import { getPillColor } from '../../../utils'
 
 function AddSearchedResultItem(props) {
 

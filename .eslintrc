@@ -5,10 +5,9 @@
     "react-hooks"
   ],
   "rules": {
-    "semi": "off",
+    "semi": [2, "never"],
     "quotes": [2, "single"],
     "react/react-in-jsx-scope": "off",
-    "react/jsx-no-undef": "off",
     "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
     "react-hooks/rules-of-hooks": "error", // 检查 Hook 的规则

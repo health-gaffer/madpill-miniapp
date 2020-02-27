@@ -1,0 +1,119 @@
+@import "~taro-ui/dist/style/components/icon.scss";
+@import "src/custom-variables";
+
+.menu {
+  position: absolute;
+  z-index: 100000;
+  //vertical-align: center;
+  .current {
+    display: flex;
+    flex-direction: row;
+
+    .cur-group {
+      font-size: 1.1rem;
+      font-weight: 500;
+      max-width: 10rem;
+      padding-right: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .upArrow{
+      animation: rotate 500ms ease;
+    }
+    @keyframes rotate {
+      0% {
+        transform:  rotateX(180deg);
+      }
+      100% {
+        transform:  rotateX(0deg);
+      }
+    }
+
+  }
+  .panel {
+    //width: 100px;
+    background-color: #f8f8f8;
+    margin-top: 5px;
+    margin-left: -0.8rem;
+    //border: #ffeeee 1px solid;
+    border-radius: 6px;
+    max-width: 10rem;
+    position: relative;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    z-index: 100000;
+    font-size: $font-size-base;
+    box-shadow: 0 0 10px 7px #d3d3d3;
+
+    overflow: hidden;
+
+    .switch-group {
+      .group-item {
+        padding: 0.4rem 1rem;
+        max-width: 10rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+      }
+
+      .group-item-active{
+        border-left: 0.2rem solid #1f4d81;
+        padding: 0.4rem 1rem 0.4rem 0.8rem;
+        max-width: 10rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .loading {
+        padding: 0.2rem 2.5rem;
+      }
+    }
+
+    .options {
+      border-top: #f2f2f2 1px solid;
+      padding: 0.4rem 0.8rem;
+      //background-color: #eeeeee;
+      display: flex;
+      flex-direction: row;
+
+      .title {
+        margin-top: 3px;
+        margin-left: 9px;
+      }
+    }
+
+    animation: show 500ms ease;
+  }
+
+  @keyframes show {
+    0% {
+      max-height: 0;
+      opacity: 0.4;
+    }
+
+    100% {
+      max-height: 1000px;
+      opacity: 1;
+    }
+  }
+
+  .fade-leave.fade-leave-active, .fade-enter {
+    opacity: 0;
+  }
+
+  .fade-enter.fade-enter-active, .fade-leave {
+    opacity: 1;
+  }
+  .blank-panel {
+    position: absolute;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    margin-left: -125px;
+    margin-top: -30px;
+    z-index: 1000;
+  }
+}

@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { AtInput } from 'taro-ui'
 import '../index.scss'
-import { AtInput, AtForm } from 'taro-ui'
 
 export default class TagInput extends Component {
   constructor(props) {
@@ -12,7 +11,7 @@ export default class TagInput extends Component {
   }
   addTag(){
     const newTag = this.state.newTagName.trim()
-    if(newTag==""){
+    if(newTag === ''){
       return
     }
     console.log(newTag)
@@ -22,7 +21,7 @@ export default class TagInput extends Component {
     this.setState({
       newTagName: ''
     },()=>{
-      this.handleChange("")
+      this.handleChange('')
     })
   }
 

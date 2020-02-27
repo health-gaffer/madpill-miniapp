@@ -1,6 +1,6 @@
 import Taro, {Component} from '@tarojs/taro'
-import {Image, Text, View} from '@tarojs/components'
-import {AtActivityIndicator} from 'taro-ui'
+import {Image, Picker, Text, View} from '@tarojs/components'
+import {AtActivityIndicator, AtModal} from 'taro-ui'
 import MedicineItem from './MedicineItem'
 import './index.scss'
 import {getToken} from '../../utils/login'
@@ -24,9 +24,7 @@ export default class MedicineList extends Component {
       isLoading: false,
       isMultipleSelection: false,
       // 多选列表
-      selectedIds: [],
-      // todo 获取用户群组
-      groups: ['group1', 'group2']
+      selectedIds: []
     }
   }
 
@@ -114,14 +112,76 @@ export default class MedicineList extends Component {
     }
   }
 
-  deleteSelected = () => {
-    // todo
+  handleDeleteClick = () => {
+    Taro.showModal({
+      title: '提示',
+      content: '确定删除所选药品吗？',
+      // confirmText: '删除',
+      // confirmColor: '#333',
+      success: res => {
+        if (res.confirm) {
+          console.log('delete confirmed')
+          this.confirmDelete()
+        }
+      }
+    })
+  }
+
+  confirmDelete = () => {
     console.log('要删除的药品列表为: ' + this.state.selectedIds)
+    getToken({
+      success: (token) => {
+        let requestHeader = {}
+        requestHeader[HEADER_MADPILL_TOKEN_KEY] = token
+        Taro.request({
+          url: HOST + '/drugs',
+          method: 'DELETE',
+          header: requestHeader,
+          data: JSON.stringify(this.state.selectedIds),
+          success: () => {
+            const expired = this.state.medicines.expired.slice().filter(medicine => this.state.selectedIds.indexOf(medicine.id) === -1)
+            const expiring = this.state.medicines.expiring.slice().filter(medicine => this.state.selectedIds.indexOf(medicine.id) === -1)
+            const notExpired = this.state.medicines.notExpired.slice().filter(medicine => this.state.selectedIds.indexOf(medicine.id) === -1)
+            const medicines = {expired: expired, expiring: expiring, notExpired: notExpired}
+            this.setState({
+              medicines: medicines,
+              isMultipleSelection: false,
+              selectedIds: []
+            })
+          },
+          fail: error => {
+            console.log('fail')
+            console.log(error)
+          }
+        })
+      },
+      fail: (err) => {
+        console.log(err)
+      }
+    })
   }
 
   handleGroupChange = e => {
-    // todo 更改分组
-    console.log('更改后的分组为: ' + this.state.groups[e.detail.value])
+    if (this.props.curGroup.id !== this.props.groupList[e.detail.value].id) {
+      console.log('更改后的分组为: ' + this.props.groupList[e.detail.value].name)
+      Taro.showModal({
+        title: '提示',
+        content: '确定移动所选药品吗？',
+        // confirmText: '删除',
+        // confirmColor: '#333',
+        success: res => {
+          if (res.confirm) {
+            console.log('group change confirmed')
+            this.confirmGroupChange()
+          }
+        }
+      })
+    }
+  }
+
+  confirmGroupChange = () => {
+    // todo 调用后端
+    console.log()
   }
 
   cancelMultiSelection = () => {
@@ -189,6 +249,7 @@ export default class MedicineList extends Component {
         />
       )
     })
+
     const expiringMedicines = filteredMedicines.expiring.map(medicine => {
       return (
         <MedicineItem
@@ -203,6 +264,7 @@ export default class MedicineList extends Component {
         />
       )
     })
+
     const notExpiredMedicines = filteredMedicines.notExpired.map(medicine => {
       return (
         <MedicineItem
@@ -217,8 +279,10 @@ export default class MedicineList extends Component {
         />
       )
     })
+
     const hasMedicine = (this.state.medicines == null || typeof (this.state.medicines) == 'undefined' || this.state.medicines === 0
       || (this.state.medicines['expired'].length === 0 && this.state.medicines['expiring'].length === 0 && this.state.medicines['notExpired'].length === 0))
+
     return (
       <View className='medicine-list-wrapper'>
         <View className='list-info'>
@@ -258,13 +322,13 @@ export default class MedicineList extends Component {
         {
           this.state.isMultipleSelection &&
           <View className='option-box'>
-            <View className='delete-btn-wrapper' onClick={this.deleteSelected}>
-              <View className='delete-btn'>
+            <View className='delete-btn-wrapper'>
+              <View className='delete-btn' onClick={this.handleDeleteClick}>
                 删除所选
               </View>
             </View>
             <View className='group-picker-wrapper'>
-              <Picker mode='selector' range={this.state.groups} onChange={this.handleGroupChange}>
+              <Picker mode='selector' range={this.props.groupList} rangeKey='name' onChange={this.handleGroupChange}>
                 <View className='picker'>
                   移动至
                 </View>

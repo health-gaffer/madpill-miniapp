@@ -223,7 +223,13 @@ export default class HomePage extends Component {
             </MPFormItem>
           </MPForm>
         </View>
-        {this.state.loggedIn && <MedicineList onRef={this.onRef} keyword={this.state.keyword} />}
+        {
+          this.state.loggedIn &&
+          <MedicineList
+            onRef={this.onRef} keyword={this.state.keyword}
+            curGroup={this.state.curGroup} groupList={this.state.groupList}
+          />
+        }
       </View>
     )
   }

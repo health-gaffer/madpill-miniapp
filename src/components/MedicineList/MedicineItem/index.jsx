@@ -17,6 +17,13 @@ export default class MedicineItem extends Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      showMore : false
+    }
+  }
+
   // 根据当前状态判断如何操作
   handleItemClick = () => {
     if (this.props.isMultipleSelection) {
@@ -37,18 +44,57 @@ export default class MedicineItem extends Component {
     this.props.onMultipleSelection(this.props.medicine.id)
   }
 
+  showMore = (e) => {
+    e.stopPropagation()
+    const more = this.state.showMore
+    this.setState({
+      showMore : !more
+    })
+  }
+
   renderMedicineInfo() {
     const {medicine, status, isMultipleSelection, checked} = this.props
     const tags = medicine.tags
     // 取前 3 个 items
-    const tagItems = tags.slice(0, 3).map(tag => {
+    var tag_width = 0.0
+    var needArrow = false
+    var needArc = false
+    var cancel_arc = false
+    tags.map(tag => {
+      tag_width += 1.6 + tag.name.length;
+      if(tag_width < 14.42 && tag_width > 14.35 ) {
+        cancel_arc = true
+      }
+    })
+    if(tag_width > 14.42){
+      needArc= !cancel_arc
+      // if(!needArc){
+        needArrow = true
+      // }
+    }
+
+    console.log(needArrow)
+    const tagItems = tags.map(tag => {
+      tag_width += 1.6 + tag.name.length;
+      // if(!this.state.needArrow && tag_width > 14.35 ) {
+      //
+      // }
+      // this.state({
+      //   needArc : false,
+      //   needArrow: false
+      // })
+      // console.log(tag_width)
       return (
-        <View key={tag.id} className='at-col-2 tag'>
+        <View key={tag.id} className='tag'>
           {tag.name}
         </View>
       )
     })
-    const ellipses = (tags.length > 3 && <View className='tag tag-ellipse'>···</View>)
+    // console.log(tag_width)
+    // 163 12.8  12.7 14.4
+    // 150 11.8  12.7 188/
+
+    // const ellipses = (tags.length > 6 && <View className='tag tag-ellipse'>···</View>)
     const curPillColor = getPillColor(medicine.manufacture + medicine.name)
     return (
       <View onClick={this.handleItemClick} onLongPress={this.handleLongPress} className='medicine-info'>
@@ -64,7 +110,7 @@ export default class MedicineItem extends Component {
           }
         </View>
         <View className='at-col at-col-9 pill-info-wrapper'>
-          <View className='at-row at-row__justify--between at-row__align--center'>
+          <View className='at-row '>
             <Text className='at-col at-col-8 medicine-name'>
               {medicine.name}
             </Text>
@@ -72,11 +118,26 @@ export default class MedicineItem extends Component {
               {medicine.manufacture}
             </Text>
           </View>
-          <View className='at-row at-row__justify--between at-row__align--center tags-wrapper'>
-            <View className='at-row at-col-8 at-row__justify--start pill-tags-wrapper'>
-              {tagItems}
-              {ellipses}
+          <View className='at-row  tags-wrapper'>
+            <View className='at-col-8' onClick={this.showMore}>
+              <View className={this.state.showMore?'pill-tags-wrapper wrapper':'pill-tags-wrapper'}>
+                {tagItems}
+              </View>
             </View>
+            {!this.state.showMore &&
+            <View className=''>
+              <View className='pill-tags-wrapper'>
+                {needArc &&
+                <View className='tag extra-tag'>
+                  1
+                </View>
+                }
+                {needArrow &&
+                (needArc ? <View className="more no-space"/> : <View className="more"/>)
+                }
+              </View>
+            </View>
+            }
             {
               {
                 'expired':

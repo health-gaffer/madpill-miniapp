@@ -1,6 +1,6 @@
 import Taro, {Component} from '@tarojs/taro'
 import {Image, Picker, Text, View} from '@tarojs/components'
-import {AtActivityIndicator, AtModal} from 'taro-ui'
+import {AtActivityIndicator} from 'taro-ui'
 import MedicineItem from './MedicineItem'
 import './index.scss'
 import {getToken} from '../../utils/login'
@@ -139,18 +139,27 @@ export default class MedicineList extends Component {
           header: requestHeader,
           data: JSON.stringify(this.state.selectedIds),
           success: () => {
-            const expired = this.state.medicines.expired.slice().filter(medicine => this.state.selectedIds.indexOf(medicine.id) === -1)
-            const expiring = this.state.medicines.expiring.slice().filter(medicine => this.state.selectedIds.indexOf(medicine.id) === -1)
-            const notExpired = this.state.medicines.notExpired.slice().filter(medicine => this.state.selectedIds.indexOf(medicine.id) === -1)
-            const medicines = {expired: expired, expiring: expiring, notExpired: notExpired}
-            this.setState({
-              medicines: medicines,
-              isMultipleSelection: false,
-              selectedIds: []
+            Taro.showToast({
+              title: '删除成功',
+              icon: 'success',
+              duration: 1000
+            }).then(res => {
+              console.log(res)
+              this.setState({
+                isMultipleSelection: false,
+                selectedIds: []
+              })
+              this.updateList(this.props.curGroup.id)
             })
           },
           fail: error => {
-            console.log('fail')
+            Taro.showToast({
+              title: '删除失败',
+              icon: 'none',
+              duration: 1000
+            }).then(res => {
+              console.log(res)
+            })
             console.log(error)
           }
         })
@@ -172,16 +181,53 @@ export default class MedicineList extends Component {
         success: res => {
           if (res.confirm) {
             console.log('group change confirmed')
-            this.confirmGroupChange()
+            this.confirmGroupChange(this.props.groupList[e.detail.value].id)
           }
         }
       })
     }
   }
 
-  confirmGroupChange = () => {
-    // todo 调用后端
-    console.log()
+  confirmGroupChange = (destGroupId) => {
+    getToken({
+      success: (token) => {
+        let requestHeader = {}
+        requestHeader[HEADER_MADPILL_TOKEN_KEY] = token
+        Taro.request({
+          url: HOST + '/drugs?destGroup=' + destGroupId,
+          method: 'PUT',
+          header: requestHeader,
+          data: JSON.stringify(this.state.selectedIds),
+          success: () => {
+            Taro.showToast({
+              title: '移动成功',
+              icon: 'success',
+              duration: 1000
+            }).then(res => {
+              console.log(res)
+              this.setState({
+                isMultipleSelection: false,
+                selectedIds: []
+              })
+              this.updateList(this.props.curGroup.id)
+            })
+          },
+          fail: error => {
+            Taro.showToast({
+              title: '移动失败',
+              icon: 'none',
+              duration: 1000
+            }).then(res => {
+              console.log(res)
+            })
+            console.log(error)
+          }
+        })
+      },
+      fail: (err) => {
+        console.log(err)
+      }
+    })
   }
 
   cancelMultiSelection = () => {
@@ -203,11 +249,7 @@ export default class MedicineList extends Component {
           method: 'DELETE',
           header: requestHeader,
           success: () => {
-            const expired = this.state.medicines.expired.slice().filter(medicine => medicine.id !== drugId)
-            const expiring = this.state.medicines.expiring.slice().filter(medicine => medicine.id !== drugId)
-            const notExpired = this.state.medicines.notExpired.slice().filter(medicine => medicine.id !== drugId)
-            const medicines = {expired: expired, expiring: expiring, notExpired: notExpired}
-            this.setState({medicines: medicines})
+            this.updateList(this.props.curGroup.id)
           },
           fail: error => {
             console.log('fail')

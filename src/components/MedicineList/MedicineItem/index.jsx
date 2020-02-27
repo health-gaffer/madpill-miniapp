@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {Checkbox, Text, View} from '@tarojs/components'
+import {Checkbox, Label, Text, View} from '@tarojs/components'
 import {AtSwipeAction} from 'taro-ui'
 import './index.scss'
 import MPDivider from '../../MPDivider'
@@ -18,7 +18,7 @@ export default class MedicineItem extends Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       showMore : false
     }
@@ -61,7 +61,7 @@ export default class MedicineItem extends Component {
     var needArc = false
     var cancel_arc = false
     tags.map(tag => {
-      tag_width += 1.6 + tag.name.length;
+      tag_width += 1.6 + tag.name.length
       if(tag_width < 14.42 && tag_width > 14.35 ) {
         cancel_arc = true
       }
@@ -75,6 +75,15 @@ export default class MedicineItem extends Component {
 
     console.log(needArrow)
     const tagItems = tags.map(tag => {
+      tag_width += 1.6 + tag.name.length
+      // if(!this.state.needArrow && tag_width > 14.35 ) {
+      //
+      // }
+      // this.state({
+      //   needArc : false,
+      //   needArrow: false
+      // })
+      // console.log(tag_width)
       return (
         <View key={tag.id} className='tag'>
           {tag.name}
@@ -87,7 +96,12 @@ export default class MedicineItem extends Component {
         {/*多选模式下，隐藏图片，显示多选框*/}
         <View className='left-part-wrapper'>
           {isMultipleSelection ?
-            <Checkbox id={'checkbox-' + medicine.id} value={medicine.id} checked={checked} className='checkbox' />
+            <View className='checkbox-wrapper'>
+            <Checkbox className='checkbox' id={'checkbox-' + medicine.id} value={medicine.id} checked={checked} />
+            <View className='checkbox-label-wrapper'>
+              <Label className='checkbox-label' for={'checkbox-' + medicine.id} />
+            </View>
+            </View>
             :
             <View
               className='madpill icon-pill pill-img'
@@ -114,7 +128,7 @@ export default class MedicineItem extends Component {
             <View onClick={this.showMore}>
               <View className='pill-tags-wrapper'>
                 {needArc && <View className='tag extra-tag'>1</View>}
-                {needArrow && (needArc ? <View className="more no-space"/> : <View className="more"/>)}
+                {needArrow && (needArc ? <View className='more no-space' /> : <View className='more' />)}
               </View>
             </View>
             }

@@ -75,26 +75,12 @@ export default class MedicineItem extends Component {
 
     console.log(needArrow)
     const tagItems = tags.map(tag => {
-      tag_width += 1.6 + tag.name.length;
-      // if(!this.state.needArrow && tag_width > 14.35 ) {
-      //
-      // }
-      // this.state({
-      //   needArc : false,
-      //   needArrow: false
-      // })
-      // console.log(tag_width)
       return (
         <View key={tag.id} className='tag'>
           {tag.name}
         </View>
       )
     })
-    // console.log(tag_width)
-    // 163 12.8  12.7 14.4
-    // 150 11.8  12.7 188/
-
-    // const ellipses = (tags.length > 6 && <View className='tag tag-ellipse'>···</View>)
     const curPillColor = getPillColor(medicine.manufacture + medicine.name)
     return (
       <View onClick={this.handleItemClick} onLongPress={this.handleLongPress} className='medicine-info'>
@@ -125,16 +111,10 @@ export default class MedicineItem extends Component {
               </View>
             </View>
             {!this.state.showMore &&
-            <View className=''>
+            <View onClick={this.showMore}>
               <View className='pill-tags-wrapper'>
-                {needArc &&
-                <View className='tag extra-tag'>
-                  1
-                </View>
-                }
-                {needArrow &&
-                (needArc ? <View className="more no-space"/> : <View className="more"/>)
-                }
+                {needArc && <View className='tag extra-tag'>1</View>}
+                {needArrow && (needArc ? <View className="more no-space"/> : <View className="more"/>)}
               </View>
             </View>
             }

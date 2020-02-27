@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {Button, View} from '@tarojs/components'
+import {Button, Image, View} from '@tarojs/components'
 import {AtAvatar, AtToast} from 'taro-ui'
 
 import './index.scss'
@@ -30,7 +30,8 @@ export default class HomePage extends Component {
       titleToast: '',
       loadingGroup: true,
       curGroup: {},
-      groupList: []
+      groupList: [],
+      inMultipleSelection: false
     }
   }
 
@@ -173,61 +174,89 @@ export default class HomePage extends Component {
     }
   }
 
+  /**
+   *  多选操作
+   **/
+  handleMultipleSelection(mode) {
+    this.setState({
+      inMultipleSelection: mode
+    })
+  }
+
+  cancelMultiSelection = () => {
+    this.child.clearSelectedIds()
+    this.setState({
+      inMultipleSelection: false
+    })
+  }
+
   render() {
     return (
       <View>
         <AtToast isOpened={this.state.showToast} duration={1000} text={this.state.titleToast} status='success' />
-        <View className='login'>
-          <View className='top-area'>
-            <View className='top-left-area'>
-              <AtAvatar className='avatar' circle size='small'
-                image={this.state.loggedIn ? (this.state.userInfo ? this.state.userInfo.avatarUrl : 'https://jdc.jd.com/img/200') : 'https://jdc.jd.com/img/200'}
-              />
-              <View className='group'>
-                <GroupMenu loading={this.state.loadingGroup} curGroup={this.state.curGroup}
-                  onCreateGroup={this.handleNewGroup} groupList={this.state.groupList}
-                  onChangeGroup={this.changeGroup}
-                />
-              </View>
-            </View>
-            <View className='top-right-area' onClick={this.handleAddDrug}>
-              <Image
-                className='add-drug-icon'
-                src={addIcon}
-                mode='aspectFit'
-              />
-            </View>
-          </View>
-          {!this.state.loggedIn ?
-            <View className='login-area'>
-              体验更完整的功能，请先
-              <Button
-                className='login-button'
-                size='mini'
-                openType='getUserInfo'
-                onGetUserInfo={this.handleGetUserInfo}
-              >登录</Button>
+        {
+          this.state.inMultipleSelection ?
+            <View className='multi-title-wrapper'>
+              <View className='cancel-btn' onClick={this.cancelMultiSelection}>取消</View>
+              <View className='group-name'>{this.state.curGroup.name}</View>
+              {/*todo 全选*/}
+              <View style='color: rgba(0,0,0,0)'>全选</View>
             </View>
             :
-            null
-          }
+            <View className='login'>
+              <View className='top-area'>
+                <View className='top-left-area'>
+                  <AtAvatar className='avatar' circle size='small'
+                    image={this.state.loggedIn ? (this.state.userInfo ? this.state.userInfo.avatarUrl : 'https://jdc.jd.com/img/200') : 'https://jdc.jd.com/img/200'}
+                  />
+                  <View className='group'>
+                    <GroupMenu loading={this.state.loadingGroup} curGroup={this.state.curGroup}
+                      onCreateGroup={this.handleNewGroup} groupList={this.state.groupList}
+                      onChangeGroup={this.changeGroup}
+                    />
+                  </View>
+                </View>
+                <View className='top-right-area' onClick={this.handleAddDrug}>
+                  <Image
+                    className='add-drug-icon'
+                    src={addIcon}
+                    mode='aspectFit'
+                  />
+                </View>
+              </View>
+              {!this.state.loggedIn ?
+                <View className='login-area'>
+                  体验更完整的功能，请先
+                  <Button
+                    className='login-button'
+                    size='mini'
+                    openType='getUserInfo'
+                    onGetUserInfo={this.handleGetUserInfo}
+                  >登录</Button>
+                </View>
+                :
+                null
+              }
 
-          {/* 搜索框 */}
-          <MPForm>
-            <MPFormItem>
-              <MPSearchBar
-                keyword={this.state.keyword}
-                placeholder='搜索'
-                onChange={this.handleSearch.bind(this)}
-              />
-            </MPFormItem>
-          </MPForm>
-        </View>
+              {/* 搜索框 */}
+              <MPForm>
+                <MPFormItem>
+                  <MPSearchBar
+                    keyword={this.state.keyword}
+                    placeholder='搜索'
+                    onChange={this.handleSearch.bind(this)}
+                  />
+                </MPFormItem>
+              </MPForm>
+            </View>
+        }
         {
           this.state.loggedIn &&
           <MedicineList
             onRef={this.onRef} keyword={this.state.keyword}
             curGroup={this.state.curGroup} groupList={this.state.groupList}
+            onSelectionModeChange={(inMultipleSelection) => this.handleMultipleSelection(inMultipleSelection)}
+            inMultipleSelection={this.state.inMultipleSelection}
           />
         }
       </View>

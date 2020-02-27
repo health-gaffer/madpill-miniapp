@@ -52,7 +52,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    color: #A9A9A9;
+    color: rgba(gray, 0.1);
     margin-bottom: 1rem;
     font-size: 0.9rem;
 
@@ -70,5 +70,24 @@
       border: none;
     }
   }
+}
+
+.multi-title-wrapper {
+  margin: 1vh 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+
+  .group-name {
+    font-size: 110%;
+    font-weight: 400;
+  }
+
+  > view {
+    flex-grow: 1;
+    text-align: center;
+  }
+
 }
 

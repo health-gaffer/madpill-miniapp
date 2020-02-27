@@ -22,7 +22,6 @@ export default class MedicineList extends Component {
         notExpired: []
       },
       isLoading: false,
-      isMultipleSelection: false,
       // 多选列表
       selectedIds: []
     }
@@ -72,19 +71,19 @@ export default class MedicineList extends Component {
 
   // 长按列表项，激活多选
   handleMultipleSelection = (firstId) => {
-    if (!this.state.isMultipleSelection) {
+    if (!this.props.inMultipleSelection) {
       console.log('激活多选，选择的 id 是: ' + firstId)
       this.state.selectedIds.push(firstId)
       this.setState({
-        isMultipleSelection: true,
         selectedIds: this.state.selectedIds
       })
+      this.props.onSelectionModeChange(true)
     }
   }
 
   // 判断是否为选中状态
   isChecked = (id) => {
-    if (this.state.isMultipleSelection) {
+    if (this.props.inMultipleSelection) {
       return this.state.selectedIds.some((selectedId) => {
         return selectedId === id
       })
@@ -146,9 +145,9 @@ export default class MedicineList extends Component {
             }).then(res => {
               console.log(res)
               this.setState({
-                isMultipleSelection: false,
                 selectedIds: []
               })
+              this.props.onSelectionModeChange(false)
               this.updateList(this.props.curGroup.id)
             })
           },
@@ -206,9 +205,9 @@ export default class MedicineList extends Component {
             }).then(res => {
               console.log(res)
               this.setState({
-                isMultipleSelection: false,
                 selectedIds: []
               })
+              this.props.onSelectionModeChange(false)
               this.updateList(this.props.curGroup.id)
             })
           },
@@ -230,9 +229,8 @@ export default class MedicineList extends Component {
     })
   }
 
-  cancelMultiSelection = () => {
+  clearSelectedIds = () => {
     this.setState({
-      isMultipleSelection: false,
       selectedIds: []
     })
   }
@@ -264,7 +262,7 @@ export default class MedicineList extends Component {
   }
 
   render() {
-    if (this.state.isMultipleSelection) {
+    if (this.props.inMultipleSelection) {
       console.log('当前选中的药品列表为: ' + this.state.selectedIds)
     }
     const keyword = this.props.keyword.trim()
@@ -282,7 +280,7 @@ export default class MedicineList extends Component {
         <MedicineItem
           key={String(medicine.id)}
           medicine={medicine} status='expired'
-          isMultipleSelection={this.state.isMultipleSelection}
+          isMultipleSelection={this.props.inMultipleSelection}
           checked={this.isChecked(medicine.id)}
           onMultipleSelection={() => this.handleMultipleSelection(medicine.id)}
           onAddToList={() => this.addMedicineItem(medicine.id)}
@@ -297,7 +295,7 @@ export default class MedicineList extends Component {
         <MedicineItem
           key={String(medicine.id)}
           medicine={medicine} status='expiring'
-          isMultipleSelection={this.state.isMultipleSelection}
+          isMultipleSelection={this.props.inMultipleSelection}
           checked={this.isChecked(medicine.id)}
           onMultipleSelection={() => this.handleMultipleSelection(medicine.id)}
           onAddToList={() => this.addMedicineItem(medicine.id)}
@@ -312,7 +310,7 @@ export default class MedicineList extends Component {
         <MedicineItem
           key={String(medicine.id)}
           medicine={medicine} status='notExpired'
-          isMultipleSelection={this.state.isMultipleSelection}
+          isMultipleSelection={this.props.inMultipleSelection}
           checked={this.isChecked(medicine.id)}
           onMultipleSelection={() => this.handleMultipleSelection(medicine.id)}
           onAddToList={() => this.addMedicineItem(medicine.id)}
@@ -330,7 +328,7 @@ export default class MedicineList extends Component {
         <View className='list-info'>
           {this.state.isLoading ?
             <View className='loading'>
-              <AtActivityIndicator content='加载中...' size={50} />
+              <AtActivityIndicator content='加载中...' size={50}/>
             </View> :
             hasMedicine ?
               <View className='empty-panel'>
@@ -362,24 +360,19 @@ export default class MedicineList extends Component {
           }
         </View>
         {
-          this.state.isMultipleSelection &&
+          this.props.inMultipleSelection &&
           <View className='option-box'>
             <View className='delete-btn-wrapper'>
               <View className='delete-btn' onClick={this.handleDeleteClick}>
-                删除所选
+                删除
               </View>
             </View>
             <View className='group-picker-wrapper'>
               <Picker mode='selector' range={this.props.groupList} rangeKey='name' onChange={this.handleGroupChange}>
                 <View className='picker'>
-                  移动至
+                  移动
                 </View>
               </Picker>
-            </View>
-            <View className='cancel-btn-wrapper' onClick={this.cancelMultiSelection}>
-              <View className='cancel-btn'>
-                取消
-              </View>
             </View>
           </View>
         }

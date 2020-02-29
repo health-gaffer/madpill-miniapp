@@ -36,37 +36,39 @@ export default class MedicineList extends Component {
   }
 
   updateList = (groupId) => {
-    this.setState({
-      isLoading: true
-    })
-    getToken({
-      success: (token) => {
-        let requestHeader = {}
-        requestHeader[HEADER_MADPILL_TOKEN_KEY] = token
-        Taro.request({
-          url: HOST + '/drugs?group=' + groupId,
-          method: 'GET',
-          header: requestHeader,
-          success: res => {
-            if (res.data.data != null) {
+    if(typeof(groupId) !== 'undefined') {
+      this.setState({
+        isLoading: true
+      })
+      getToken({
+        success: (token) => {
+          let requestHeader = {}
+          requestHeader[HEADER_MADPILL_TOKEN_KEY] = token
+          Taro.request({
+            url: HOST + '/drugs?group=' + groupId,
+            method: 'GET',
+            header: requestHeader,
+            success: res => {
+              if (res.data.data != null) {
+                this.setState({
+                  medicines: res.data.data
+                })
+              }
               this.setState({
-                medicines: res.data.data
+                isLoading: false
               })
+            },
+            fail: error => {
+              console.log('fail')
+              console.log(error)
             }
-            this.setState({
-              isLoading: false
-            })
-          },
-          fail: error => {
-            console.log('fail')
-            console.log(error)
-          }
-        })
-      },
-      fail: (err) => {
-        console.log(err)
-      }
-    })
+          })
+        },
+        fail: (err) => {
+          console.log(err)
+        }
+      })
+    }
   }
 
   // 长按列表项，激活多选
@@ -266,9 +268,9 @@ export default class MedicineList extends Component {
       console.log('当前选中的药品列表为: ' + this.state.selectedIds)
     }
     const keyword = this.props.keyword.trim()
-    console.log(keyword)
+    // console.log(keyword)
     let selectedMedicines = Object.assign({}, this.state.medicines)
-    console.log(selectedMedicines)
+    // console.log(selectedMedicines)
     let filteredMedicines = Object.assign({}, this.state.medicines)
     if (typeof (keyword) !== undefined && keyword !== '') {
       Object.keys(selectedMedicines).forEach(function (key) {

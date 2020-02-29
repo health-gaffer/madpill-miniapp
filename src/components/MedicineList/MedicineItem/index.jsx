@@ -73,7 +73,7 @@ export default class MedicineItem extends Component {
       // }
     }
 
-    console.log(needArrow)
+    // console.log(needArrow)
     const tagItems = tags.map(tag => {
       tag_width += 1.6 + tag.name.length
       // if(!this.state.needArrow && tag_width > 14.35 ) {

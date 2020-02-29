@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View} from '@tarojs/components'
+import {View, Button} from '@tarojs/components'
 import {
   AtIcon,
   AtInput,
@@ -32,7 +32,7 @@ export default class GroupMenu extends Component {
         message: ''
       }
     }
-    console.log(props)
+    // console.log(props)
   }
 
   handleClick(value, e) {
@@ -97,7 +97,7 @@ export default class GroupMenu extends Component {
             this.props.onCreateGroup({
               id: result.data.data,
               name: this.state.newGroupName
-            });
+            })
             this.interval = setInterval(() => {
               this.setState({
                 toast: {
@@ -108,8 +108,8 @@ export default class GroupMenu extends Component {
                 newGroupName: ''
               })
               this.handleCreateChange('')
-              clearInterval(this.interval);
-            }, 1000);
+              clearInterval(this.interval)
+            }, 1000)
           },
           fail: error => {
             console.log('fail')
@@ -129,8 +129,8 @@ export default class GroupMenu extends Component {
                   message: ''
                 },
               })
-              clearInterval(this.interval);
-            }, 1000);
+              clearInterval(this.interval)
+            }, 1000)
           }
         })
       },
@@ -152,10 +152,10 @@ export default class GroupMenu extends Component {
           {this.state.showPanel?
 
             <View className='upArrow'>
-              <AtIcon value='chevron-up' size='24'></AtIcon>
+              <AtIcon value='chevron-up' size='24' />
             </View>:
             <View className='upArrow'>
-              <AtIcon value='chevron-down' size='24'></AtIcon>
+              <AtIcon value='chevron-down' size='24' />
             </View>
           }
         </View>
@@ -170,8 +170,9 @@ export default class GroupMenu extends Component {
                 groupList.map((group) =>
 
                     <View key={group.id}
-                          className= {group.id === this.props.curGroup['id']?'group-item-active':'group-item'}
-                          onClick={this.handleClick.bind(this, group['id'])}>
+                      className={group.id === this.props.curGroup['id']?'group-item-active':'group-item'}
+                      onClick={this.handleClick.bind(this, group['id'])}
+                    >
                       {group['name']}
                     </View>
 

@@ -128,7 +128,6 @@ export default class HomePage extends Component {
   }
   changeGroup = (value) => {
     //todo change the viewList
-    console.log(value)
     console.log(this.state.groupList)
     this.state.groupList.map(group => {
       if (group.id === value) {
